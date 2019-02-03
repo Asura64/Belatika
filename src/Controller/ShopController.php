@@ -17,7 +17,7 @@ class ShopController extends AbstractController
      */
     public function index():Response
     {
-        $items = $this->getDoctrine()->getRepository(Item::class)->findAllWithImages();
+        $items = $this->getDoctrine()->getRepository(Item::class)->findAllWithImages()->setCurrentPage(2);
 
         $categories = $this->getDoctrine()->getRepository(Category::class)->findBy([], ['name' => 'ASC']);
 
