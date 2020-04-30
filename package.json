@@ -13,7 +13,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "lodash": "^4.17.15",
         "node-sass": "^4.13.0",
         "sass-loader": "^7.0.1"
