@@ -66,7 +66,7 @@
                             class="bt-btn bt-btn--primary cart-button btn-sm mr-3"
                             data-item_id="{{ item.id }}"
                             data-add_item_url="{{ absolute_url(path('app_cart_add', {'id':item.id})) }}"
-                            data-remove_item_url="{{ absolute_url(path('app_cart_remove', {'item_id':item.id})) }}"
+                            data-remove_item_url="{{ absolute_url(path('app_cart_remove', {'id':item.id})) }}"
                             {% if cart[item.id] is defined %}data-added{% endif %}
                     >
                         <span class="add-item{% if cart[item.id] is defined %} hidden{% endif %}">{{ 'Ajouter au panier'|gTrans }}</span>

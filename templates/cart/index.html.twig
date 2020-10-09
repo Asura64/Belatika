@@ -51,7 +51,7 @@
                                     {{ (price * item.quantity)|number_format(2, ',') }}€
                                 </td>
                                 <td class="cart-content__item__remove">
-                                    <a class="text-dark" href="{{ path('app_cart_remove', {'item_id': item.id, 'quantity': item.quantity}) }}" title="{{ 'Retirer cet article de votre panier.'|gTrans }}"><i class="fas fa-trash-alt"></i></a>
+                                    <a class="text-dark" href="{{ path('app_cart_remove', {'id': item.id, 'quantity': item.quantity}) }}" title="{{ 'Retirer cet article de votre panier.'|gTrans }}"><i class="fas fa-trash-alt"></i></a>
                                 </td>
                             </tr>
                         {% endfor %}

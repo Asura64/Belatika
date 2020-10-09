@@ -8,7 +8,7 @@
                 {{ item.name|gTrans|truncate(30) }}
             </a>
             <span class="cart-hover__item__price">{{ (onSales ? item.discountPrice : item.price)|number_format(2, ',') }}€</span>
-            <i data-item_id="{{ item.id }}" data-remove_item_url="{{ absolute_url(path('app_cart_remove', {'item_id':item.id})) }}" class="remove-item far fa-window-close"></i>
+            <i data-item_id="{{ item.id }}" data-remove_item_url="{{ absolute_url(path('app_cart_remove', {'id':item.id})) }}" class="remove-item far fa-window-close"></i>
         </div>
         {% set cartTotal = cartTotal + item.quantity * (onSales ? item.discountPrice : item.price) %}
     {% endfor %}

@@ -28,6 +28,7 @@ export default class Cart {
         this.processing = false;
         this.cartContent = {};
         this.onSales = false;
+        this.gaIsInitialized = false;
 
         //DOM handling
         this.buttons = [].slice.call(document.getElementsByClassName(this.options.button_class));
@@ -72,6 +73,7 @@ export default class Cart {
                 this.options.popup.show();
             }
             this.processing = false;
+            this.analytics(!added, JSON.parse(response.item));
         }, {method: 'POST'});
     }
 
@@ -243,5 +245,24 @@ export default class Cart {
             removeText.classList.remove('hidden');
             button.setAttribute('data-added', '');
         }
+    }
+
+    analytics(add, item)
+    {
+        if (!this.gaIsInitialized) {
+            ga("create", "UA-XXXXX-Y");
+            ga("require", "ec");
+            this.gaIsInitialized = true;
+        }
+
+        ga('ec:addProduct', {
+            'id': item.id,
+            'name': item.name,
+            'category': item.category.slug,
+            'price': item.price,
+            'quantity': 1,
+        });
+        ga('ec:setAction', add ? 'add' : 'remove');
+        ga('send', 'event', 'UX', 'click', 'add to cart');     // Send data using an event.
     }
 }

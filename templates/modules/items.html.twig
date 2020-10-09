@@ -19,7 +19,7 @@
                         data-item_id="{{ item.id }}"
                         data-popup="add-to-cart-popup"
                         data-add_item_url="{{ absolute_url(path('app_cart_add', {'id':item.id})) }}"
-                        data-remove_item_url="{{ absolute_url(path('app_cart_remove', {'item_id':item.id})) }}"
+                        data-remove_item_url="{{ absolute_url(path('app_cart_remove', {'id':item.id})) }}"
                         {% if cart[item.id] is defined %}data-added{% endif %}
                 >
                     <span class="add-item{% if cart[item.id] is defined %} hidden{% endif %}">{{ 'Acheter'|gTrans }}</span>

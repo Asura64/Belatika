@@ -93,7 +93,7 @@ class CartController extends AbstractController
      * @param CacheManager $cacheManager
      * @return JsonResponse
      */
-    public function add(Item $item, Request $request, $quantity, CacheManager $cacheManager):JsonResponse
+    public function add(Item $item, Request $request, int $quantity, CacheManager $cacheManager):JsonResponse
     {
         $session = $this->getSessionFrom($request);
 
@@ -125,7 +125,7 @@ class CartController extends AbstractController
             ->setRemoveLink($this->generateUrl(
                 'app_cart_remove',
                 [
-                    'item_id' => $item->getId()
+                    'id' => $item->getId()
                 ],
                 UrlGeneratorInterface::ABSOLUTE_PATH)
             );
@@ -136,25 +136,30 @@ class CartController extends AbstractController
 
         $message = $this->gTrans('Article ajouté au panier');
 
+        $serializer = $this->get('serializer');
+
         return new JsonResponse([
             'message' => $message,
             'onSales' => $this->onSales(),
-            'cart' => $this->get('serializer')->serialize($cart, 'json', ['groups' => 'item'])
+            'item' => $serializer->serialize($item, 'json', ['groups' => 'item']),
+            'cart' => $serializer->serialize($cart, 'json', ['groups' => 'item'])
         ]);
     }
 
     /**
-     * @Route("/remove/{item_id<\d+>}/{quantity<\d+>?0}", name="app_cart_remove")
-     * @param int $item_id
+     * @Route("/remove/{id<\d+>}/{quantity<\d+>?0}", name="app_cart_remove")
+     * @param Item $item
      * @param int $quantity
      * @param Request $request
      * @return JsonResponse|RedirectResponse
      */
-    public function remove(int $item_id, int $quantity, Request $request):Response
+    public function remove(Item $item, int $quantity, Request $request):Response
     {
         $session = $this->getSessionFrom($request);
 
         $cart = $session->get('cart');
+
+        $item_id = $item->getId();
 
         if(is_array($cart) && array_key_exists($item_id, $cart)){
             $item = $cart[$item_id];
@@ -169,11 +174,14 @@ class CartController extends AbstractController
 
         $message = $this->gTrans('Article Retiré du panier');
 
+        $serializer = $this->get('serializer');
+
         if ($request->isMethod('POST')) {
             return new JsonResponse([
                 'message' => $message,
                 'onSales' => $this->onSales(),
-                'cart' => $this->get('serializer')->serialize($cart, 'json', ['groups' => 'item'])
+                'item' => $serializer->serialize($item, 'json', ['groups' => 'item']),
+                'cart' => $serializer->serialize($cart, 'json', ['groups' => 'item'])
             ]);
         } else {
             return $this->redirectToRoute('app_cart_show');
