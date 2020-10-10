@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\BlogArticle;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -13,14 +13,15 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  */
 class BlogArticleRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, BlogArticle::class);
     }
 
-     /**
-      * @return BlogArticle[] Returns an array of BlogArticle objects
-      */
+    /**
+     * @param bool $visibleOnly
+     * @return BlogArticle[] Returns an array of BlogArticle objects
+     */
     public function findAllWithComments($visibleOnly = true)
     {
         $qb = $this->createQueryBuilder('b');

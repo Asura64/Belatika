@@ -15,8 +15,14 @@ framework:
     php_errors:
         log: true
 
-    templating:
-        engines: ['twig', 'php']
+#    templating:
+#        engines: ['twig', 'php']
+
+#    error_controller: Symfony\Bundle\TwigBundle\Controller\ExceptionController::showAction
 
     serializer:
         enabled: true
+
+#    _errors:
+#        resource: '@FrameworkBundle/Resources/config/routing/errors.xml'
+#        prefix: /_error

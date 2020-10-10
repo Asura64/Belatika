@@ -7,7 +7,7 @@ use App\Entity\Category;
 use App\Entity\CustomerOrder;
 use App\Entity\CustomerOrderLine;
 use App\Entity\EtsyFeedback;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -15,7 +15,7 @@ class FunctionExtension extends AbstractExtension
 {
     private $manager;
 
-    public function __construct(ObjectManager $manager)
+    public function __construct(EntityManager $manager)
     {
         $this->manager = $manager;
     }

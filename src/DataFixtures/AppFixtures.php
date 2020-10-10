@@ -8,7 +8,7 @@ use App\Entity\Item;
 use App\Entity\Translation;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use joshtronic\LoremIpsum;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 

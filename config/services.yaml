@@ -9,9 +9,9 @@ parameters:
 
 services:
 
-    Symfony\Bundle\TwigBundle\Controller\ExceptionController:
-        alias: twig.controller.exception
-        public: true
+#    Symfony\Bundle\TwigBundle\Controller\ExceptionController:
+#        alias: twig.controller.exception
+#        public: true
 
     # default configuration for services in *this* file
     _defaults:

@@ -94,7 +94,7 @@ class AdminController extends AbstractController
         file_put_contents($this->settingsFile, Yaml::dump($belatika_yaml));
     }
 
-    protected function render($view, array $parameters = [], Response $response = null)
+    protected function render(string $view, array $parameters = [], Response $response = null): Response
     {
         $menus = [
             'Site Front' => $this->generateUrl('app_shop_index'),

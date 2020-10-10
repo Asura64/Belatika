@@ -4,9 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use App\Entity\Item;
-use App\Entity\Range;
 use Pagerfanta\Pagerfanta;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
@@ -17,7 +16,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  */
 class ItemRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Item::class);
     }
@@ -128,7 +127,7 @@ class ItemRepository extends AbstractRepository
      * @param string $search
      * @return Item[]
      */
-    public function searchWithImages($search): array
+    public function searchWithImages(string $search): array
     {
         $qb = $this->createQueryBuilder('it')
             ->where('it.visible = 1')

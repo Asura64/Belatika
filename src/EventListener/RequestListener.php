@@ -4,9 +4,8 @@
 namespace App\EventListener;
 
 
-use App\Entity\StatVisit;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class RequestListener
 {
@@ -20,7 +19,7 @@ class RequestListener
         $this->manager = $manager;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         $session = $event->getRequest()->getSession();
         $request = $event->getRequest();

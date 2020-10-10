@@ -3,7 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Translation;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Translation|null find($id, $lockMode = null, $lockVersion = null)
@@ -13,7 +14,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class TranslationRepository extends AbstractRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Translation::class);
     }
@@ -22,9 +23,9 @@ class TranslationRepository extends AbstractRepository
      * @param string $crc32
      * @param string $language
      * @return Translation|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
-    public function searchTranslation($crc32, $language):?Translation
+    public function searchTranslation(string $crc32, string $language):?Translation
     {
         return $this
             ->createQueryBuilder('t')

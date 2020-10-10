@@ -9,7 +9,7 @@ use App\Entity\Gift;
 use App\Entity\User;
 use App\Service\GoogleTranslator;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use \Swift_Mailer;
 use \Swift_Message;
@@ -215,7 +215,7 @@ abstract class AbstractController extends Controller
         $manager->flush();
     }
 
-    protected function render($view, array $parameters = [], Response $response = null)
+    protected function render(string $view, array $parameters = [], Response $response = null): Response
     {
         if (count($this->breadcrumb) > 0) {
             $parameters['breadcrumb'] = $this->breadcrumb;

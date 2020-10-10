@@ -6,7 +6,7 @@ namespace App\Tests\Twig\Extension;
 use App\Entity\Translation;
 use App\Repository\TranslationRepository;
 use App\Twig\Extension\FilterExtension;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +20,7 @@ class TransExtensionTest extends WebTestCase
      * @param string $expected
      * @param Translation|null $translation
      */
-    public function testTranslateFromDB($text, $expected, Translation $translation = null):void
+    public function testTranslateFromDB(string $text, string $expected, Translation $translation = null):void
     {
         $translator = $this->getMockBuilder(GoogleTranslate::class)->getMock();
         $translator->method('setTarget')->willReturn($translator);
@@ -33,7 +33,7 @@ class TransExtensionTest extends WebTestCase
         $translationRepository = $this->getMockBuilder(TranslationRepository::class)->disableOriginalConstructor()->getMock();
         $translationRepository->method('searchTranslation')->willReturn($translation);
 
-        $objectManager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $objectManager = $this->getMockBuilder(EntityManager::class)->getMock();
         $objectManager->method('getRepository')->willReturn($translationRepository);
 
         self::bootKernel();
@@ -56,7 +56,7 @@ class TransExtensionTest extends WebTestCase
 
         $translationRepository = $this->getMockBuilder(TranslationRepository::class)->disableOriginalConstructor()->getMock();
 
-        $objectManager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $objectManager = $this->getMockBuilder(EntityManager::class)->getMock();
         $objectManager->method('getRepository')->willReturn($translationRepository);
 
         self::bootKernel();
@@ -77,7 +77,7 @@ class TransExtensionTest extends WebTestCase
         $request = new Request();
         $requestStack->expects($this->once())->method('getCurrentRequest')->willReturn($request);
 
-        $objectManager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $objectManager = $this->getMockBuilder(EntityManager::class)->getMock();
 
         self::bootKernel();
         $container = self::$kernel->getContainer();
@@ -96,7 +96,7 @@ class TransExtensionTest extends WebTestCase
         $request = new Request();
         $requestStack->expects($this->once())->method('getCurrentRequest')->willReturn($request);
 
-        $objectManager = $this->getMockBuilder(ObjectManager::class)->getMock();
+        $objectManager = $this->getMockBuilder(EntityManager::class)->getMock();
 
         self::bootKernel();
         $container = self::$kernel->getContainer();

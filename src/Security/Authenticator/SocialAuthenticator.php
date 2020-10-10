@@ -83,7 +83,7 @@ class SocialAuthenticator extends KnpUOauthAuthenticator
      *     return new Response('Auth header required', 401);
      *
      * @param Request $request The request that resulted in an AuthenticationException
-     * @param AuthenticationException $authException The exception that started the authentication process
+     * @param AuthenticationException|null $authException The exception that started the authentication process
      *
      * @return Response
      */
