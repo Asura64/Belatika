@@ -46,12 +46,14 @@
 
     <section>
         <h2>{{ 'La collection'|gTrans }}</h2>
-        <div class="shop-ranges">
+        <div class="categories">
             {% for category in categories %}
-                <figure class="ranges-preview ranges-preview--categories">
-                    <figcaption class="ranges-preview__figcaption">{{ category.name|gTrans }}{% if category.customers == 'homme' %} homme{% endif %}</figcaption>
-                    <a href="{{ path('app_shop_category', {'customer' : category.customers, 'slug' : category.slug}) }}"><img class="ranges-preview__image" src="{{ asset(category.imageWebPath)|imagine_filter('large') }}" alt="{{ category.name|gTrans }}"></a>
-                </figure>
+                <div class="categories__category">
+                    <figure class="categories__category">
+                        <figcaption class="categories__category__figcaption centered-axis-xy">{{ category.name|gTrans }}{% if category.customers == 'homme' %} homme{% endif %}</figcaption>
+                        <a href="{{ path('app_shop_category', {'customer' : category.customers, 'slug' : category.slug}) }}"><img class="categories__category__image" src="{{ asset(category.imageWebPath)|imagine_filter('large') }}" alt="{{ category.name|gTrans }}"></a>
+                    </figure>
+                </div>
             {% endfor %}
         </div>
     </section>
