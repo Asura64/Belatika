@@ -48,15 +48,28 @@
         <h2>{{ 'La collection'|gTrans }}</h2>
         <div class="categories">
             {% for category in categories %}
-                <a class="categories__category" href="{{ path('app_shop_category', {'customer' : category.customers, 'slug' : category.slug}) }}">
+                <div class="categories__category">
                     <figure>
                         <figcaption class="centered-axis-xy">{{ category.name|gTrans }}{% if category.customers == 'homme' %} homme{% endif %}</figcaption>
-                        <img src="https://picsum.photos/620/350" alt="{{ category.name|gTrans }}">
+                        <a href="{{ path('app_shop_category', {'customer' : category.customers, 'slug' : category.slug}) }}">
+                            <img src="{{ ('img/resources/categories/' ~ category.image)|imagine_filter('620x350') }}" alt="{{ category.name|gTrans }}">
+                        </a>
                     </figure>
-                    <div class="categories__category__description">
-                        Latius iam disseminata licentia onerosus bonis omnibus Caesar nullum post haec adhibens modum orientis latera cuncta vexabat nec honoratis parcens nec urbium primatibus nec plebeiis.
+                    <div class="categories__category__overview">
+                        {% for item in category.items({'limit': 3}) %}
+                            <div style="display: flex;margin-bottom: 20px;align-items: center">
+                                <div style="flex: 1">
+                                    <img style="width: 100%" src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
+                                </div>
+                                <div style="flex: 2;padding-left: 20px;font-family: open sans,sans-serif,Arial,Helvetica;
+    font-size: 15px;
+    line-height: 18px;">
+                                    {{ item.name }}
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
-                </a>
+                </div>
             {% endfor %}
         </div>
     </section>

@@ -1,68 +1,13 @@
-.slider {
-  position: relative;
-  overflow: hidden;
-  background-image: url("./pebbles.jpg");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  margin: -20px 0;
-  padding: 60px 10px;
-  @include media-breakpoint-up(xl) {
-    padding: 60px 40px;
-  }
-  &::after,
-  &::before {
-    content: '';
-    position: absolute;
-    display: block;
-    height: 50%;
-    transform-origin: center top;
-    animation: shape-divider 2s cubic-bezier(.5,0,.5,1) infinite alternate;
-    z-index: 9;
-    width: 100%;
-    left: 0;
-    @include media-breakpoint-up(sm) {
-      width: 200%;
-      left: -50%;
-      transform: skewY(0);
-      border-radius: 50%;
-    }
-  }
-  &::after {
-    background: linear-gradient(white, white 90%, transparent);
-    top: -40%;
-  }
-  &::before {
-    background: linear-gradient(transparent, white 10%, white);
-    bottom: -40%;
-  }
-  &__item {
-    margin: 0 15px;
-    border-radius: .75rem;
-    box-shadow: 0 0 15px black;
-    overflow: hidden;
-    & img {
-      transition: transform .2s .1s ease-in-out;
-      &:hover {
-        transform: scale(1.05);
-      }
-    }
-  }
-}
-
-@keyframes shape-divider {
-  from {
-    transform: skewY(-1deg);
-  }
-  to {
-    transform: skewY(1deg);
-  }
-}
-
 .categories {
   padding: 0 20px;
   &__category {
     display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    @include media-breakpoint-up(sm) {
+      align-items: flex-start;
+      flex-direction: row;
+    }
     color: inherit;
     &:hover {
       text-decoration: none;
@@ -80,6 +25,9 @@
     figure {
       position: relative;
       overflow: hidden;
+      @include media-breakpoint-up(sm) {
+        flex: 1;
+      }
       img {
         z-index: 1;
         width: 100%;
@@ -109,8 +57,11 @@
         }
       }
     }
-    &__description {
-      padding-left: 20px;
+    &__overview {
+      @include media-breakpoint-up(sm) {
+        flex: 1;
+        padding-left: 20px;
+      }
     }
   }
 }
