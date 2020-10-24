@@ -21,7 +21,6 @@
         "/build/vendors~app_blog_article~app_shop_index~app_user_address.js",
         "/build/vendors~app~app_shop_index~app_user_address.js",
         "/build/vendors~app_shop_index~app_user_address.js",
-        "/build/app_shop_index~app_user_address.js",
         "/build/app~app_shop_index.js",
         "/build/app_shop_index.js"
       ]
@@ -43,7 +42,7 @@
         "/build/vendors~app_blog_article~app_shop_index~app_user_address.js",
         "/build/vendors~app~app_shop_index~app_user_address.js",
         "/build/vendors~app_shop_index~app_user_address.js",
-        "/build/app_shop_index~app_user_address.js",
+        "/build/vendors~app_user_address.js",
         "/build/app_user_address.js"
       ]
     },

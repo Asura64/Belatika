@@ -9,6 +9,7 @@
       flex-direction: row;
     }
     color: inherit;
+    &.animate,
     &:hover {
       text-decoration: none;
       color: inherit;
