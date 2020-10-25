@@ -17,4 +17,16 @@ class CategoryRepository extends AbstractRepository
     {
         parent::__construct($registry, Category::class);
     }
+
+    public function findAllWithItems()
+    {
+        $qb = $this->createQueryBuilder('c');
+        $this->with($qb, ['items', 'images']);
+        $qb
+            ->where('i.visible = 1')
+            ->orderBy('c.id')
+            ->orderBy('i.created_at', 'desc');
+
+        return $qb->getQuery()->getResult();
+    }
 }
