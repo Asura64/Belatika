@@ -48,7 +48,7 @@
         <h2>{{ 'La collection'|gTrans }}</h2>
         <div class="categories">
             {% for category in categories if category.items|length >= 5 %}
-                <div class="categories__category animated" data-start="25" data-end="40">
+                <div class="categories__category animated" data-start="25" data-end="40" data-mobile-only="1">
                     <figure>
                         <figcaption class="centered-axis-xy">{{ category.name|gTrans }}{% if category.customers == 'homme' %} homme{% endif %}</figcaption>
                         <a href="{{ path('app_shop_category', {'customer' : category.customers, 'slug' : category.slug}) }}">
