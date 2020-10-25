@@ -70,4 +70,14 @@ document.addEventListener('DOMContentLoaded', () => {
     //Gestion des animations au scroll
     const animatedElts = [].slice.call(document.getElementsByClassName('animated'));
     animatedElts.forEach(animatedElt => new ScrollAnimation(animatedElt));
+
+    //Gestion des show-more
+    const showMoreElts = [].slice.call(document.getElementsByClassName('show-more'));
+    showMoreElts.forEach(showMoreElt => showMoreElt.addEventListener('click', () => {
+        if (showMoreElt.classList.contains('show')) {
+            showMoreElt.classList.remove('show');
+        } else {
+            showMoreElt.classList.add('show');
+        }
+    }));
 });
