@@ -47,28 +47,30 @@
     <section>
         <h2>{{ 'La collection'|gTrans }}</h2>
         <div class="categories">
-            {% for category in categories if category.items|length >= 5 %}
-                <div class="categories__category animated" data-start="25" data-end="40" data-mobile-only="1">
-                    <figure>
+            {% set nbItems = 6 %}
+            {% for category in categories if category.items|length >= nbItems %}
+                <div class="categories__category">
+                    <figure class="categories__category__figure animated" data-start="25" data-end="40" data-mobile-only="1">
                         <figcaption class="centered-axis-xy">{{ category.name|gTrans }}{% if category.customers == 'homme' %} homme{% endif %}</figcaption>
                         <a href="{{ path('app_shop_category', {'customer' : category.customers, 'slug' : category.slug}) }}">
                             <img src="{{ ('img/resources/categories/' ~ category.image)|imagine_filter('620x350') }}" alt="{{ category.name|gTrans }}">
                         </a>
                     </figure>
-                    <div class="categories__category__overview">
-                        {% for item in category.items({'limit': 3}) %}
-                            <div style="display: flex;margin-bottom: 20px;align-items: center">
-                                <div style="flex: 1">
-                                    <img style="width: 100%" src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
-                                </div>
-                                <div style="flex: 2;padding-left: 20px;font-family: open sans,sans-serif,Arial,Helvetica;
-    font-size: 15px;
-    line-height: 18px;">
-                                    {{ item.name }}
-                                </div>
-                            </div>
-                        {% endfor %}
+                    <div class="categories__category__description">
+                        {{ category.shortDescription|raw }}
                     </div>
+                </div>
+                <div class="categories__overview">
+                    {% for item in category.items({'limit': nbItems}) %}
+                        <a class="category-item {% if loop.index > 3 %}d-mobile-none{% endif %}" href="{{ path('app_shop_item', {'customer': item.category.customers, 'category_slug': item.category.slug, 'slug': item.slug}) }} }}">
+                            <div class="category-item__image">
+                                <img src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
+                            </div>
+                            <div class="category-item__description">
+                                {{ item.name }}
+                            </div>
+                        </a>
+                    {% endfor %}
                 </div>
             {% endfor %}
         </div>

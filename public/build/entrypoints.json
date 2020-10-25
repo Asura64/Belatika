@@ -2,86 +2,75 @@
   "entrypoints": {
     "app": {
       "js": [
-        "/build/runtime.js",
-        "/build/vendors~app~app_blog_article~app_order_index~app_shop_index~app_user_address~app_user_profile.js",
-        "/build/vendors~app~app_blog_article~app_shop_index~app_user_address.js",
-        "/build/vendors~app~app_shop_index~app_user_address.js",
-        "/build/app~app_shop_index.js",
-        "/build/app.js"
+        "/build/runtime.5e3ab09c.js",
+        "/build/0.f78069ef.js",
+        "/build/1.dc8f165e.js",
+        "/build/app.a6910c1a.js"
       ],
       "css": [
-        "/build/app.css"
+        "/build/app.ca153ac4.css"
       ]
     },
     "app_shop_index": {
       "js": [
-        "/build/runtime.js",
-        "/build/vendors~app~app_blog_article~app_order_index~app_shop_index~app_user_address~app_user_profile.js",
-        "/build/vendors~app~app_blog_article~app_shop_index~app_user_address.js",
-        "/build/vendors~app_blog_article~app_shop_index~app_user_address.js",
-        "/build/vendors~app~app_shop_index~app_user_address.js",
-        "/build/vendors~app_shop_index~app_user_address.js",
-        "/build/app~app_shop_index.js",
-        "/build/app_shop_index.js"
+        "/build/runtime.5e3ab09c.js",
+        "/build/0.f78069ef.js",
+        "/build/1.dc8f165e.js",
+        "/build/app_shop_index.193c9aa8.js"
       ]
     },
     "app_blog_article": {
       "js": [
-        "/build/runtime.js",
-        "/build/vendors~app~app_blog_article~app_order_index~app_shop_index~app_user_address~app_user_profile.js",
-        "/build/vendors~app~app_blog_article~app_shop_index~app_user_address.js",
-        "/build/vendors~app_blog_article~app_shop_index~app_user_address.js",
-        "/build/app_blog_article.js"
+        "/build/runtime.5e3ab09c.js",
+        "/build/0.f78069ef.js",
+        "/build/1.dc8f165e.js",
+        "/build/app_blog_article.f850cd41.js"
       ]
     },
     "app_user_address": {
       "js": [
-        "/build/runtime.js",
-        "/build/vendors~app~app_blog_article~app_order_index~app_shop_index~app_user_address~app_user_profile.js",
-        "/build/vendors~app~app_blog_article~app_shop_index~app_user_address.js",
-        "/build/vendors~app_blog_article~app_shop_index~app_user_address.js",
-        "/build/vendors~app~app_shop_index~app_user_address.js",
-        "/build/vendors~app_shop_index~app_user_address.js",
-        "/build/vendors~app_user_address.js",
-        "/build/app_user_address.js"
+        "/build/runtime.5e3ab09c.js",
+        "/build/1.dc8f165e.js",
+        "/build/2.3217893a.js",
+        "/build/app_user_address.c8cb658b.js"
       ]
     },
     "app_user_order": {
       "js": [
-        "/build/runtime.js",
-        "/build/app_user_order.js"
+        "/build/runtime.5e3ab09c.js",
+        "/build/app_user_order.e9f69dbe.js"
       ]
     },
     "app_user_profile": {
       "js": [
-        "/build/runtime.js",
-        "/build/vendors~app~app_blog_article~app_order_index~app_shop_index~app_user_address~app_user_profile.js",
-        "/build/app_user_profile.js"
+        "/build/runtime.5e3ab09c.js",
+        "/build/0.f78069ef.js",
+        "/build/app_user_profile.6a798034.js"
       ]
     },
     "app_cart_index": {
       "js": [
-        "/build/runtime.js",
-        "/build/app_cart_index.js"
+        "/build/runtime.5e3ab09c.js",
+        "/build/app_cart_index.e408cf4b.js"
       ],
       "css": [
-        "/build/app_cart_index.css"
+        "/build/app_cart_index.7794134c.css"
       ]
     },
     "app_order_index": {
       "js": [
-        "/build/runtime.js",
-        "/build/vendors~app~app_blog_article~app_order_index~app_shop_index~app_user_address~app_user_profile.js",
-        "/build/app_order_index.js"
+        "/build/runtime.5e3ab09c.js",
+        "/build/0.f78069ef.js",
+        "/build/app_order_index.dde407da.js"
       ]
     },
     "app_admin": {
       "js": [
-        "/build/runtime.js",
-        "/build/app_admin.js"
+        "/build/runtime.5e3ab09c.js",
+        "/build/app_admin.ed0ff35c.js"
       ],
       "css": [
-        "/build/app_admin.css"
+        "/build/app_admin.1f98f179.css"
       ]
     }
   }

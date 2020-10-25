@@ -1,19 +1,26 @@
 .categories {
   padding: 0 20px;
+  max-width: 1200px;
+  margin: 3rem auto;
+  &__overview {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
   &__category {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     margin-bottom: 20px;
-    @include media-breakpoint-up(sm) {
-      align-items: flex-start;
-      flex-direction: row;
-    }
     color: inherit;
-    &.animate,
-    &:hover {
-      text-decoration: none;
-      color: inherit;
-      figure {
+    &__figure {
+      position: relative;
+      overflow: hidden;
+      margin: 0;
+      &.animate,
+      &:hover {
+        text-decoration: none;
+        color: inherit;
         img {
           transform: scale(1.05);
         }
@@ -22,12 +29,8 @@
           background-color: transparent;
         }
       }
-    }
-    figure {
-      position: relative;
-      overflow: hidden;
-      @include media-breakpoint-up(sm) {
-        flex: 1;
+      @include media-breakpoint-up(md) {
+        flex: 2;
       }
       img {
         z-index: 1;
@@ -35,6 +38,7 @@
         transition: transform .3s .1s ease-in-out;
       }
       figcaption {
+        pointer-events: none;
         white-space: nowrap;
         z-index: 2;
         padding: 0 12px;
@@ -58,12 +62,63 @@
         }
       }
     }
-    &__overview {
-      @include media-breakpoint-up(sm) {
+    &__description {
+      display: none;
+      @include media-breakpoint-up(md) {
+        display: flex;
+        align-items: center;
+        text-align: justify;
         flex: 1;
-        padding-left: 20px;
+        padding: 20px;
+        font-family: open sans,sans-serif,Arial,Helvetica;
+        background-color: #faebd778;
+        font-size: 1rem;
+        line-height: 1.2rem;
+      }
+      @include media-breakpoint-up(lg) {
+        font-size: 1.2rem;
+        line-height: 2rem;
       }
     }
+  }
+}
+
+.category-item {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+  color: inherit;
+  width: 100%;
+  &.d-mobile-none {
+    display: none;
+    @include media-breakpoint-up(md) {
+      display: flex;
+    }
+  }
+  @include media-breakpoint-up(md) {
+    width: 33%;
+  }
+  &:hover {
+    color: inherit;
+    text-decoration: none;
+    & img {
+      transform: scale(1.05);
+    }
+  }
+  &__image {
+    flex: 1;
+    overflow: hidden;
+    & img {
+      transition: transform .3s .1s ease-in-out;
+      width: 100%;
+    }
+  }
+  &__description {
+    flex: 2;
+    padding-left: 20px;
+    font-family: open sans,sans-serif,Arial,Helvetica;
+    font-size: 15px;
+    line-height: 18px;
   }
 }
 
