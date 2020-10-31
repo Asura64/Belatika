@@ -1,4 +1,7 @@
+# see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
+    router:
+        utf8: true
     secret: '%env(APP_SECRET)%'
     default_locale: fr
     #csrf_protection: true
@@ -9,6 +12,8 @@ framework:
     session:
         handler_id: ~
         gc_probability: null
+        cookie_secure: auto
+        cookie_samesite: lax
 
     #esi: true
     #fragments: true

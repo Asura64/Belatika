@@ -2,7 +2,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-json": ">=1.6",
@@ -29,6 +29,7 @@
         "symfony/flex": ">=1.1",
         "symfony/form": ">=3.4",
         "symfony/framework-bundle": ">=3.4",
+        "symfony/intl": ">=3.4",
         "symfony/monolog-bundle": ">=3.1",
         "symfony/orm-pack": "*",
         "symfony/process": ">=3.4",
@@ -39,11 +40,9 @@
         "symfony/validator": ">=3.4",
         "symfony/web-link": ">=3.4",
         "symfony/webpack-encore-bundle": ">=1.7",
-        "symfony/yaml": ">=3.4",
-        "twig/extensions": "^1.5"
+        "symfony/yaml": ">=3.4"
     },
     "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": ">=3.1",
         "joshtronic/php-loremipsum": "*",
         "sensiolabs/security-checker": ">=5.0",
         "symfony/dotenv": ">=3.4",

@@ -5,7 +5,7 @@
         <div class="cart-hover__item">
             <a class="cart-hover__item__link" href="{{ path('app_shop_item', {'customer' : item.category.customers, 'category_slug' : item.category.slug, 'slug' : item.slug}) }}" title="{{ item.name|gTrans }}">
                 <img src="{{ asset(item.images|first.webpath|imagine_filter('icon')) }}" alt="{{ item.images|first.alt|gTrans }}">
-                {{ item.name|gTrans|truncate(30) }}
+                {{ item.name|gTrans|trunc(30) }}
             </a>
             <span class="cart-hover__item__price">{{ (onSales ? item.discountPrice : item.price)|number_format(2, ',') }}€</span>
             <i data-item_id="{{ item.id }}" data-remove_item_url="{{ absolute_url(path('app_cart_remove', {'id':item.id})) }}" class="remove-item far fa-window-close"></i>

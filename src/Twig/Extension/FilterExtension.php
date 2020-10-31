@@ -25,8 +25,8 @@ class FilterExtension extends AbstractExtension
         ];
     }
 
-    public function trunc($text):string
+    public function trunc($text, $length = 20):string
     {
-        return strlen($text) > 20 ? substr($text, 0, 20).'...' : $text;
+        return strlen($text) > $length ? substr($text, 0, $length).'...' : $text;
     }
 }

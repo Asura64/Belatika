@@ -4,6 +4,7 @@ namespace App\Twig\Extension;
 
 
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -16,11 +17,11 @@ class FlashAlertExtension extends AbstractExtension
 
     /**
      * FlashAlertExtension constructor.
-     * @param FlashBagInterface $flashBag
+     * @param SessionInterface $session
      */
-    public function __construct(FlashBagInterface $flashBag)
+    public function __construct(SessionInterface $session)
     {
-        $this->flashBag = $flashBag;
+        $this->flashBag = $session->getFlashBag();
     }
 
     public function getFunctions():array

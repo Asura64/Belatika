@@ -31,7 +31,8 @@ security:
                 csrf_token_generator: security.csrf.token_manager
             logout:
                 path: app_logout
-            anonymous:             lazy
+            anonymous: true
+            lazy: true
 #            logout_on_user_change: true
             guard:
                 authenticators:
