@@ -16,10 +16,10 @@ liip_imagine:
             quality: 75
             filters:
                 thumbnail: { size: [33,40], mode: outbound}
-        slide:
+        620x350:
             quality: 75
             filters:
-                thumbnail: { size: [229,300], mode: outbound}
+                thumbnail: { size: [620,350], mode: outbound}
         square:
             quality: 75
             filters:

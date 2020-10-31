@@ -17,9 +17,13 @@ import Popup from "./class/_Popup";
 import Search from "./class/_Search";
 import Navigation from "./class/_Navigation";
 import BackInStock from "./class/_BackInStock";
+import ScrollAnimation from "./class/_ScrollAnimation";
 
 document.addEventListener('DOMContentLoaded', () => {
+    //Chargement différé des images
     new Lazyloader();
+
+    //Popup panier
     const cartPopup = document.getElementById('add-to-cart-popup');
     if (cartPopup) {
         const popup = new Popup(cartPopup, {
@@ -34,7 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         new Cart();
     }
+
+    //Module de recherche
     new Search();
+
+    //Sticky navbar masquée au scroll descendant, visible au scroll montant
     new Navigation({
         toggleButton: document.getElementById('navbarToggle'),
         navContent: document.getElementById('navbarContent'),
@@ -54,6 +62,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         YOffset = window.pageYOffset;
     });
+
+    //Gestion de la remise en stock
     const backinstockElts = [].slice.call(document.getElementsByClassName('backinstock'));
     backinstockElts.forEach(backinstockElt => new BackInStock(backinstockElt));
+
+    //Gestion des animations au scroll
+    const animatedElts = [].slice.call(document.getElementsByClassName('animated'));
+    animatedElts.forEach(animatedElt => new ScrollAnimation(animatedElt));
+
+    //Gestion des show-more
+    const showMoreElts = [].slice.call(document.getElementsByClassName('show-more'));
+    showMoreElts.forEach(showMoreElt => showMoreElt.addEventListener('click', () => {
+        if (showMoreElt.classList.contains('show')) {
+            showMoreElt.classList.remove('show');
+        } else {
+            showMoreElt.classList.add('show');
+        }
+    }));
 });

@@ -11,8 +11,8 @@
     <meta property="og:title" content="{{ 'Bijoux tendance'|gTrans }}">
     <meta property="fb:app_id" content="1293327757393160">
     <meta property="og:description" content="{{ "Découvrez les bijoux chics et modernes de la boutique Belatika. Des bijoux tendances qui se portent au quotidien."|gTransDB }}">
-    <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ asset('img/resources/og_200829.jpg') }}">
-    <meta property="og:image:secure_url" content="{{ app.request.getSchemeAndHttpHost() ~ asset('img/resources/og_200829.jpg') }}">
+    <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() ~ asset('img/resources/og_201025.jpg') }}">
+    <meta property="og:image:secure_url" content="{{ app.request.getSchemeAndHttpHost() ~ asset('img/resources/og_201025.jpg') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/leaflet/1/leaflet.css"/>
     <script type="application/ld+json">
         {
@@ -36,36 +36,47 @@
             </figure>
             <p class="about__paragraph">{{ "J’imagine et assemble des apprêts pour créer des bijoux fins et chics."|gTrans }}</p>
             <p class="about__paragraph">{{ "Des bijoux qui vous accompagneront au quotidien ou pour une soirée très spéciale."|gTrans }}</p>
-            <p class="about__paragraph">{{ "Vous pouvez me contacter par mail ou téléphone pour toute demande de personnalisation, je serais ravie de vous aider à créer le bijou de vos rêves."|gTrans }}</p>
-            <p class="about__paragraph">{{ "Dans ma boutique vous allez retrouver des bagues, des bracelets en argent ou en acier inoxydable, mais aussi des colliers et boucles d’oreilles en gold-filled 14k ou en laiton. J'utilise aussi les pierres naturelles et les cristaux Swarovski pour le coté chic et décontracté."|gTrans }}</p>
-            <p class="about__paragraph">{{ "De couleur argent ou doré vous allez trouver votre bonheur dans ma collection de bijoux."|gTrans }}</p>
-            <p class="about__paragraph">{{ "Vous aurez également dans la boutique des bijoux réalisés par des fournisseurs de qualité, oui oui... j'aime le travail de certains fournisseurs alors je vous les partage également, et je suis sûre que cela va vous plaire!"|gTrans }}</p>
-            <p class="about__paragraph">{{ "Je vous laisse découvrir mon univers tendance et chic que je propose dans la boutique."|gTrans }}</p>
+            <div class="show-more">
+                <i class="fas fa-angle-down"></i>
+                <p class="about__paragraph">{{ "Vous pouvez me contacter par mail ou téléphone pour toute demande de personnalisation, je serais ravie de vous aider à créer le bijou de vos rêves."|gTrans }}</p>
+                <p class="about__paragraph">{{ "Dans ma boutique vous allez retrouver des bagues, des bracelets en argent ou en acier inoxydable, mais aussi des colliers et boucles d’oreilles en gold-filled 14k ou en laiton. J'utilise aussi les pierres naturelles et les cristaux Swarovski pour le coté chic et décontracté."|gTrans }}</p>
+                <p class="about__paragraph">{{ "De couleur argent ou doré vous allez trouver votre bonheur dans ma collection de bijoux."|gTrans }}</p>
+                <p class="about__paragraph">{{ "Vous aurez également dans la boutique des bijoux réalisés par des fournisseurs de qualité, oui oui... j'aime le travail de certains fournisseurs alors je vous les partage également, et je suis sûre que cela va vous plaire!"|gTrans }}</p>
+                <p class="about__paragraph">{{ "Je vous laisse découvrir mon univers tendance et chic que je propose dans la boutique."|gTrans }}</p>
+            </div>
         </article>
     </section>
 
     <section>
         <h2>{{ 'La collection'|gTrans }}</h2>
-        <div class="shop-ranges">
-            {% for category in categories %}
-                <figure class="ranges-preview ranges-preview--categories">
-                    <figcaption class="ranges-preview__figcaption">{{ category.name|gTrans }}{% if category.customers == 'homme' %} homme{% endif %}</figcaption>
-                    <a href="{{ path('app_shop_category', {'customer' : category.customers, 'slug' : category.slug}) }}"><img class="ranges-preview__image" src="{{ asset(category.imageWebPath)|imagine_filter('large') }}" alt="{{ category.name|gTrans }}"></a>
-                </figure>
+        <div class="categories">
+            {% set nbItems = 6 %}
+            {% for category in categories if category.items|length >= nbItems %}
+                <div class="categories__category">
+                    <figure class="categories__category__figure animated" data-start="25" data-end="40" data-mobile-only="1">
+                        <figcaption class="centered-axis-xy">{{ category.name|gTrans }}{% if category.customers == 'homme' %} homme{% endif %}</figcaption>
+                        <a href="{{ path('app_shop_category', {'customer' : category.customers, 'slug' : category.slug}) }}">
+                            <img src="{{ ('img/resources/categories/' ~ category.image)|imagine_filter('620x350') }}" alt="{{ category.name|gTrans }}">
+                        </a>
+                    </figure>
+                    <div class="categories__category__description">
+                        {{ category.shortDescription|raw }}
+                    </div>
+                </div>
+                <div class="categories__overview">
+                    {% for item in category.items({'limit': nbItems}) %}
+                        <a class="category-item {% if loop.index > 3 %}d-mobile-none{% endif %}" href="{{ path('app_shop_item', {'customer': category.customers, 'category_slug': category.slug, 'slug': item.slug}) }}">
+                            <div class="category-item__image">
+                                <img src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
+                            </div>
+                            <div class="category-item__description">
+                                {{ item.name }}
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
             {% endfor %}
         </div>
-    </section>
-
-    <section class="about">
-        <h2>{{ "La créatrice"|gTrans }}</h2>
-        <figure class="about__image">
-            <img src="{{ asset('img/resources/belatika_profile_2.jpg'|imagine_filter('thumb')) }}" alt="{{ 'Profil créatrice bijoux tendance Belatika'|gTrans }}">
-        </figure>
-        <p class="about__paragraph">{{ "Je m’appelle Isabelle et je suis la créatrice de Belatika."|gTrans }}</p>
-        <p class="about__paragraph">{{ "Belatika est une marque déposée auprès de l’INPI depuis 2016."|gTrans }}</p>
-        <p class="about__paragraph">{{ "Je suis installée dans le sud-ouest de la France avec ma famille non loin de Bayonne."|gTrans }}</p>
-        <p class="about__paragraph">{{ "Je réalise depuis chez moi l’assemblage des bijoux que vous allez découvrir dans ma boutique."|gTrans }}</p>
-        <p class="about__paragraph">{{ "J’utilise des matières de qualité comme l’argent, l’acier inoxydable ou le gold filled 14k et le laiton mais aussi des cristaux Swarovski et des pierres naturelles pour leur coté chic et décontracté."|gTrans }}</p>
     </section>
 
     {% if blogArticle %}
@@ -143,6 +154,18 @@
                 ></div>
             </div>
         </div>
+    </section>
+
+    <section class="about">
+        <h2>{{ "La créatrice"|gTrans }}</h2>
+        <figure class="about__image">
+            <img src="{{ asset('img/resources/belatika_profile_2.jpg'|imagine_filter('thumb')) }}" alt="{{ 'Profil créatrice bijoux tendance Belatika'|gTrans }}">
+        </figure>
+        <p class="about__paragraph">{{ "Je m’appelle Isabelle et je suis la créatrice de Belatika."|gTrans }}</p>
+        <p class="about__paragraph">{{ "Belatika est une marque déposée auprès de l’INPI depuis 2016."|gTrans }}</p>
+        <p class="about__paragraph">{{ "Je suis installée dans le sud-ouest de la France avec ma famille non loin de Bayonne."|gTrans }}</p>
+        <p class="about__paragraph">{{ "Je réalise depuis chez moi l’assemblage des bijoux que vous allez découvrir dans ma boutique."|gTrans }}</p>
+        <p class="about__paragraph">{{ "J’utilise des matières de qualité comme l’argent, l’acier inoxydable ou le gold filled 14k et le laiton mais aussi des cristaux Swarovski et des pierres naturelles pour leur coté chic et décontracté."|gTrans }}</p>
     </section>
 
     {% if app.user and not app.user.newsletter and app.user.suggestNewsletter %}

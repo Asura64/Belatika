@@ -55,6 +55,16 @@ class Category
      */
     private $image;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $metaDescription;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $shortDescription;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -90,11 +100,23 @@ class Category
     }
 
     /**
+     * @param array $filters
      * @return Collection|Item[]
      */
-    public function getItems(): Collection
+    public function getItems(array $filters = []): Collection
     {
-        return $this->items;
+        $filters = array_merge([
+            'limit' => 0,
+        ], $filters);
+
+        $items = $this->items;
+
+        if ($filters['limit']) {
+            $items = $items->slice(0, $filters['limit']);
+            $items = new ArrayCollection($items);
+        }
+
+        return $items;
     }
 
     public function addItem(Item $item): self
@@ -164,5 +186,29 @@ class Category
     public function getImageWebPath()
     {
         return self::IMAGE_PATH.$this->image;
+    }
+
+    public function getMetaDescription(): ?string
+    {
+        return $this->metaDescription;
+    }
+
+    public function setMetaDescription(string $metaDescription): self
+    {
+        $this->metaDescription = $metaDescription;
+
+        return $this;
+    }
+
+    public function getShortDescription(): ?string
+    {
+        return $this->shortDescription;
+    }
+
+    public function setShortDescription(string $shortDescription): self
+    {
+        $this->shortDescription = $shortDescription;
+
+        return $this;
     }
 }

@@ -1,6 +1,5 @@
 import ajax from "../functions/_ajax";
 import L from '../vendors/leaflet';
-import places from '../vendors/places';
 
 export default class Salesmap {
 
