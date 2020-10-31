@@ -51,7 +51,8 @@
         <h2>{{ 'La collection'|gTrans }}</h2>
         <div class="categories">
             {% set nbItems = 6 %}
-            {% for category in categories if category.items|length >= nbItems %}
+            {% for category in categories %}
+                {% if category.items|length >= nbItems %}
                 <div class="categories__category">
                     <figure class="categories__category__figure animated" data-start="25" data-end="40" data-mobile-only="1">
                         <figcaption class="centered-axis-xy">{{ category.name|gTrans }}{% if category.customers == 'homme' %} homme{% endif %}</figcaption>
@@ -75,6 +76,7 @@
                         </a>
                     {% endfor %}
                 </div>
+                {% endif %}
             {% endfor %}
         </div>
     </section>
