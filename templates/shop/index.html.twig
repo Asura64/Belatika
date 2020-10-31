@@ -79,18 +79,6 @@
         </div>
     </section>
 
-    <section class="about">
-        <h2>{{ "La créatrice"|gTrans }}</h2>
-        <figure class="about__image">
-            <img src="{{ asset('img/resources/belatika_profile_2.jpg'|imagine_filter('thumb')) }}" alt="{{ 'Profil créatrice bijoux tendance Belatika'|gTrans }}">
-        </figure>
-        <p class="about__paragraph">{{ "Je m’appelle Isabelle et je suis la créatrice de Belatika."|gTrans }}</p>
-        <p class="about__paragraph">{{ "Belatika est une marque déposée auprès de l’INPI depuis 2016."|gTrans }}</p>
-        <p class="about__paragraph">{{ "Je suis installée dans le sud-ouest de la France avec ma famille non loin de Bayonne."|gTrans }}</p>
-        <p class="about__paragraph">{{ "Je réalise depuis chez moi l’assemblage des bijoux que vous allez découvrir dans ma boutique."|gTrans }}</p>
-        <p class="about__paragraph">{{ "J’utilise des matières de qualité comme l’argent, l’acier inoxydable ou le gold filled 14k et le laiton mais aussi des cristaux Swarovski et des pierres naturelles pour leur coté chic et décontracté."|gTrans }}</p>
-    </section>
-
     {% if blogArticle %}
         <section class="blog-article">
             <h2>{{ 'Dernier article du blog'|gTrans }}</h2>
@@ -166,6 +154,18 @@
                 ></div>
             </div>
         </div>
+    </section>
+
+    <section class="about">
+        <h2>{{ "La créatrice"|gTrans }}</h2>
+        <figure class="about__image">
+            <img src="{{ asset('img/resources/belatika_profile_2.jpg'|imagine_filter('thumb')) }}" alt="{{ 'Profil créatrice bijoux tendance Belatika'|gTrans }}">
+        </figure>
+        <p class="about__paragraph">{{ "Je m’appelle Isabelle et je suis la créatrice de Belatika."|gTrans }}</p>
+        <p class="about__paragraph">{{ "Belatika est une marque déposée auprès de l’INPI depuis 2016."|gTrans }}</p>
+        <p class="about__paragraph">{{ "Je suis installée dans le sud-ouest de la France avec ma famille non loin de Bayonne."|gTrans }}</p>
+        <p class="about__paragraph">{{ "Je réalise depuis chez moi l’assemblage des bijoux que vous allez découvrir dans ma boutique."|gTrans }}</p>
+        <p class="about__paragraph">{{ "J’utilise des matières de qualité comme l’argent, l’acier inoxydable ou le gold filled 14k et le laiton mais aussi des cristaux Swarovski et des pierres naturelles pour leur coté chic et décontracté."|gTrans }}</p>
     </section>
 
     {% if app.user and not app.user.newsletter and app.user.suggestNewsletter %}
