@@ -44,16 +44,6 @@ services:
     app.google_translate:
         class: Stichoza\GoogleTranslate\GoogleTranslate
 
-    App\Twig\Extension\FilterExtension:
-        tags: ['twig.extension']
-        arguments:
-            $translator: '@App\Service\GoogleTranslator'
-
-    App\Twig\Extension\FunctionExtension:
-        tags: ['twig.extension']
-        arguments:
-            $manager: '@doctrine.orm.entity_manager'
-
     App\Twig\Extension\GlobalExtension:
         tags: ['twig.extension']
         arguments:

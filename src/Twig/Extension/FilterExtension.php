@@ -9,7 +9,7 @@ use Twig\TwigFilter;
 
 class FilterExtension extends AbstractExtension
 {
-    private $translator;
+    private GoogleTranslator $translator;
 
     public function __construct(GoogleTranslator $translator)
     {

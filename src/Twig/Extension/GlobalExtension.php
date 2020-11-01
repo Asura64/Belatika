@@ -9,13 +9,11 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
 {
     private $sales_start;
     private $sales_end;
-    private $now;
 
     public function __construct($shopSettings)
     {
         $this->sales_start = $shopSettings['sales']['start'];
         $this->sales_end = $shopSettings['sales']['end'];
-        $this->now = time();
     }
 
     /**
@@ -26,7 +24,13 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     public function getGlobals():array
     {
         return [
-            'onSales' => $this->sales_start < $this->now && $this->now < $this->sales_end,
+            'onSales' => [$this, 'onSales'],
         ];
+    }
+
+    public function onSales()
+    {
+        $now = time();
+        return $this->sales_start < $now && $now < $this->sales_end;
     }
 }
