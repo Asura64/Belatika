@@ -1,19 +1,13 @@
 security:
     encoders:
-#        FOS\UserBundle\Model\UserInterface: bcrypt
-        App\Entity\User:
-            algorithm: auto
-
+        App\Entity\User: bcrypt
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     providers:
-#        fos_userbundle:
-#            id: fos_user.user_provider.username_email
-        # used to reload user from session & other features (e.g. switch_user)
-        app_user_provider:
+        database_users:
             entity:
                 class: App\Entity\User
                 property: email
@@ -22,23 +16,24 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
         main:
             pattern: ^/
-            form_login:
-                provider: app_user_provider
-                login_path: app_login
-#                check_path: app_check
-                csrf_token_generator: security.csrf.token_manager
-            logout:
-                path: app_logout
             anonymous: true
-            lazy: true
-#            logout_on_user_change: true
+            logout:
+                path: security_logout
             guard:
                 authenticators:
                     - App\Security\Authenticator\SocialAuthenticator
                     - App\Security\LoginFormAuthenticator
                 entry_point: App\Security\LoginFormAuthenticator
+            form_login:
+                provider: database_users
+                login_path: security_login
+#                check_path: app_check
+                csrf_token_generator: security.csrf.token_manager
+            lazy: true
+#            logout_on_user_change: true
 
             # activate different ways to authenticate
 
@@ -51,9 +46,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+#        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+#        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+#        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/user, role: IS_AUTHENTICATED_FULLY, requires_channel: https }
         - { path: ^/admin/, role: ROLE_ADMIN, requires_channel: https }
         - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
