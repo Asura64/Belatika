@@ -14,6 +14,7 @@
         "league/oauth2-facebook": ">=2.0",
         "league/oauth2-google": ">=3.0",
         "liip/imagine-bundle": ">=2.1",
+        "platformsh/symfonyflex-bridge": "^1.3",
         "sensio/framework-extra-bundle": ">=5.2",
         "spipu/html2pdf": ">=5.2",
         "stichoza/google-translate-php": ">=4.0",

@@ -1,0 +1,47 @@
+# Le nom de l'application
+name: app
+
+# Le type d'application à construire
+type: php:7.4
+build:
+  flavor: composer
+
+variables:
+  env:
+    # Configuration des variables d'environnement pour Symfony
+    APP_ENV: 'prod'
+    APP_DEBUG: 0
+
+# Actions à exécuter à la construction et au déploiement
+hooks:
+  build: |
+    set -e
+    bin/console assets:install --no-debug
+    bin/console cache:clear
+  deploy: |
+    set -e
+    bin/console assets:install --symlink --relative public
+    bin/console cache:clear
+
+# Les services utilisés
+relationships:
+  database: "mysqldb:mysql"
+
+# L'espace disque configurés
+disk: 2048
+
+# Les dossiers qui doivent rester accessibles en écriture
+mounts:
+  "/var/cache": "shared:files/cache"
+  "/var/log": "shared:files/log"
+  "/var/sessions": "shared:files/sessions"
+
+# La configuration web
+web:
+  locations:
+    "/":
+      # Dossier public
+      root: "public"
+      # Le contrôleur frontal (qui doit recevoir toutes les requêtes)
+      passthru: "/index.php"
+
