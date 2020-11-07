@@ -1,42 +1,64 @@
-{% extends 'layout.html.twig' %}
-
-{% block title %}Log in!{% endblock %}
-
+{% extends "layout.html.twig" %}
+{% block title %}{{ 'security.login.submit'|trans }}{% endblock %}
+{% block meta_title %}{{ 'security.login.submit'|trans }}{% endblock %}
+{% block head %}
+    <link rel="canonical" href="{{ absolute_url(path('security_login')) }}">
+    <meta name="description" content="{{ "Me connecter à mon compte Belatika"|gTransDB }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-social.css') }}">
+{% endblock %}
 {% block content %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+    <div class="container my-3">
+        <div class="row">
+            {% if error %}
+                <p class="alert alert-danger text-center col-12">{{ error.messageKey|trans(error.messageData) }}</p>
+            {% endif %}
+            <p class="alert alert-bt-info text-center col-12">{{ 'Pour accéder à cette page, vous devez vous identifier.'|gTrans }}</p>
         </div>
-    {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" required>
+        <div class="row d-flex justify-content-between pb-5">
+            <div class="flex-grow-1 mr-2 d-flex flex-column justify-content-between align-items-xl-start">
+                <h2>{{ 'Me connecter avec mon réseau social'|gTrans }}:</h2>
+                <p>{{ 'Connectez-vous d\'un simple clic en utilisant le réseau social de votre choix'|gTrans }}:</p>
+                <div class="d-flex flex-column align-self-center align-self-xl-auto">
+                    <a class="btn btn-social btn-facebook my-2" href="{{ path('connect_facebook_start') }}">
+                        <i class="fab fa-facebook-f"></i> {{ 'Se connecter avec Facebook'|gTrans }}
+                    </a>
+                    <a class="btn btn-social btn-google" href="{{ path('connect_google_start') }}">
+                        <i class="fab fa-google"></i> {{ 'Se connecter avec Google'|gTrans }}
+                    </a>
+                </div>
+            </div>
+            <div class="flex-grow-1 ml-2 d-flex flex-column justify-content-between">
+                <h2>{{ 'Me connecter avec mes identifiants'|gTrans }} :</h2>
+                <form method="post">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <div class="form-group row">
+                        <label class="col-sm-6 col-form-label" for="inputEmail">{{ 'security.login.email'|trans }}</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" type="email" id="inputEmail" name="_username" value="{{ last_username }}" required autofocus>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-6 col-form-label" for="inputPassword">{{ 'security.login.password'|trans }}</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" type="password" id="inputPassword" name="password" required>
+                        </div>
+                    </div>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a class="btn btn-secondary btn-belatika-dark" href="#fos_user_resetting_request">{{ 'Mot de passe oublié'|gTrans }}</a>
+                        </div>
+                        <div class="col-sm-6 mt-2 mt-sm-0">
+                            <input class="btn bt-btn--primary float-sm-right" type="submit" value="{{ 'security.login.submit'|trans }}" />
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-    #}
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+        <div class="row">
+            <p class="col-12">{{ 'Je ne possède pas encore de compte'|gTrans }}: <a class="btn btn-sm bt-btn--primary" href="#fos_user_registration_register">{{ 'Créer mon compte'|gTrans }}</a></p>
+        </div>
+    </div>
 {% endblock %}
