@@ -1,6 +1,6 @@
 {% extends "layout.html.twig" %}
-{% block title %}{{ 'security.login.submit'|trans }}{% endblock %}
-{% block meta_title %}{{ 'security.login.submit'|trans }}{% endblock %}
+{% block title %}{{ 'security.login.title'|trans }}{% endblock %}
+{% block meta_title %}{{ 'security.login.title'|trans }}{% endblock %}
 {% block head %}
     <link rel="canonical" href="{{ absolute_url(path('security_login')) }}">
     <meta name="description" content="{{ "Me connecter à mon compte Belatika"|gTransDB }}">
@@ -33,13 +33,13 @@
                 <form method="post">
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                     <div class="form-group row">
-                        <label class="col-sm-6 col-form-label" for="inputEmail">{{ 'security.login.email'|trans }}</label>
+                        <label class="col-sm-6 col-form-label" for="inputEmail">{{ 'form.email'|trans }}</label>
                         <div class="col-sm-6">
-                            <input class="form-control" type="email" id="inputEmail" name="_username" value="{{ last_username }}" required autofocus>
+                            <input class="form-control" type="email" id="inputEmail" name="email" value="{{ last_username }}" required autofocus>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-6 col-form-label" for="inputPassword">{{ 'security.login.password'|trans }}</label>
+                        <label class="col-sm-6 col-form-label" for="inputPassword">{{ 'form.password'|trans }}</label>
                         <div class="col-sm-6">
                             <input class="form-control" type="password" id="inputPassword" name="password" required>
                         </div>
@@ -58,7 +58,7 @@
         </div>
 
         <div class="row">
-            <p class="col-12">{{ 'Je ne possède pas encore de compte'|gTrans }}: <a class="btn btn-sm bt-btn--primary" href="#fos_user_registration_register">{{ 'Créer mon compte'|gTrans }}</a></p>
+            <p class="col-12">{{ 'Je ne possède pas encore de compte'|gTrans }}: <a class="btn btn-sm bt-btn--primary" href="{{ path('security_register') }}">{{ 'layout.register'|trans }}</a></p>
         </div>
     </div>
 {% endblock %}

@@ -1,8 +1,6 @@
-{% extends "/layout.html.twig" %}
-{% block title %}{{ 'Vérification de l\'adresse mail'|gTrans }}{% endblock %}
-{% block meta_title %}{{ 'Vérification de l\'adresse mail'|gTrans }}{% endblock %}
-
-{% trans_default_domain 'FOSUserBundle' %}
+{% extends "layout.html.twig" %}
+{% block title %}{{ 'registration.check_email_title'|trans|raw }}{% endblock %}
+{% block meta_title %}{{ 'registration.check_email_title'|trans }}{% endblock %}
 
 {% block content %}
     <div class="container my-3">

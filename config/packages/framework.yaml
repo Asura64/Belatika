@@ -4,6 +4,10 @@ framework:
         utf8: true
     secret: '%env(APP_SECRET)%'
     default_locale: fr
+    translator:
+        paths:
+            - '%kernel.project_dir%/translations'
+        fallbacks: ['fr']
     #csrf_protection: true
     #http_method_override: true
 

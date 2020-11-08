@@ -3,14 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ORM\Table("fos_user")
+ * @UniqueEntity("email", message="field.already_exists.email")
  */
 class User implements UserInterface
 {
@@ -19,74 +23,107 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $email;
-
-    /**
-     * @ORM\Column(type="array")
-     */
-    private $roles = [];
-
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
-    private $password;
-
-    /**
-     * @var Address
      * @ORM\OneToOne(targetEntity="App\Entity\Address", inversedBy="user", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      */
-    private $address;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $realname;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $created_at;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $facebook_id;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $google_id;
+    private ?Address $address = null;
 
     /**
      * @ORM\OneToMany(targetEntity="CustomerOrder", mappedBy="user", orphanRemoval=true)
      */
-    private $customerOrders;
+    private Collection $customerOrders;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="field.required")
+     * @Assert\Length(
+     *     min="3",
+     *     minMessage="user.pseudo.min"
+     * )
+     */
+    private string $pseudo;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email(message="The email '{{ value }}' is not a valid email.")
+     * @Assert\NotBlank(message="field.required")
+     */
+    private string $email;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private string $password;
+
+    /**
+     * @Assert\Length(
+     *     min="6",
+     *     minMessage="user.password.min"
+     * )
+     */
+    private ?string $plainPassword = null;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $newsletter = false;
+    private bool $enabled = false;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private array $roles = [];
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private ?string $confirmation_token = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $salt = null;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private DateTimeInterface $created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private DateTimeInterface $last_login;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $facebook_id = null;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $google_id = null;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $suggestNewsletter = true;
+    private bool $newsletter = false;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $hasNewsletterGift = false;
+    private bool $suggestNewsletter = true;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $hasNewsletterGift = false;
 
     public function __construct()
     {
-        $this->created_at = date_create();
+        $this->created_at = new DateTimeImmutable();
         $this->customerOrders = new ArrayCollection();
     }
 
@@ -95,133 +132,16 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUsername(): string
-    {
-        return (string) $this->email;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        if (empty($roles)) {
-            $roles[] = 'ROLE_USER';
-        }
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getPassword(): string
-    {
-        return (string) $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * @return Address
-     */
     public function getAddress(): ?Address
     {
         return $this->address;
     }
 
-    /**
-     * @param Address $address
-     * @return User
-     */
     public function setAddress(Address $address): self
     {
         $this->address = $address;
-        return $this;
-    }
-
-    public function getRealname(): ?string
-    {
-        return $this->realname;
-    }
-
-    public function setRealname(?string $realname): self
-    {
-        $this->realname = $realname;
 
         return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $created_at): self
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getFacebookId(): ?string
-    {
-        return $this->facebook_id;
-    }
-
-    public function setFacebookId(?string $facebook_id): self
-    {
-        $this->facebook_id = $facebook_id;
-
-        return $this;
-    }
-
-    public function getGoogleId(): ?string
-    {
-        return $this->google_id;
-    }
-
-    public function setGoogleId(?string $google_id): self
-    {
-        $this->google_id = $google_id;
-
-        return $this;
-    }
-
-    public function hasSocial():bool
-    {
-        return $this->getFacebookId() !== null || $this->getGoogleId() !== null;
     }
 
     /**
@@ -255,9 +175,178 @@ class User implements UserInterface
         return $this;
     }
 
-    public function isAdmin()
+    public function getPseudo(): ?string
     {
-        return in_array('ROLE_ADMIN', $this->roles);
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getConfirmationToken(): ?string
+    {
+        return $this->confirmation_token;
+    }
+
+    public function setConfirmationToken(?string $confirmation_token): self
+    {
+        $this->confirmation_token = $confirmation_token;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
+    {
+        return $this->salt;
+    }
+
+    public function setSalt(?string $salt): self
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?DateTimeInterface
+    {
+        return $this->last_login;
+    }
+
+    public function setLastLogin(DateTimeInterface $last_login): self
+    {
+        $this->last_login = $last_login;
+
+        return $this;
+    }
+
+    public function getFacebookId(): ?string
+    {
+        return $this->facebook_id;
+    }
+
+    public function setFacebookId(?string $facebook_id): self
+    {
+        $this->facebook_id = $facebook_id;
+
+        return $this;
+    }
+
+    public function getGoogleId(): ?string
+    {
+        return $this->google_id;
+    }
+
+    public function setGoogleId(?string $google_id): self
+    {
+        $this->google_id = $google_id;
+
+        return $this;
+    }
+
+    public function hasSocial():bool
+    {
+        return $this->getFacebookId() !== null || $this->getGoogleId() !== null;
     }
 
     public function getNewsletter(): ?bool
@@ -272,7 +361,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function toggleNewsletter()
+    public function toggleNewsletter(): self
     {
         $this->newsletter = !$this->newsletter;
 
@@ -303,20 +392,16 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getSalt()
+    public function isAdmin(): bool
     {
-        // not needed when using the "bcrypt" algorithm in security.yaml
+        return in_array('ROLE_ADMIN', $this->roles);
     }
 
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+         $this->plainPassword = null;
     }
 }

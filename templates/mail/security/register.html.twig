@@ -1,0 +1,11 @@
+{% extends "mail/layout.html.twig" %}
+
+{% block meta_title %}{{ 'registration.email.subject'|trans({'%username%' : pseudo}) }}{% endblock %}
+
+{% block title %}{{ 'registration.email.subject'|trans({'%username%' : pseudo}) }}{% endblock %}
+{% block content %}
+    <h2 class="heading--2">{{ 'registration.email.subject'|trans({'%username%' : pseudo}) }}</h2>
+    <p>
+        {{ 'registration.email.message'|trans({'%username%' : pseudo, '%confirmationUrl%' : confirmationUrl})|raw }}
+    </p>
+{% endblock %}

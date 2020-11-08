@@ -117,12 +117,12 @@ abstract class AbstractController extends Controller
      * @param string|array $to
      * @param string $template
      * @param array $viewVars
-     * @return int
+     * @return bool
      */
-    protected function fastMail($subject, $to, $template, $viewVars = [])
+    protected function fastMail(string $subject, $to, string $template, $viewVars = []): bool
     {
-        if (getenv('APP_ENV') === 'dev') {
-            $to = getenv('DEV_MAIL');
+        if (in_array($_ENV['APP_ENV'] ?? null, ['dev', 'test']) && $_ENV['DEV_MAIL'] ?? null) {
+            $to = $_ENV['DEV_MAIL'];
         }
         $message = (new Swift_Message($subject))
             ->setCharset('utf-8')
@@ -130,7 +130,7 @@ abstract class AbstractController extends Controller
             ->setFrom('contact@belatika.com')
             ->setTo($to)
             ->setBody($this->renderView($template, $viewVars));
-        return $this->mailer->send($message);
+        return $this->mailer->send($message) > 0;
     }
 
     protected function getSessionFrom(Request $request): SessionInterface
