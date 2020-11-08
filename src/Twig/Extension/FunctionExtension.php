@@ -77,7 +77,7 @@ class FunctionExtension extends AbstractExtension
 
     public function flashAlert():string
     {
-        $html = '<div id="alert-container">';
+        $html = '<div id="alert-container" class="p-2">';
 
         $types = $this->flashBag->keys();
 

@@ -31,9 +31,7 @@
     {% else %}
         {% include '/modules/header.html.twig' %}
     {% endif %}
-    <div class="container d-flex flex-column align-items-center">
-        {{ flashAlert() }}
-    </div>
+    {{ flashAlert() }}
     {% block content %}{% endblock %}
     {% include '/modules/footer.html.twig' %}
 </div>

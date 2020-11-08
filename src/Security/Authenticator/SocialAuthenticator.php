@@ -4,65 +4,45 @@ namespace App\Security\Authenticator;
 
 
 use App\Entity\User;
-use App\Service\GoogleTranslator;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator as KnpUOauthAuthenticator;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SocialAuthenticator extends KnpUOauthAuthenticator
 {
-    /**
-     * @var ClientRegistry
-     */
-    private $clientRegistry;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-    /**
-     * @var EncoderFactory
-     */
-    private $encoderFactory;
-    /**
-     * @var array
-     */
-    private $socials;
-    /**
-     * @var string
-     */
-    private $currentSocial;
-    /**
-     * @var Request
-     */
-    private $request;
-    /**
-     * @var GoogleTranslator
-     */
-    private $googleTranslator;
+    private array $socials;
+    private string $currentSocial;
+    private Request $request;
+    private ClientRegistry $clientRegistry;
+    private EntityManagerInterface $em;
+    private EncoderFactoryInterface $encoderFactory;
+    private TranslatorInterface $translator;
 
     public function __construct(
         ClientRegistry $clientRegistry,
         EntityManagerInterface $em,
         EncoderFactoryInterface $encoderFactory,
-        GoogleTranslator $googleTranslator
+        TranslatorInterface $translator
     )
     {
         $this->clientRegistry = $clientRegistry;
         $this->em = $em;
         $this->encoderFactory = $encoderFactory;
         $this->socials = ['facebook', 'google'];
-        $this->googleTranslator = $googleTranslator;
+        $this->translator = $translator;
     }
 
     /**
@@ -160,35 +140,43 @@ class SocialAuthenticator extends KnpUOauthAuthenticator
     public function getUser($credentials, UserProviderInterface $userProvider):?UserInterface
     {
         $socialUser = $this->getSocialClient()->fetchUserFromToken($credentials);
-        /**
-         * @var FlashBag $flashBag
-         */
+        $socialId = $socialUser->getId();
+        $email = $this->getFromSocialUser($socialUser, 'email');
+        $pseudo = $this->getFromSocialUser($socialUser, 'name');
+
+        if (!$socialId || !$email || !$pseudo) {
+            throw new CustomUserMessageAuthenticationException(
+                $this->translator->trans('security.login.error.'.$this->currentSocial)
+            );
+        }
+
+        /** @var FlashBag $flashBag */
         $flashBag = $this->request->getSession()->getFlashBag();
 
         //Returns existing social user
         $existingUser = $this
             ->em
             ->getRepository(User::class)
-            ->findOneBy([$this->currentSocial.'_id' => $socialUser->getId()]);
+            ->findOneBy([$this->currentSocial.'_id' => $socialId]);
         if($existingUser) {
             $flashBag->add(
                 'success',
-                $this->googleTranslator->gTrans('Bienvenue, ').$existingUser->getUsername());
+                $this->translator->trans('security.login.success', ['%pseudo%' => $existingUser->getPseudo()])
+            );
             return $existingUser;
         }
 
         //Or find user with matching email and upgrade it to social-type user
-        $email = $socialUser->getEmail();
         $setSocialId = 'set' . ucfirst($this->currentSocial) . 'Id';
         $emailMatchingUser = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
         if($emailMatchingUser) {
             $emailMatchingUser
-                ->$setSocialId($socialUser->getId())
-                ->setRealname($socialUser->getName());
+                ->$setSocialId($socialId)
+                ->setPseudo($pseudo);
             $this->em->flush();
             $flashBag->add(
                 'success',
-                $this->googleTranslator->gTrans('Bienvenue, ').$emailMatchingUser->getUsername()
+                $this->translator->trans('security.login.success', ['%pseudo%' => $emailMatchingUser->getPseudo()])
             );
             return $emailMatchingUser;
         }
@@ -198,17 +186,16 @@ class SocialAuthenticator extends KnpUOauthAuthenticator
         $encoder = $this->encoderFactory->getEncoder($user);
         $encodedPassword = $encoder->encodePassword($this->generatePass(), $user->getSalt());
         $user
-            ->$setSocialId($socialUser->getId())
+            ->$setSocialId($socialId)
             ->setEmail($email)
-            ->setRealname($socialUser->getName())
-            ->setUsername($email)
+            ->setPseudo($pseudo)
             ->setEnabled(true)
             ->setPassword($encodedPassword);
         $this->em->persist($user);
         $this->em->flush();
         $flashBag->add(
             'success',
-            $this->googleTranslator->gTrans('Votre compte a été créé. Bienvenue, ').$user->getUsername()
+            $this->translator->trans('registration.confirmed', ['%username%' => $user->getPseudo()])
         );
         return $user;
     }
@@ -273,5 +260,15 @@ class SocialAuthenticator extends KnpUOauthAuthenticator
     private function generatePass():string
     {
         return rtrim(strtr(base64_encode(random_bytes(10)), '+/', '-_'), '=');
+    }
+
+    private function getFromSocialUser(ResourceOwnerInterface $socialUser, string $field)
+    {
+        $getter = 'get'.ucfirst($field);
+        if (method_exists($socialUser, $getter)) {
+            return $socialUser->$getter();
+        }
+
+        return null;
     }
 }

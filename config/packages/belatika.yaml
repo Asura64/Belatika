@@ -1,6 +1,5 @@
 parameters:
     shop_settings:
-        template: light
         sales:
             start: 1594800000
             end: 1597190399

@@ -25,8 +25,8 @@ security:
             guard:
                 authenticators:
                     - App\Security\Authenticator\SocialAuthenticator
-                    - App\Security\LoginFormAuthenticator
-                entry_point: App\Security\LoginFormAuthenticator
+                    - App\Security\Authenticator\LoginFormAuthenticator
+                entry_point: App\Security\Authenticator\LoginFormAuthenticator
             form_login:
                 provider: database_users
                 login_path: security_login
