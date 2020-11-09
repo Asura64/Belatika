@@ -57,7 +57,7 @@ class OrderController extends AdminController
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        $this->fastMail($this->gTrans('Votre commande Belatika est en route'), $order->getUser()->getEmail(), 'mail/sentOrder.html.twig', ['order' => $order]);
+        $this->fastMail($this->gTrans('Votre commande Belatika est en route'), $order->getAddress()->getEmail(), 'mail/sentOrder.html.twig', ['order' => $order]);
 
         return $this->redirectToRoute('app_admin_order_orders');
     }
