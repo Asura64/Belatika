@@ -62,7 +62,7 @@ class UserController extends AbstractController
 
         $user = $this->getUser();
 
-        if ($customerOrder->getUser()->getId() !== $user->getId() && !$user->isAdmin()) {
+        if ($customerOrder->getUser() && $customerOrder->getUser()->getId() !== $user->getId() && !$user->isAdmin()) {
             return $this->redirectToRoute('fos_user_profile_show');
         }
 
