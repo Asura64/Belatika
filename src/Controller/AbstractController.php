@@ -124,6 +124,8 @@ abstract class AbstractController extends Controller
         if (getenv('APP_ENV') === 'dev') {
             $to = getenv('DEV_MAIL');
         }
+        $to = is_array($to) ? $to : [$to];
+        $to[] = 'contact@belatika.com';
         $message = (new Swift_Message($subject))
             ->setCharset('utf-8')
             ->setContentType('text/html')
