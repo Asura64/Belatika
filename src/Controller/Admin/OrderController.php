@@ -31,8 +31,7 @@ class OrderController extends AdminController
         foreach ($orders as $order) {
             if ($order->getTrackingNumber() && !$order->getReceivedAt()) {
                 $status = $laPoste->getStatus($order->getTrackingNumber());
-                $status = isset($status->shipment->timeline) && is_array($status->shipment->timeline) ? array_pop($status->shipment->timeline)->shortLabel : 'Non pris en charge par la poste';
-                $order->setShippingStatus($status);
+                $order->setShippingStatus($status->returnMessage);
             }
         }
 
