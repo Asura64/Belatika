@@ -242,7 +242,7 @@ class ShopController extends AbstractController
                     'slug' => $item->getSlug(),
                     'category_slug' => $item->getCategory()->getSlug(),
                     'customer' => $item->getCategory()->getCustomers(),
-                ], UrlGeneratorInterface::ABSOLUTE_PATH);
+                ], UrlGeneratorInterface::ABSOLUTE_URL);
                 $this->fastMail(
                     'Demande de remise en stock',
                     [getenv('ADMIN_MAIL'), getenv('DEV_MAIL')],
