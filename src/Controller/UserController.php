@@ -5,9 +5,8 @@ namespace App\Controller;
 use App\Entity\CustomerOrder;
 use App\Form\UserAddressesType;
 use App\Service\GiftManager;
-use Spipu\Html2Pdf\Exception\Html2PdfException;
-use Spipu\Html2Pdf\Html2Pdf;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,53 +51,12 @@ class UserController extends AbstractController
     /**
      * @Route("/order/{reference<\d+>}")
      * @param CustomerOrder $customerOrder
-     * @param Request $request
-     * @return Response
-     * @throws Html2PdfException
+     * @return RedirectResponse
      */
-    public function order(CustomerOrder $customerOrder, Request $request)
+    public function order(CustomerOrder $customerOrder)
     {
-        $pdf = $request->get('mode') === 'pdf';
-
-        $user = $this->getUser();
-
-        if ($customerOrder->getUser() && $customerOrder->getUser()->getId() !== $user->getId() && !$user->isAdmin()) {
-            return $this->redirectToRoute('fos_user_profile_show');
-        }
-
-        if ($request->isMethod('POST')) {
-            $rate = intval($request->get('rating'));
-            $review = strip_tags($request->get('content'));
-            if ($rate > 0 && (!empty($review) || $rate > 2)) {
-                $customerOrder->setRating($rate)->setReview($review);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($customerOrder);
-                $em->flush();
-            }
-        }
-
-        if ($pdf) {
-            $html = $this->renderView('order/order.pdf.twig', [
-                'order' => $customerOrder,
-            ]);
-
-            $html2pdf = new Html2Pdf('P', 'A4', 'fr');
-            $html2pdf->setDefaultFont('Arial');
-            $html2pdf->pdf->SetAuthor('Belatika');
-            $html2pdf->pdf->SetDisplayMode('real');
-            $html2pdf->pdf->SetTitle('Facture_' . $customerOrder->getReference() . '.pdf');
-            $html2pdf->writeHTML($html);
-            $html2pdf->output('Facture_' . $customerOrder->getReference() . '.pdf');
-
-            $response = new Response();
-            $response->headers->set('Content-type', 'application/pdf');
-
-            return $response;
-        } else {
-            return $this->render('order/order.html.twig', [
-                'order' => $customerOrder,
-            ]);
-        }
+        //Deprecated => redirect to orderController
+        return $this->redirectToRoute('app_order_review', ['reference' => $customerOrder->getReference()]);
     }
 
     /**
