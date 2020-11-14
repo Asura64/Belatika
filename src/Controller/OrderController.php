@@ -8,6 +8,8 @@ use App\Entity\CustomerOrderLine;
 use App\Entity\Payment;
 use App\Entity\User;
 use App\Service\GoogleTranslator;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
+use Spipu\Html2Pdf\Html2Pdf;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 use Swift_Mailer;
@@ -132,7 +134,8 @@ class OrderController extends AbstractController
 
         $gift = $this->checkGift($gift);
         $order = new CustomerOrder();
-        $order->setUser($this->user)->setAddress($address)->setGift($gift);
+        $token = rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
+        $order->setUser($this->user)->setAddress($address)->setGift($gift)->setToken($token);
 
         foreach ($items as $cartItem) {
             $item = $this->getEm()->getRepository(Item::class)->find($cartItem->getId());
@@ -175,5 +178,73 @@ class OrderController extends AbstractController
         $arrayErrors = json_decode($errors);
         $this->alertAdmin('Echec tentative de paiement', is_array($arrayErrors) ? implode("\r\n",  $arrayErrors) : $errors);
         return $this->json([]);
+    }
+
+    /**
+     * @Route("/review/{reference<\d+>}")
+     * @param CustomerOrder $customerOrder
+     * @param Request $request
+     * @return Response
+     * @throws Html2PdfException
+     */
+    public function review(CustomerOrder $customerOrder, Request $request)
+    {
+        $pdf = $request->get('mode') === 'pdf';
+        $token = $request->get('token');
+
+        $user = $this->getUser();
+
+        $accessAllowed = false;
+        $isOwner = false;
+        if ($user instanceof User && $user->isAdmin()) {
+            $accessAllowed = true;
+        } elseif ($customerOrder->getToken() && $token === $customerOrder->getToken()) {
+            $accessAllowed = true;
+            $isOwner = true;
+        } elseif ($customerOrder->belongsTo($user)) {
+            $accessAllowed = true;
+            $isOwner = true;
+        } elseif ($customerOrder->getUser() && !$user) {
+            return $this->redirectToRoute('fos_user_security_login');
+        }
+
+        if (!$accessAllowed) {
+            return $this->redirectToRoute('app_shop_index');
+        }
+
+        if ($request->isMethod('POST')) {
+            $rate = intval($request->get('rating'));
+            $review = strip_tags($request->get('content'));
+            if ($rate > 0 && (!empty($review) || $rate > 2)) {
+                $customerOrder->setRating($rate)->setReview($review);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($customerOrder);
+                $em->flush();
+            }
+        }
+
+        if ($pdf) {
+            $html = $this->renderView('order/order.pdf.twig', [
+                'order' => $customerOrder,
+            ]);
+
+            $html2pdf = new Html2Pdf('P', 'A4', 'fr');
+            $html2pdf->setDefaultFont('Arial');
+            $html2pdf->pdf->SetAuthor('Belatika');
+            $html2pdf->pdf->SetDisplayMode('real');
+            $html2pdf->pdf->SetTitle('Facture_' . $customerOrder->getReference() . '.pdf');
+            $html2pdf->writeHTML($html);
+            $html2pdf->output('Facture_' . $customerOrder->getReference() . '.pdf');
+
+            $response = new Response();
+            $response->headers->set('Content-type', 'application/pdf');
+
+            return $response;
+        } else {
+            return $this->render('order/order.html.twig', [
+                'order' => $customerOrder,
+                'isOwner' => $isOwner,
+            ]);
+        }
     }
 }

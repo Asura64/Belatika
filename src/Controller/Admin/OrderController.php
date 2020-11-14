@@ -31,7 +31,7 @@ class OrderController extends AdminController
         foreach ($orders as $order) {
             if ($order->getTrackingNumber() && !$order->getReceivedAt()) {
                 $status = $laPoste->getStatus($order->getTrackingNumber());
-                $status = isset($status->shipment->timeline) && is_array($status->shipment->timeline) ? array_pop($status->shipment->timeline)->shortLabel : 'Non pris en charge par la poste';
+                $status = isset($status->shipment->timeline) && is_array($status->shipment->timeline) ? array_pop($status->shipment->timeline)->shortLabel : $status->returnMessage;
                 $order->setShippingStatus($status);
             }
         }
@@ -57,7 +57,7 @@ class OrderController extends AdminController
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        $this->fastMail($this->gTrans('Votre commande Belatika est en route'), $order->getUser()->getEmail(), 'mail/sentOrder.html.twig', ['order' => $order]);
+        $this->fastMail($this->gTrans('Votre commande Belatika est en route'), $order->getAddress()->getEmail(), 'mail/sentOrder.html.twig', ['order' => $order]);
 
         return $this->redirectToRoute('app_admin_order_orders');
     }

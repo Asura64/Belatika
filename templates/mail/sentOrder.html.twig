@@ -34,7 +34,7 @@
         {{ "Lorsque vous aurez reçu votre commande, je vous invite à laisser un avis en cliquant sur le lien suivant :"|gTrans }}<br>
     </p>
     <div class="text-center">
-        <a class="btn btn-gold" href='{{ url('app_user_order', { 'reference' : order.reference }) }}' >{{ 'Laisser un avis sur ma commande'|gTrans }}</a>
+        <a class="btn btn-gold" href='{{ url('app_order_review', { 'reference' : order.reference }) }}?token={{ order.token }}' >{{ 'Laisser un avis sur ma commande'|gTrans }}</a>
     </div>
     <h2 class="heading--2">{{ 'Récapitulatif de votre commande'|gTrans }}</h2>
     <table class="table">
@@ -67,5 +67,5 @@
         </tr>
         </tfoot>
     </table>
-    <p><a href='{{ url('app_user_order', { 'reference' : order.reference }) }}?mode=pdf'>{{ 'Télécharger la facture'|gTrans }}</a><br/></p>
+    <p><a href='{{ url('app_order_review', { 'reference' : order.reference }) }}?token={{ order.token }}&mode=pdf'>{{ 'Télécharger la facture'|gTrans }}</a><br/></p>
 {% endblock %}

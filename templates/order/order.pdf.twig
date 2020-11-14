@@ -91,27 +91,14 @@
     <h1>Facture N°{{ order.reference }}<br/>du {{ order.orderedAt|date('d/m/Y') }}</h1>
     <p>Adresse de facturation</p>
     <ul>
-        <li>{{ order.billingAddress.firstname }} {{ order.billingAddress.lastname }}</li>
-        <li>{{ order.billingAddress.fullAddress }}</li>
-        {% if order.billingAddress.additional %}
-            <li>{{ order.billingAddress.additional }}</li>
+        <li>{{ order.address.firstname }} {{ order.address.lastname }}</li>
+        <li>{{ order.address.address }}</li>
+        {% if order.address.additional %}
+            <li>{{ order.address.additional }}</li>
         {% endif %}
-        <li>{{ order.billingAddress.postcode }} {{ order.billingAddress.city }} - {{ order.billingAddress.country }}</li>
+        <li>{{ order.address.postcode }} {{ order.address.city }} - {{ order.address.country }}</li>
     </ul>
 </div>
-{% if order.billingAddress.id != order.deliveryAddress.id and order.billingAddress.fullAddress != order.deliveryAddress.fullAddress %}
-    <div class='delivery'>
-        <p>Adresse de livraison</p>
-        <ul>
-            <li>{{ order.deliveryAddress.firstname }} {{ order.deliveryAddress.lastname }}</li>
-            <li>{{ order.deliveryAddress.fullAddress }}</li>
-            {% if order.deliveryAddress.additional %}
-                <li>{{ order.deliveryAddress.additional }}</li>
-            {% endif %}
-            <li>{{ order.deliveryAddress.postcode }} {{ order.deliveryAddress.city }} - {{ order.deliveryAddress.country }}</li>
-        </ul>
-    </div>
-{% endif %}
 <table cellspacing="0" cellpadding="0" id="entity">
     <tr>
         <td class="color" width="80">Aperçu</td>

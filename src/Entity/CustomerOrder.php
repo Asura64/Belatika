@@ -105,6 +105,11 @@ class CustomerOrder
      */
     private $received_at;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $token;
+
     private $shippingStatus;
 
     public function __construct()
@@ -350,6 +355,18 @@ class CustomerOrder
         return $this->received_at instanceof \DateTimeInterface;
     }
 
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
     /**
      * @return string
      */
@@ -366,5 +383,14 @@ class CustomerOrder
     {
         $this->shippingStatus = $shippingStatus;
         return $this;
+    }
+
+    public function belongsTo(?User $user)
+    {
+        if (!($this->user instanceof User && $user instanceof User)) {
+            return false;
+        }
+
+        return $user->getId() === $this->user->getId();
     }
 }
