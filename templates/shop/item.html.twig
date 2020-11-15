@@ -1,4 +1,4 @@
-{% extends "/layout.html.twig" %}
+{% extends "layout.html.twig" %}
 {% set cart = app.session.get('cart') %}
 {% block meta_title %}{{ item.name|gTrans }}{% endblock %}
 {% block title %}{{ item.name|gTrans }}{% endblock %}

@@ -1,6 +1,6 @@
 {% set categories = categories() %}
 
-{% extends "/layout.html.twig" %}
+{% extends "layout.html.twig" %}
 {% block meta_title %}{{ 'Bijoux tendance'|gTrans }}{% endblock %}
 {% block head %}
     <link rel="canonical" href="{{ absolute_url(path('app_shop_index')) }}">

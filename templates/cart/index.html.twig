@@ -3,7 +3,7 @@
 {% else %}
     {% set referer = app.request.headers.get('referer') %}
 {% endif %}
-{% extends "/layout.html.twig" %}
+{% extends "layout.html.twig" %}
 {% block title %}{{ 'Votre panier'|gTrans }}{% endblock %}
 {% block meta_title %}{{ 'Votre panier'|gTrans }}{% endblock %}
 {% block head %}
