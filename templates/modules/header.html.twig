@@ -44,7 +44,11 @@
             </form>
         </div>
         <div class="btheader__tools__item">
-            <a title="{{ 'Mon compte'|gTrans }}" href="{{ path('security_login') }}"><i class="fas fa-user"></i></a>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a title="{{ 'profile.show.title'|trans }}" href="{{ path('security_profile_show') }}"><i class="fas fa-user"></i></a>
+            {% else %}
+                <a title="{{ 'security.login.title'|trans }}" href="{{ path('security_login') }}"><i class="far fa-user"></i></a>
+            {% endif %}
         </div>
         <div
             class="btheader__tools__item navcart {% if not app.session.get('cart')|length %}empty{% endif %}"

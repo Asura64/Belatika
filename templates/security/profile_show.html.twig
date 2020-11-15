@@ -1,0 +1,43 @@
+{% extends "layout.html.twig" %}
+{% block title %}{{ 'profile.show.title'|trans }}{% endblock %}
+{% block meta_title %}{{ 'profile.show.title'|trans }}{% endblock %}
+{% block head %}{{ encore_entry_script_tags('app_user_profile') }}{% endblock %}
+
+{% block content %}
+    <div class="container my-3">
+        <div class="row pb-5">
+            <div class="col-md-6 pl-md-0">
+                <div class="bloc-belatika rounded p-2 box-shadow my-2 my-md-0">
+                    <h2><i class="fas fa-user"></i> {{ 'profile.infos.title'|trans }}</h2>
+                    <p><span class="font-weight-bold">{{ 'profile.show.username'|trans }}:</span> {{ app.user.username }}</p>
+                    <p><span class="font-weight-bold">{{ 'profile.show.email'|trans }}:</span> {{ app.user.email }}</p>
+                    <p>
+                        <label>
+                            <input id="toggle-newsletter" data-url="{{ path('app_user_togglenewsletter') }}" type="checkbox" {% if app.user.newsletter %}checked{% endif %}>
+                            <span class="text-secondary">{{ 'profile.infos.newsletter'|trans }}</span>
+                        </label>
+                    </p>
+                    <a href="{{ path('security_profile_edit') }}" class="btn btn-info btn-sm">{{ 'layout.edit'|trans }}</a>
+                    <a href="{{ path('security_logout') }}" class="btn btn-danger btn-sm">{{ 'layout.logout'|trans }}</a>
+                </div>
+            </div>
+
+            <div class="col-md-6 pr-md-0">
+                <div class="bloc-belatika rounded p-2 box-shadow my-2 my-md-0">
+                    <h2><i class="fas fa-dolly"></i> {{ 'profile.orders.title'|trans }}</h2>
+                    {% if app.user.customerOrders|length > 0 %}
+                        <ul>
+                            {% for order in app.user.customerOrders %}
+                                {% if order.reference %}
+                                    <li><a class="text-dark" href="{{ path('app_order_review', {'reference' : order.reference}) }}">{{ order.orderedAt|date('d/m/Y') }} - {{ order.total|number_format(2, ',') }}€</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>{{ 'profile.orders.no_order'|trans }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
