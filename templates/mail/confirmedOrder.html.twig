@@ -59,6 +59,6 @@
         </tfoot>
     </table>
     {% if order.user %}
-        <p><a href='{{ url('app_user_order', { 'reference' : order.reference }) }}?mode=pdf'>{{ 'Télécharger la facture'|gTrans }}</a></p>
+        <p><a href='{{ url('app_order_review', { 'reference' : order.reference }) }}?token={{ order.token }}&mode=pdf'>{{ 'Télécharger la facture'|gTrans }}</a></p>
     {% endif %}
 {% endblock %}

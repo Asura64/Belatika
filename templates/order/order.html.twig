@@ -42,7 +42,7 @@
                 </tfoot>
             </table>
             <div class="col-12">
-                <a class="btn btn-sm bt-btn--primary float-right" target="_blank" href="{{ path('app_user_order', {'reference' : order.reference}) }}?mode=pdf"><i class="far fa-eye"></i> {{ 'Voir au format PDF'|gTrans }}</a>
+                <a class="btn btn-sm bt-btn--primary float-right" target="_blank" href="{{ path('app_order_review', {'reference' : order.reference}) }}?token={{ order.token }}&mode=pdf"><i class="far fa-eye"></i> {{ 'Voir au format PDF'|gTrans }}</a>
             </div>
         </div>
         <div class="row mt-3">

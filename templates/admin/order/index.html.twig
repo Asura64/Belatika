@@ -25,7 +25,7 @@
                             <td class="text-right">{{ order.total|number_format(2, ',') }}€</td>
                             <td class="text-right">
                                 {% if order.reference %}
-                                    <a href="{{ path('app_user_order', {'reference':order.reference}) }}" target="_blank"><i class="fas fa-file-export"></i></a>
+                                    <a href="{{ path('app_order_review', {'reference':order.reference}) }}" target="_blank"><i class="fas fa-file-export"></i></a>
                                 {% else %}
 
                                 {% endif %}
