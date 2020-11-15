@@ -156,14 +156,11 @@ class SecurityController extends AbstractController
         $form
             ->remove('plainPassword')
             ->remove('salt')
-            ->add('plainPassword', PasswordType::class, ['label' => 'form.password']);
+            ->add('current_password', PasswordType::class, ['label' => 'form.password']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($encoder->isPasswordValid($user, $user->getPlainPassword())) {
-                $user->eraseCredentials();
-                $this->getEm()->persist($user);
-                $this->getEm()->flush();
+            if ($this->editUserOnPasswordConfirmation($user, $encoder)) {
                 $this->addFlash('success', $translator->trans('profile.edit.success'));
                 return $this->redirectToRoute('security_profile_show');
             } else {
@@ -180,6 +177,55 @@ class SecurityController extends AbstractController
     public function profile()
     {
         return $this->render('security/profile_show.html.twig');
+    }
+
+    /**
+     * @Route("/password/change", name="security_password_change")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $encoder
+     * @param TranslatorInterface $translator
+     * @return Response
+     */
+    public function changePassword(
+        Request $request,
+        UserPasswordEncoderInterface $encoder,
+        TranslatorInterface $translator
+    )
+    {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw new AccessDeniedException('This user does not have access to this section.');
+        }
+
+        $form = $this->createForm(UserType::class, $user);
+        $form
+            ->remove('pseudo')
+            ->remove('email')
+            ->remove('salt')
+            ->add('current_password', PasswordType::class, ['label' => 'form.password']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($this->editUserOnPasswordConfirmation($user, $encoder)) {
+                $this->addFlash('success', $translator->trans('change_password.success'));
+                return $this->redirectToRoute('security_profile_show');
+            } else {
+                $this->addFlash('danger', $translator->trans('form.error.wrong_password'));
+            }
+        }
+
+        return $this->render('security/change_password.html.twig', ['form' => $form->createView()]);
+    }
+
+    private function editUserOnPasswordConfirmation(User $user, UserPasswordEncoderInterface $encoder)
+    {
+        if ($encoder->isPasswordValid($user, $user->getCurrentPassword())) {
+            $user->eraseCredentials();
+            $this->getEm()->persist($user);
+            $this->getEm()->flush();
+            return true;
+        }
+        return false;
     }
 
     private function generateToken(): string

@@ -67,6 +67,8 @@ class User implements UserInterface
      */
     private ?string $plainPassword = null;
 
+    private ?string $current_password = null;
+
     /**
      * @ORM\Column(type="boolean")
      */
@@ -233,6 +235,18 @@ class User implements UserInterface
     public function setPlainPassword(string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getCurrentPassword(): ?string
+    {
+        return $this->current_password;
+    }
+
+    public function setCurrentPassword(string $current_password): self
+    {
+        $this->current_password = $current_password;
 
         return $this;
     }
@@ -404,5 +418,6 @@ class User implements UserInterface
     public function eraseCredentials(): void
     {
          $this->plainPassword = null;
+         $this->current_password = null;
     }
 }
