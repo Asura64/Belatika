@@ -14,6 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Table(name="`user`")
  * @UniqueEntity("email", message="field.already_exists.email")
  */
 class User implements UserInterface
@@ -77,7 +78,7 @@ class User implements UserInterface
     private array $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180)
      */
     private ?string $confirmation_token = null;
 
