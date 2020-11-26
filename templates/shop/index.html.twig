@@ -26,6 +26,18 @@
     </script>
 {% endblock %}
 {% block content %}
+    {% if onSales %}
+        <a class="black-friday" href="{{ path('app_shop_black-friday') }}">
+            <div class="black-friday__txt">
+                <h2>Les Black Friday sont arrivés chez Belatika !</h2>
+                <div class="black-friday__txt__discount"><b>-15%</b> sur TOUTE la boutique!</div>
+                <div class="black-friday__txt__cta">J'en profite</div>
+            </div>
+            <div class="black-friday__img">
+                <img src="{{ asset('img/resources/black-friday-1800272_640.png') }}" alt="Black Friday Belatika">
+            </div>
+        </a>
+    {% endif %}
 
     <section class="about">
         <h2>{{ "Présentation"|gTrans }}</h2>

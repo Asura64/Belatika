@@ -13,9 +13,9 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
 
     public function __construct($shopSettings)
     {
-        $this->sales_start = $shopSettings['sales']['start'];
-        $this->sales_end = $shopSettings['sales']['end'];
-        $this->now = time();
+        $this->sales_start = \DateTime::createFromFormat('d/m/Y_H:i', $shopSettings['sales']['start']);
+        $this->sales_end = \DateTime::createFromFormat('d/m/Y_H:i', $shopSettings['sales']['end']);
+        $this->now = date_create(null, new \DateTimeZone('Europe/Paris'));
     }
 
     /**
@@ -26,7 +26,20 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
     public function getGlobals():array
     {
         return [
-            'onSales' => $this->sales_start < $this->now && $this->now < $this->sales_end,
+            'onSales' => $this->onSales(),
         ];
+    }
+
+    private function onSales()
+    {
+        if (
+            !$this->sales_start instanceof \DateTimeInterface
+            || !$this->sales_end instanceof \DateTimeInterface
+            || !$this->now instanceof \DateTimeInterface
+        ) {
+            return false;
+        }
+
+        return $this->sales_start < $this->now && $this->now < $this->sales_end;
     }
 }
