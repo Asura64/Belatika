@@ -30,7 +30,7 @@ class GlobalExtension extends AbstractExtension implements GlobalsInterface
         ];
     }
 
-    private function onSales()
+    public function onSales()
     {
         if (
             !$this->sales_start instanceof \DateTimeInterface
