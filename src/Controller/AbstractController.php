@@ -8,6 +8,7 @@ use App\Entity\CustomerOrder;
 use App\Entity\Gift;
 use App\Entity\User;
 use App\Service\GoogleTranslator;
+use App\Twig\Extension\GlobalExtension;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,10 +73,9 @@ abstract class AbstractController extends Controller
     {
         $shopSettings = $this->getParameter('shop_settings');
 
-        return
-            isset($shopSettings['sales']['start']) &&
-            isset($shopSettings['sales']['end']) &&
-            $shopSettings['sales']['start'] < time() && time() < $shopSettings['sales']['end'];
+        $twigGlobalExtension = new GlobalExtension($shopSettings);
+
+        return $twigGlobalExtension->onSales();
     }
 
     protected function getTemplate($path)

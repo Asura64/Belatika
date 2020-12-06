@@ -1,5 +1,5 @@
 parameters:
     shop_settings:
         sales:
-            start: 1594800000
-            end: 1597190399
+            start: 27/11/2020_00:00
+            end: 29/11/2020_23:59
