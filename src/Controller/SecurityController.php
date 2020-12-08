@@ -82,9 +82,9 @@ class SecurityController extends AbstractController
                 [
                     'pseudo' => $user->getPseudo(),
                     'confirmationUrl' => $this->generateUrl(
-                        'security_register_confirmation', ['token' => $user->getConfirmationToken()],
+                        'security_register_confirmation', [],
                         UrlGeneratorInterface::ABSOLUTE_URL
-                    )
+                    ).'?token='.$user->getConfirmationToken()
                 ]
             );
 
@@ -95,8 +95,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/register/confirmation/{confirmationToken}", name="security_register_confirmation")
-     * @param string $confirmationToken
+     * @Route("/register/confirmation", name="security_register_confirmation")
      * @param Request $request
      * @param TranslatorInterface $translator
      * @param GuardAuthenticatorHandler $guardHandler
@@ -104,13 +103,14 @@ class SecurityController extends AbstractController
      * @return Response
      */
     public function registerConfirmation(
-        string $confirmationToken,
         Request $request,
         TranslatorInterface $translator,
         GuardAuthenticatorHandler $guardHandler,
         LoginFormAuthenticator $formAuthenticator
     ): Response
     {
+        $confirmationToken = $request->get('token');
+
         $em = $this->getEm();
         $user = $em->getRepository(User::class)->findOneBy(['confirmation_token' => $confirmationToken]);
 
@@ -145,7 +145,7 @@ class SecurityController extends AbstractController
         Request $request,
         UserPasswordEncoderInterface $encoder,
         TranslatorInterface $translator
-    )
+    ): Response
     {
         $user = $this->getUser();
         if (!$user instanceof User) {
@@ -174,7 +174,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/profile", name="security_profile_show")
      */
-    public function profile()
+    public function profile(): Response
     {
         return $this->render('security/profile_show.html.twig');
     }
@@ -190,7 +190,7 @@ class SecurityController extends AbstractController
         Request $request,
         UserPasswordEncoderInterface $encoder,
         TranslatorInterface $translator
-    )
+    ): Response
     {
         $user = $this->getUser();
         if (!$user instanceof User) {
@@ -217,7 +217,100 @@ class SecurityController extends AbstractController
         return $this->render('security/change_password.html.twig', ['form' => $form->createView()]);
     }
 
-    private function editUserOnPasswordConfirmation(User $user, UserPasswordEncoderInterface $encoder)
+    /**
+     * @Route("/password/request", name="security_password_request")
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return Response
+     */
+    public function requestPassword(Request $request, TranslatorInterface $translator): Response
+    {
+        $viewVars = [];
+
+        if ($request->isMethod('POST') && $request->get('email')) {
+            $email = $request->get('email');
+            $user = $this->getEm()->getRepository(User::class)->findOneBy(['email' => $email]);
+            $tokenLifeTime = 2;
+            $limitDate = date_create()->modify("-$tokenLifeTime hour");
+            if ($user instanceof User) {
+                //Envoi mail
+                if (
+                    !$user->getPasswordRequestedAt() instanceof \DateTimeInterface
+                    || $user->getPasswordRequestedAt() < $limitDate
+                ) {
+                    if (!$user->getConfirmationToken()) {
+                        $user->setConfirmationToken($this->generateToken());
+                    }
+                    $url = $this->generateUrl(
+                        'security_password_reset',
+                        ['token' => $user->getConfirmationToken()],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    );
+                    $this->fastMail(
+                        $translator->trans('resetting.email.subject'),
+                        $user->getEmail(),
+                        'mail/security/reset_password.html.twig',
+                        [
+                            'user' => $user,
+                            'confirmationUrl' => $url
+                        ]
+                    );
+                    $user->setPasswordRequestedAt(new \DateTimeImmutable());
+                    $this->getEm()->flush();
+                }
+                return $this->render('security/reset_password_check_email.html.twig', ['tokenLifetime' => $tokenLifeTime]);
+            } else {
+                $viewVars['invalid_email'] = $email;
+            }
+        }
+
+        return $this->render('security/request_password.html.twig', $viewVars);
+    }
+
+    /**
+     * @Route("/password/reset/{token}", name="security_password_reset")
+     * @param Request $request
+     * @param string $token
+     * @param TranslatorInterface $translator
+     * @param UserPasswordEncoderInterface $encoder
+     * @return Response
+     */
+    public function resetPassword(
+        Request $request,
+        string $token,
+        TranslatorInterface $translator,
+        UserPasswordEncoderInterface $encoder
+    ): Response
+    {
+        $user = $this->getEm()->getRepository(User::class)->findOneBy(['confirmation_token' => $token]);
+
+        if (null === $user) {
+            return $this->redirectToRoute('security_login');
+        }
+
+        $form = $this->createForm(UserType::class, $user);
+        $form
+            ->remove('pseudo')
+            ->remove('email')
+            ->remove('salt');
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($encoder->encodePassword($user, $user->getPlainPassword()));
+            $user->eraseCredentials();
+
+            $this->addFlash('success', $translator->trans('change_password.success'));
+            $this->getEm()->flush();
+            return $this->redirectToRoute('security_login');
+        }
+
+        return $this->render('security/reset_password.html.twig', array(
+            'token' => $token,
+            'form' => $form->createView(),
+        ));
+    }
+
+    private function editUserOnPasswordConfirmation(User $user, UserPasswordEncoderInterface $encoder): bool
     {
         if ($encoder->isPasswordValid($user, $user->getCurrentPassword())) {
             $user->eraseCredentials();

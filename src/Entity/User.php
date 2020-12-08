@@ -100,6 +100,11 @@ class User implements UserInterface
     private DateTimeInterface $last_login;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private ?DateTimeInterface $password_requested_at = null;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private ?string $facebook_id = null;
@@ -331,6 +336,18 @@ class User implements UserInterface
     public function setLastLogin(DateTimeInterface $last_login): self
     {
         $this->last_login = $last_login;
+
+        return $this;
+    }
+
+    public function getPasswordRequestedAt(): ?DateTimeInterface
+    {
+        return $this->password_requested_at;
+    }
+
+    public function setPasswordRequestedAt(DateTimeInterface $password_requested_at): self
+    {
+        $this->password_requested_at = $password_requested_at;
 
         return $this;
     }
