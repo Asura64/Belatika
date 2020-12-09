@@ -1,4 +1,4 @@
-{% if app.request.headers.get('referer') == absolute_url(path('app_cart_show')) or app.request.headers.get('referer') == absolute_url(path('fos_user_security_login')) %}
+{% if app.request.headers.get('referer') == absolute_url(path('app_cart_show')) or app.request.headers.get('referer') == absolute_url(path('security_login')) %}
     {% set referer = path('app_shop_index') %}
 {% else %}
     {% set referer = app.request.headers.get('referer') %}
@@ -8,7 +8,6 @@
 {% block meta_title %}{{ 'Votre panier'|gTrans }}{% endblock %}
 {% block head %}
     {{ encore_entry_script_tags('app_cart_index') }}
-    <link rel="stylesheet" href="{{ asset('build/app_cart_index.css') }}">
 {% endblock %}
 {% block content %}
     <div class="container my-3">

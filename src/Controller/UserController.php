@@ -40,7 +40,7 @@ class UserController extends AbstractController
 
             $this->addFlash('success', $this->gTrans('Votre adresse a bien été enregistrée.'));
 
-            return $this->redirectToRoute('fos_user_profile_show');
+            return $this->redirectToRoute('security_profile_show');
         }
 
         return $this->render('user/address.html.twig', [

@@ -205,7 +205,7 @@ class OrderController extends AbstractController
             $accessAllowed = true;
             $isOwner = true;
         } elseif ($customerOrder->getUser() && !$user) {
-            return $this->redirectToRoute('fos_user_security_login');
+            return $this->redirectToRoute('security_login');
         }
 
         if (!$accessAllowed) {

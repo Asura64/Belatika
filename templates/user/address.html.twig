@@ -8,7 +8,7 @@
     <div class="container my-3">
         {% include '/modules/address/content.html.twig' with {
             validate : { url : path('app_user_address'), name : 'Enregistrer' },
-            back : { url : path('fos_user_profile_show'), name : 'Retour' }
+            back : { url : path('security_profile_show'), name : 'Retour' }
         } %}
     </div>
 {% endblock %}

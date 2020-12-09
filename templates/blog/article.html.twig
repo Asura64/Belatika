@@ -31,7 +31,7 @@
                 </div>
             {% else %}
                 <div class="blog-article__comment blog-article__comment--offline">
-                    <a href="{{ path('fos_user_security_login') }}">{{ 'Vous pouvez laisser un commentaire en vous connectant'|gTrans }}</a>
+                    <a href="{{ path('security_login') }}">{{ 'Vous pouvez laisser un commentaire en vous connectant'|gTrans }}</a>
                 </div>
             {% endif %}
             {% for comment in blogArticle.blogComments %}
