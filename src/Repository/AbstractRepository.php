@@ -4,14 +4,14 @@ namespace App\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 
 abstract class AbstractRepository extends ServiceEntityRepository
 {
     protected function paginate(QueryBuilder $qb):Pagerfanta
     {
-        return new Pagerfanta(new DoctrineORMAdapter($qb));
+        return new Pagerfanta(new QueryAdapter($qb));
     }
 
     protected function with(QueryBuilder $qb, $linkedEntities)
