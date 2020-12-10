@@ -127,6 +127,7 @@ abstract class AbstractController extends Controller
     {
         if (in_array($_ENV['APP_ENV'] ?? null, ['dev', 'test']) && $_ENV['DEV_MAIL'] ?? null) {
             $to = $_ENV['DEV_MAIL'];
+            $subject = '['.$_ENV['APP_ENV'].']'.$subject;
         }
         $to = is_array($to) ? $to : [$to];
         $to[] = 'contact@belatika.com';
