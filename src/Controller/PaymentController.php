@@ -21,7 +21,7 @@ use PayPal\Api\Transaction;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Exception\PayPalConnectionException;
 use PayPal\Rest\ApiContext;
-use Stripe\Error\SignatureVerification;
+use Stripe\Exception\SignatureVerificationException;
 use Stripe\Webhook;
 use Swift_Mailer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -42,11 +42,19 @@ class PaymentController extends AbstractController
      */
     private $user;
 
-    public function __construct(GoogleTranslator $googleTranslator, Swift_Mailer $mailer, TokenStorageInterface $tokenStorage)
+    private string $stripeSecretWebhook;
+
+    public function __construct(
+        GoogleTranslator $googleTranslator,
+        Swift_Mailer $mailer,
+        TokenStorageInterface $tokenStorage,
+        string $stripeSecretWebhook
+    )
     {
         parent::__construct($googleTranslator, $mailer);
         $user = $tokenStorage->getToken()->getUser();
         $this->user = $user instanceof User ? $user : null;
+        $this->stripeSecretWebhook = $stripeSecretWebhook;
     }
 
     /**
@@ -54,21 +62,19 @@ class PaymentController extends AbstractController
      */
     public function stripe()
     {
-        $endpoint_secret = getenv('APP_ENV') === 'prod' ? getenv('STRIPE_SECRET_WEBHOOK') : getenv('STRIPE_SECRET_WEBHOOK_TEST');
-
         $payload = @file_get_contents('php://input');
         $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
         $event = null;
 
         try {
             $event = Webhook::constructEvent(
-                $payload, $sig_header, $endpoint_secret
+                $payload, $sig_header, $this->stripeSecretWebhook
             );
         } catch (\UnexpectedValueException $e) {
             // Invalid payload
             http_response_code(400);
             exit();
-        } catch (SignatureVerification $e) {
+        } catch (SignatureVerificationException $e) {
             // Invalid signature
             http_response_code(400);
             exit();
@@ -106,7 +112,7 @@ class PaymentController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function paypal(Request $request)
+    public function paypal(Request $request): Response
     {
         if ($this->user) {
             $order = $this->getPendingOrder($this->user, ['gift', 'payment', ['customerOrderLines', 'item']]);
@@ -170,7 +176,7 @@ class PaymentController extends AbstractController
         }
     }
 
-    private function validateOrder(CustomerOrder $order)
+    private function validateOrder(CustomerOrder $order): Response
     {
         $highestReference = $this->getDoctrine()->getRepository(CustomerOrder::class)->getHighestReference();
         $order

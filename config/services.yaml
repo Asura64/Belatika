@@ -90,3 +90,12 @@ services:
             - "@doctrine.orm.entity_manager"
         tags:
             - { name: request.param_converter, priority: 1, converter: blog_article_converter }
+
+    App\Controller\OrderController:
+        arguments:
+            $stripeSecretKey: '%stripe_secret_key%'
+            $stripePublicKey: '%stripe_public_key%'
+
+    App\Controller\PaymentController:
+        arguments:
+            $stripeSecretWebhook: '%stripe_secret_webhook%'

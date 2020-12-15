@@ -30,11 +30,22 @@ class OrderController extends AbstractController
      */
     private $user;
 
-    public function __construct(GoogleTranslator $googleTranslator, Swift_Mailer $mailer, TokenStorageInterface $tokenStorage)
+    private string $stripeSecretKey;
+    private string $stripePublicKey;
+
+    public function __construct(
+        GoogleTranslator $googleTranslator,
+        Swift_Mailer $mailer,
+        TokenStorageInterface $tokenStorage,
+        string $stripeSecretKey,
+        string $stripePublicKey
+    )
     {
         parent::__construct($googleTranslator, $mailer);
         $user = $tokenStorage->getToken()->getUser();
         $this->user = $user instanceof User ? $user : null;
+        $this->stripeSecretKey = $stripeSecretKey;
+        $this->stripePublicKey = $stripePublicKey;
     }
 
     /**
@@ -68,8 +79,7 @@ class OrderController extends AbstractController
 
         $order = $this->updateOrder($order);
 
-        $stripe_secret_key = getenv('APP_ENV') === 'prod' ? getenv('STRIPE_SECRET_KEY') : getenv('STRIPE_SECRET_KEY_TEST');
-        Stripe::setApiKey($stripe_secret_key);
+        Stripe::setApiKey($this->stripeSecretKey);
 
         $payment = $order->getPayment();
         if ($payment instanceof Payment) {
@@ -103,7 +113,7 @@ class OrderController extends AbstractController
 
         return $this->render('order/index.html.twig', [
             'order' => $order,
-            'stripe_public_key' => getenv('APP_ENV') === 'prod' ? getenv('STRIPE_PUBLIC_KEY') : getenv('STRIPE_PUBLIC_KEY_TEST'),
+            'stripe_public_key' => $this->stripePublicKey,
             'stripe_intent_secret' => $intent->client_secret
         ]);
     }
