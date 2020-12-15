@@ -99,3 +99,7 @@ services:
     App\Controller\PaymentController:
         arguments:
             $stripeSecretWebhook: '%stripe_secret_webhook%'
+
+    App\Controller\Admin\OrderController:
+        arguments:
+            $laposteSecretKey: '%laposte_secret_key%'

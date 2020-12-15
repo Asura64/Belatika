@@ -6,3 +6,4 @@ parameters:
     stripe_secret_key:     '%env(resolve:STRIPE_SECRET_KEY)%'
     stripe_secret_webhook: '%env(resolve:STRIPE_SECRET_WEBHOOK)%'
     stripe_public_key:     '%env(resolve:STRIPE_PUBLIC_KEY)%'
+    laposte_secret_key:    '%env(resolve:LAPOSTE_SECRET_KEY)%'
