@@ -33,7 +33,7 @@ class OrderController extends AdminController
      */
     public function orders()
     {
-        $laPoste = new LaPoste(getenv('LAPOSTE_SECRET_KEY'));
+        $laPoste = new LaPoste($this->laposteSecretKey);
         /**
          * @var CustomerOrder[] $orders
          */
