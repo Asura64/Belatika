@@ -55,6 +55,7 @@ services:
             $request: '@request_stack'
             $manager: '@doctrine.orm.entity_manager'
             $projectDir: '%kernel.project_dir%'
+            $rootDir: '%env(ROOT)%'
 
     App\Service\ImageLoader:
         arguments:
@@ -64,6 +65,31 @@ services:
     App\Service\GiftManager:
         arguments:
             $manager: '@doctrine.orm.entity_manager'
+
+    App\Service\Config:
+        arguments:
+            $appEnv:                '%env(APP_ENV)%'
+            $adminMail:             '%env(ADMIN_MAIL)%'
+            $devMail:               '%env(DEV_MAIL)%'
+            $ownerMail:             '%env(OWNER_MAIL)%'
+            $stripePublicKey:       '%stripe_public_key%'
+            $stripeSecretKey:       '%stripe_secret_key%'
+            $stripeSecretWebhook:   '%stripe_secret_webhook%'
+            $paypalPublicKey:       '%paypal_public_key%'
+            $paypalSecretKey:       '%paypal_secret_key%'
+            $facebookPublicKey:     '%env(FACEBOOK_PUBLIC_KEY)%'
+            $facebookSecretKey:     '%env(FACEBOOK_SECRET_KEY)%'
+            $googlePublicKey:       '%env(GOOGLE_PUBLIC_KEY)%'
+            $googleSecretKey:       '%env(GOOGLE_SECRET_KEY)%'
+            $algoliaId:             '%env(ALGOLIA_PLACES_ID)%'
+            $algoliaKey:            '%env(ALGOLIA_PLACES_KEY)%'
+            $etsyKey:               '%env(ETSY_KEY)%'
+            $etsySecret:            '%env(APP_SECRET)%'
+            $etsyUserId:            '%env(ETSY_USER_ID)%'
+            $etsyShopId:            '%env(ETSY_SHOP_ID)%'
+            $etsyAccessToken:       '%env(ETSY_ACCESS_TOKEN)%'
+            $etsyAccessTokenSecret: '%env(ETSY_ACCESS_TOKEN_SECRET)%'
+            $laPosteSecretKey:      '%env(LAPOSTE_SECRET_KEY)%'
 
     Liip\ImagineBundle\Imagine\Cache\CacheManager:
         alias: 'liip_imagine.cache.manager'
@@ -90,16 +116,3 @@ services:
             - "@doctrine.orm.entity_manager"
         tags:
             - { name: request.param_converter, priority: 1, converter: blog_article_converter }
-
-    App\Controller\OrderController:
-        arguments:
-            $stripeSecretKey: '%stripe_secret_key%'
-            $stripePublicKey: '%stripe_public_key%'
-
-    App\Controller\PaymentController:
-        arguments:
-            $stripeSecretWebhook: '%stripe_secret_webhook%'
-
-    App\Controller\Admin\OrderController:
-        arguments:
-            $laposteSecretKey: '%laposte_secret_key%'

@@ -161,8 +161,8 @@
                 </div>
                 <div
                         style="height:600px;max-width: 1100px;margin:auto" id="sales-map"
-                        data-app_id="{{ env('ALGOLIA_PLACES_ID') }}"
-                        data-app_key="{{ env('ALGOLIA_PLACES_KEY') }}"
+                        data-app_id="{{ env('algoliaId') }}"
+                        data-app_key="{{ env('algoliaKey') }}"
                         data-customer_countries="{{ customerCountries }}"
                         data-geojson="{{ app.request.getSchemeAndHttpHost ~ asset('json/world.geo.json') }}"
                 ></div>

@@ -150,6 +150,12 @@
     "paragonie/random_compat": {
         "version": "v2.0.18"
     },
+    "paypal/paypal-checkout-sdk": {
+        "version": "1.0.1"
+    },
+    "paypal/paypalhttp": {
+        "version": "1.0.0"
+    },
     "php": {
         "version": "7.4"
     },

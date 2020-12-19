@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\CustomerOrder;
 use App\Entity\CustomerOrderLine;
 use App\Entity\EtsyFeedback;
+use App\Service\Config;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -17,11 +18,17 @@ class FunctionExtension extends AbstractExtension
 {
     private EntityManagerInterface $manager;
     private FlashBagInterface $flashBag;
+    private Config $config;
 
-    public function __construct(EntityManagerInterface $manager, SessionInterface $session)
+    public function __construct(
+        EntityManagerInterface $manager,
+        SessionInterface $session,
+        Config $config
+    )
     {
         $this->manager = $manager;
         $this->flashBag = $session->getFlashBag();
+        $this->config = $config;
     }
 
     public function getFunctions():array
@@ -46,7 +53,7 @@ class FunctionExtension extends AbstractExtension
         return $this->manager->getRepository(CustomerOrderLine::class)->countSales();
     }
 
-    public function getRatings()
+    public function getRatings(): array
     {
         $ratings = [];
         $customerOrders = $this->manager->getRepository(CustomerOrder::class)->getRatings();
@@ -62,7 +69,12 @@ class FunctionExtension extends AbstractExtension
 
     public function env(string $key):string
     {
-        return getenv($key);
+        $configGetter = 'get'.ucfirst($key);
+        if (!method_exists($this->config, $configGetter)) {
+            throw new \InvalidArgumentException('Aucune configuration trouvée pour '.$key);
+        }
+
+        return $this->config->$configGetter();
     }
 
     public function randomImage()

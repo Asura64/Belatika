@@ -28,15 +28,15 @@ class EtsyController extends AdminController
      * @param Etsy $etsy
      * @return RedirectResponse
      */
-    public function etsy(Etsy $etsy)
+    public function etsy(Etsy $etsy): RedirectResponse
     {
         $this->etsy = $etsy;
         $this->etsy
-            ->setApiKey(getenv('ETSY_KEY'))
-            ->setApiSecret(getenv('ETSY_SECRET'))
-            ->setShopId(getenv('ETSY_SHOP_ID'))
-            ->setUserId(getenv('ETSY_USER_ID'))
-            ->setSSLCheck(getenv('APP_ENV') !== 'dev');
+            ->setApiKey($this->config->getEtsyKey())
+            ->setApiSecret($this->config->getEtsySecret())
+            ->setShopId($this->config->getEtsyShopId())
+            ->setUserId($this->config->getEtsyUserId())
+            ->setSSLCheck($this->config->getAppEnv() !== 'dev');
 
         $this->synchroFeedbacks();
 //        $this->synchroSales();
@@ -44,7 +44,7 @@ class EtsyController extends AdminController
         return $this->redirectToRoute('app_admin_index');
     }
 
-    protected function synchroFeedbacks()
+    protected function synchroFeedbacks(): bool
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository(EtsyFeedback::class);
@@ -69,13 +69,13 @@ class EtsyController extends AdminController
         return $hasNewFeedbacks;
     }
 
-    protected function synchroSales()
+    protected function synchroSales(): bool
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository(EtsySale::class);
         $hasNewSales = false;
-        $access_token = $_ENV['ETSY_ACCESS_TOKEN'];
-        $access_token_secret = $_ENV['ETSY_ACCESS_TOKEN_SECRET'];
+        $access_token = $this->config->getEtsyAccessToken();
+        $access_token_secret = $this->config->getEtsyAccessTokenSecret();
         $page = 1;
         while ($page) {
             $sales = $this->etsy->getSales($access_token, $access_token_secret, $page);
@@ -109,13 +109,13 @@ class EtsyController extends AdminController
      * @param Etsy $etsy
      * @return Response
      */
-    public function etsyGetAccessToken(Request $request, Etsy $etsy)
+    public function etsyGetAccessToken(Request $request, Etsy $etsy): Response
     {
         $etsy
-            ->setApiKey(getenv('ETSY_KEY'))
-            ->setApiSecret(getenv('ETSY_SECRET'))
-            ->setShopId(getenv('ETSY_SHOP_ID'))
-            ->setSSLCheck(getenv('APP_ENV') !== 'dev');
+            ->setApiKey($this->config->getEtsyKey())
+            ->setApiSecret($this->config->getEtsySecret())
+            ->setShopId($this->config->getEtsyShopId())
+            ->setSSLCheck($this->config->getAppEnv() !== 'dev');
 
         $request_token = $request->get('oauth_token');
         $request_token_secret = $request->getSession()->get('oauth_token_secret');

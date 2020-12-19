@@ -94,14 +94,22 @@
                 </div>
                 <div class="payment-method payment-method--paypal">
                     <div class="payment-method__choice">
-                        <input type="radio" id="paypal" name="payment-method" value="paypal">
-                        <label for="paypal">
+                        <input type="radio" id="paypal-method" name="payment-method" value="paypal">
+                        <label for="paypal-method">
                             <span>Paypal</span>
                             <img class="ml-2 img-fluid" src="{{ asset('img/resources/paypal-logo.png') }}" alt="{{ "Paypal"|gTrans}}">
                         </label>
                     </div>
                     <div class="payment-method__action">
-                        <p><span>{{ 'Payer avec mon compte Paypal'|gTrans }}:</span><a href="{{ path('app_payment_paypal') }}" class="btn btn-sm bt-btn--primary float-right"><i class="fab fa-paypal"></i> Paypal</a></p>
+                        <div class="paypal">
+                            <span>{{ 'Payer avec mon compte Paypal'|gTrans }}:</span>
+                            <div
+                                    id="paypal-button-container"
+                                    data-paypal-order-id="{{ paypal_order_id }}"
+                                    data-order-id="{{ order.id }}"
+                                    data-url="{{ absolute_url(path('app_payment_paypal', {id: order.id})) }}"
+                            ></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -117,4 +125,7 @@
 
 {% block javascripts %}
     <script src="https://js.stripe.com/v3/"></script>
+    <script
+        src="https://www.paypal.com/sdk/js?currency=EUR&disable-funding=card,credit,bancontact&client-id={{ paypal_public_key }}"
+    ></script>
 {% endblock %}

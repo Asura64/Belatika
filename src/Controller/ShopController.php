@@ -245,7 +245,7 @@ class ShopController extends AbstractController
                 ], UrlGeneratorInterface::ABSOLUTE_URL);
                 $this->fastMail(
                     'Demande de remise en stock',
-                    [getenv('ADMIN_MAIL'), getenv('DEV_MAIL')],
+                    [$this->config->getAdminMail(), $this->config->getDevMail()],
                     'mail/backinstockSeller.html.twig',
                     [
                         'email' => $email,

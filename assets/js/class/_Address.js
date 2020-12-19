@@ -47,6 +47,7 @@ export default class Address {
      */
     initPlaces() {
         let placesAutocomplete = places(this.fixedOptions).configure(this.reconfigurableOptions);
+        this.addressInput.setAttribute('autocomplete', 'new-password');
 
         placesAutocomplete.on('change', function resultSelected(e) {
             document.getElementById('address_country').value = e.suggestion.country || '';

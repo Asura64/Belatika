@@ -7,7 +7,11 @@ use App\Entity\CustomerOrder;
 use App\Entity\CustomerOrderLine;
 use App\Entity\Payment;
 use App\Entity\User;
+use App\Service\Config;
 use App\Service\GoogleTranslator;
+use PayPalCheckoutSdk\Core\PayPalHttpClient;
+use PayPalCheckoutSdk\Core\SandboxEnvironment;
+use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use Stripe\PaymentIntent;
@@ -30,22 +34,16 @@ class OrderController extends AbstractController
      */
     private $user;
 
-    private string $stripeSecretKey;
-    private string $stripePublicKey;
-
     public function __construct(
         GoogleTranslator $googleTranslator,
         Swift_Mailer $mailer,
         TokenStorageInterface $tokenStorage,
-        string $stripeSecretKey,
-        string $stripePublicKey
+        Config $config
     )
     {
-        parent::__construct($googleTranslator, $mailer);
+        parent::__construct($googleTranslator, $mailer, $config);
         $user = $tokenStorage->getToken()->getUser();
         $this->user = $user instanceof User ? $user : null;
-        $this->stripeSecretKey = $stripeSecretKey;
-        $this->stripePublicKey = $stripePublicKey;
     }
 
     /**
@@ -79,7 +77,8 @@ class OrderController extends AbstractController
 
         $order = $this->updateOrder($order);
 
-        Stripe::setApiKey($this->stripeSecretKey);
+        //--------------------------------------------- STRIPE -------------------------------------------------------//
+        Stripe::setApiKey($this->config->getStripeSecretKey());
 
         $payment = $order->getPayment();
         if ($payment instanceof Payment) {
@@ -111,10 +110,74 @@ class OrderController extends AbstractController
             $this->getEm()->flush();
         }
 
+        //--------------------------------------------- PAYPAL -------------------------------------------------------//
+        $paypalEnvironment = new SandboxEnvironment($this->config->getPaypalPublicKey(), $this->config->getPaypalSecretKey());
+        $paypalClient = new PayPalHttpClient($paypalEnvironment);
+
+        $items = [];
+        foreach ($order->getCustomerOrderLines() as $line) {
+            $items[] = [
+                'name' => $line->getItem()->getName(),
+                'unit_amount' => [
+                    'currency_code' => 'EUR',
+                    'value' => $line->getPrice() * $line->getQuantity(),
+                ],
+                'quantity' => $line->getQuantity(),
+            ];
+        }
+
+        $paypalRequestBody = [
+            'intent' => 'CAPTURE',
+            'application_context' => [
+                'brand_name' => 'BELATIKA',
+                'user_action' => 'PAY_NOW',
+            ],
+            'purchase_units' => [
+                [
+                    'reference_id' => $order->getId(),
+                    'amount' => [
+                        'currency_code' => 'EUR',
+                        'value' => $order->getTotal(),
+                        'breakdown' => [
+                            'item_total' => [
+                                'currency_code' => 'EUR',
+                                'value' => $order->getTotal(),
+                            ],
+                        ],
+                    ],
+                    'items' => $items,
+                    'shipping' => [
+                        'method' => 'La Poste recommandé',
+                        'address' => [
+                            'address_line_1' => $order->getAddress()->getAddress(),
+                            'address_line_2' => $order->getAddress()->getAdditional(),
+                            'admin_area_2' => $order->getAddress()->getCity(),
+                            'admin_area_1' => $order->getAddress()->getCountry(),
+                            'postal_code' => $order->getAddress()->getPostcode(),
+                            'country_code' => $order->getAddress()->getCountryCode(),
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $paypalRequest = new OrdersCreateRequest();
+        $paypalRequest->prefer('return=representation');
+        $paypalRequest->body = $paypalRequestBody;
+
+        $paypalResponse = $paypalClient->execute($paypalRequest);
+        $paypalResult = $paypalResponse->result;
+        $paypalOrderId = isset($paypalResult->id) ? $paypalResult->id : null;
+
+        //------------------------------------------------------------------------------------------------------------//
+
+
         return $this->render('order/index.html.twig', [
             'order' => $order,
-            'stripe_public_key' => $this->stripePublicKey,
-            'stripe_intent_secret' => $intent->client_secret
+            'stripe_public_key' => $this->config->getStripePublicKey(),
+            'stripe_intent_secret' => $intent->client_secret,
+            'paypal_public_key' => $this->config->getPaypalPublicKey(),
+            'paypal_order_id' => $paypalOrderId,
         ]);
     }
 

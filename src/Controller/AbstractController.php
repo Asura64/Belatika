@@ -7,6 +7,7 @@ use App\Entity\Address;
 use App\Entity\CustomerOrder;
 use App\Entity\Gift;
 use App\Entity\User;
+use App\Service\Config;
 use App\Service\GoogleTranslator;
 use App\Twig\Extension\GlobalExtension;
 use Doctrine\Persistence\ObjectManager;
@@ -21,23 +22,18 @@ use Doctrine\ORM\NonUniqueResultException;
 
 abstract class AbstractController extends Controller
 {
-    /**
-     * @var GoogleTranslator
-     */
-    private $googleTranslator;
+    private GoogleTranslator $googleTranslator;
+    private Swift_Mailer $mailer;
 
-    /**
-     * @var Swift_Mailer
-     */
-    private $mailer;
+    protected array $breadcrumb = [];
+    protected ?ObjectManager $em = null;
+    protected Config $config;
 
-    protected $breadcrumb = [];
-    protected $em;
-
-    public function __construct(GoogleTranslator $googleTranslator, Swift_Mailer $mailer)
+    public function __construct(GoogleTranslator $googleTranslator, Swift_Mailer $mailer, Config $config)
     {
         $this->googleTranslator = $googleTranslator;
         $this->mailer = $mailer;
+        $this->config = $config;
     }
 
     /**
@@ -102,15 +98,12 @@ abstract class AbstractController extends Controller
 
     protected function alertAdmin($subject, $body):void
     {
-        if (getenv('APP_ENV') !== 'prod') {
-            return;
-        }
         $message = (new Swift_Message($subject))
             ->setFrom('noreply@belatika.com')
             ->setTo([
-                getenv('ADMIN_MAIL'),
-                getenv('DEV_MAIL'),
-                getenv('OWNER_MAIL'),
+                $this->config->getAdminMail(),
+                $this->config->getDevMail(),
+                $this->config->getOwnerMail(),
             ], 'Admin Belatika')
             ->setBody($body);
         $this->mailer->send($message);
@@ -125,11 +118,11 @@ abstract class AbstractController extends Controller
      */
     protected function fastMail(string $subject, $to, string $template, $viewVars = []): bool
     {
-        if (in_array($_ENV['APP_ENV'] ?? null, ['dev', 'test']) && $_ENV['DEV_MAIL'] ?? null) {
-            $to = [$_ENV['DEV_MAIL']];
+        if (in_array($this->config->getAppEnv() ?? null, ['dev', 'test'])) {
+            $to = [$this->config->getDevMail()];
         } else {
             $to = is_array($to) ? $to : [$to];
-            $to[] = 'contact@belatika.com';
+            $to[] = $this->config->getOwnerMail();
         }
         $message = (new Swift_Message($subject))
             ->setCharset('utf-8')
@@ -204,10 +197,7 @@ abstract class AbstractController extends Controller
         return $order;
     }
 
-    /**
-     * @return User;
-     */
-    public function getUser()
+    public function getUser(): ?User
     {
         return parent::getUser();
     }
@@ -230,10 +220,7 @@ abstract class AbstractController extends Controller
         return parent::render($view, $parameters, $response);
     }
 
-    /**
-     * @return ObjectManager
-     */
-    protected function getEm()
+    protected function getEm(): ObjectManager
     {
         if (!$this->em instanceof ObjectManager) {
             $this->em = $this->getDoctrine()->getManager();

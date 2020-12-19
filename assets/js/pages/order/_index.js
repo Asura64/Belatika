@@ -3,7 +3,7 @@ import ajax from '../../functions/_ajax';
 document.addEventListener('DOMContentLoaded', () => {
     //Gestion choix paiement
     let cbRadio = document.getElementById('cb');
-    let paypalRadio = document.getElementById('paypal');
+    let paypalRadio = document.getElementById('paypal-method');
     let choices = document.querySelectorAll('.payment-method');
     [cbRadio, paypalRadio].forEach((radio) => {
         radio.addEventListener('click', () => {
@@ -100,4 +100,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
         form.submit();
     }
+
+    //Paypal:
+    let paypalElt = document.getElementById('paypal-button-container');
+    paypal.Buttons({
+        createOrder: () => {
+            return paypalElt.dataset.paypalOrderId
+        },
+        onApprove: (data, actions) => {
+            return actions.order.capture().then(function(details) {
+                if (details.status === 'COMPLETED') {
+                    ajax(
+                        paypalElt.dataset.url,
+                        (response) => {
+                            window.location.href = cardElt.dataset.confirmation_url;
+                        },
+                        {
+                            datas : {
+                                id: paypalElt.dataset.orderId
+                            },
+                            method: 'POST',
+                        }
+                    );
+                } else {
+                    alert('Paypal transaction failed');
+                }
+            });
+        }
+    }).render('#paypal-button-container');
 });

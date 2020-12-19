@@ -32,26 +32,26 @@
         {{ form_widget(form.address, {'attr': {
             'class': 'form-control',
             'placeholder': 'Votre adresse'|gTrans|capitalize},
-            'data-app-id': env('ALGOLIA_PLACES_ID'),
-            'data-app-key': env('ALGOLIA_PLACES_KEY'),
+            'data-app-id': env('algoliaId'),
+            'data-app-key': env('algoliaKey'),
         }) }}
         {{ form_errors(form.address) }}
     </div>
     <div class="address-field mt-2">
-        {{ form_widget(form.additional, {'attr': {'class': 'form-control', 'autocomplete': 'no', 'placeholder': 'Votre complément d\'adresse'|gTrans|capitalize}}) }}
+        {{ form_widget(form.additional, {'attr': {'class': 'form-control', 'autocomplete': 'new-password', 'placeholder': 'Votre complément d\'adresse'|gTrans|capitalize}}) }}
         {{ form_errors(form.additional) }}
     </div>
     <div class="form-group row mt-2">
         <div class="col-sm-4">
-            {{ form_widget(form.postcode, {'attr': {'class': 'form-control', 'placeholder': 'Code postal'|gTrans|capitalize}}) }}
+            {{ form_widget(form.postcode, {'attr': {'class': 'form-control', 'autocomplete': 'new-password', 'placeholder': 'Code postal'|gTrans|capitalize}}) }}
             {{ form_errors(form.postcode) }}
         </div>
         <div class="col-sm-4">
-            {{ form_widget(form.city, {'attr': {'class': 'form-control', 'placeholder': 'Ville'|gTrans|capitalize}}) }}
+            {{ form_widget(form.city, {'attr': {'class': 'form-control', 'autocomplete': 'new-password', 'placeholder': 'Ville'|gTrans|capitalize}}) }}
             {{ form_errors(form.city) }}
         </div>
         <div class="col-sm-4">
-            {{ form_widget(form.country, {'attr': {'class': 'form-control', 'placeholder': 'Pays'|gTrans|capitalize}}) }}
+            {{ form_widget(form.country, {'attr': {'class': 'form-control', 'autocomplete': 'new-password', 'placeholder': 'Pays'|gTrans|capitalize}}) }}
             {{ form_errors(form.country) }}
         </div>
     </div>

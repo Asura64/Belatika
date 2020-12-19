@@ -14,29 +14,25 @@ use App\Entity\Translation;
 
 class GoogleTranslator
 {
-    /**
-     * @var GoogleTranslate
-     */
-    private $translator;
-    /**
-     * @var RequestStack
-     */
-    private $request;
-    /**
-     * @var EntityManager
-     */
-    private $manager;
-    /**
-     * @var string
-     */
-    private $projectDir;
+    private GoogleTranslate $translator;
+    private RequestStack $request;
+    private EntityManager $manager;
+    private string $projectDir;
+    private string $rootDir;
 
-    public function __construct(GoogleTranslate $translator, RequestStack $request, EntityManager $manager, $projectDir)
+    public function __construct(
+        GoogleTranslate $translator,
+        RequestStack $request,
+        EntityManager $manager,
+        string $projectDir,
+        string $rootDir
+    )
     {
         $this->translator = $translator;
         $this->request = $request;
         $this->manager = $manager;
         $this->projectDir = $projectDir;
+        $this->rootDir = $rootDir;
     }
 
     /**
@@ -54,7 +50,7 @@ class GoogleTranslator
         $language = $request->getLocale();
         if($language === 'fr' && !$force) { return $text; }
 
-        $translationFile = getenv('ROOT') . '\translations\messages.'.$language.'.yaml';
+        $translationFile = $this->rootDir . '\translations\messages.'.$language.'.yaml';
 
         if(file_exists($translationFile)){
             $translations = Yaml::parseFile($translationFile);

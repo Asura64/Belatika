@@ -3,7 +3,9 @@ parameters:
         sales:
             start: 27/11/2020_00:00
             end: 29/11/2020_23:59
-    stripe_secret_key:     '%env(resolve:STRIPE_SECRET_KEY)%'
-    stripe_secret_webhook: '%env(resolve:STRIPE_SECRET_WEBHOOK)%'
-    stripe_public_key:     '%env(resolve:STRIPE_PUBLIC_KEY)%'
-    laposte_secret_key:    '%env(resolve:LAPOSTE_SECRET_KEY)%'
+    stripe_secret_key:     '%env(STRIPE_SECRET_KEY)%'
+    stripe_secret_webhook: '%env(STRIPE_SECRET_WEBHOOK)%'
+    stripe_public_key:     '%env(STRIPE_PUBLIC_KEY)%'
+    paypal_secret_key:     '%env(PAYPAL_SECRET_KEY)%'
+    paypal_public_key:     '%env(PAYPAL_PUBLIC_KEY)%'
+    laposte_secret_key:    '%env(LAPOSTE_SECRET_KEY)%'

@@ -48,14 +48,23 @@
         padding: .5rem;
       }
     }
-    & p {
+    & .paypal {
       display: flex;
+      flex-direction: column;
+      @include media-breakpoint-up(sm) {
+        flex-direction: row;
+      }
       border: none;
       box-shadow: 0 0 3px #1e1e1e;
       margin: 0;
       & span {
         padding: .2rem;
         flex: 1;
+      }
+      & div {
+        display: flex;
+        align-items: center;
+        margin: 1px;
       }
     }
   }

@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Controller\AdminController;
 use App\Entity\CustomerOrder;
 use App\Service\API\LaPoste;
+use App\Service\Config;
 use App\Service\GoogleTranslator;
 use Swift_Mailer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,21 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class OrderController extends AdminController
 {
-    private string $laposteSecretKey;
-
-    public function __construct(GoogleTranslator $googleTranslator, Swift_Mailer $mailer, string $laposteSecretKey)
-    {
-        parent::__construct($googleTranslator, $mailer);
-        $this->laposteSecretKey = $laposteSecretKey;
-    }
-
     /**
      * @Route("/")
      * @return Response
      */
     public function orders()
     {
-        $laPoste = new LaPoste($this->laposteSecretKey);
+        $laPoste = new LaPoste($this->config->getLaPosteSecretKey());
         /**
          * @var CustomerOrder[] $orders
          */
