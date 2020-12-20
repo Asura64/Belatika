@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Service\Config;
 use App\Service\GoogleTranslator;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
+use PayPalCheckoutSdk\Core\ProductionEnvironment;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
@@ -111,7 +112,11 @@ class OrderController extends AbstractController
         }
 
         //--------------------------------------------- PAYPAL -------------------------------------------------------//
-        $paypalEnvironment = new SandboxEnvironment($this->config->getPaypalPublicKey(), $this->config->getPaypalSecretKey());
+        if ($this->config->getAppEnv() === 'prod') {
+            $paypalEnvironment = new ProductionEnvironment($this->config->getPaypalPublicKey(), $this->config->getPaypalSecretKey());
+        } else {
+            $paypalEnvironment = new SandboxEnvironment($this->config->getPaypalPublicKey(), $this->config->getPaypalSecretKey());
+        }
         $paypalClient = new PayPalHttpClient($paypalEnvironment);
 
         $items = [];
