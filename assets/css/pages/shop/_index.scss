@@ -213,16 +213,11 @@ hr.separator {
 
 .about {
   max-width: 1200px;
-  margin: 3rem auto;
-  padding: 2rem;
-  &:nth-child(2n + 1) {
-    background-color: lighten($gold, 40%);
-  }
-  &:nth-child(2n) {
-    background-color: lighten($gold, 10%);
-  }
+  margin: 1rem auto;
+  padding: .5rem;
+  background-color: lighten($gold, 40%);
   &__intro {
-    margin: 2rem 0;
+    margin-bottom: 2rem;
     text-align: center;
     font-weight: bold;
   }

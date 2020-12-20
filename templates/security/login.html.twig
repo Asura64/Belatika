@@ -46,11 +46,11 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-6">
-                            <a class="btn btn-secondary btn-belatika-dark" href="{{ path('security_password_request') }}">{{ 'resetting.request.title'|trans }}</a>
-                        </div>
-                        <div class="col-sm-6 mt-2 mt-sm-0">
+                        <div class="col-sm-6 order-sm-2">
                             <input class="btn bt-btn--primary float-sm-right" type="submit" value="{{ 'security.login.submit'|trans }}" />
+                        </div>
+                        <div class="col-sm-6 order-sm-1 mt-2 mt-sm-0">
+                            <a href="{{ path('security_password_request') }}">{{ 'resetting.request.title'|trans }}</a>
                         </div>
                     </div>
                 </form>
