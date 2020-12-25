@@ -40,7 +40,7 @@ class BlogController extends AbstractController
      */
     public function article(BlogArticle $blogArticle)
     {
-        if (!$blogArticle->getIsPublished() && !$this->getUser()->isAdmin()) {
+        if (!$blogArticle->getIsPublished() && !$this->isAdmin()) {
             return $this->redirectToRoute('app_blog_index');
         }
 

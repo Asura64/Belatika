@@ -202,6 +202,15 @@ abstract class AbstractController extends Controller
         return parent::getUser();
     }
 
+    public function isAdmin(): bool
+    {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            return false;
+        }
+        return  $user->isAdmin();
+    }
+
     protected function clearUnusedAddresses()
     {
         $manager = $this->getDoctrine()->getManager();
