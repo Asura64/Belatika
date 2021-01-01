@@ -111,7 +111,7 @@ class CartController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $stock = $item->getQuantity();
-        $em->clear(Item::class);
+        $em->clear();
         $item
             ->setQuantity($quantity > $stock ? $stock : $quantity)
             ->setLink($this->generateUrl(
