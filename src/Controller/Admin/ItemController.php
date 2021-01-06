@@ -24,7 +24,7 @@ class ItemController extends AdminController
      * @param Request $request
      * @return Response
      */
-    public function items($page, Request $request)
+    public function items(int $page, Request $request): Response
     {
         $manager = $this->getDoctrine()->getManager();
         /**
@@ -85,7 +85,7 @@ class ItemController extends AdminController
             $manager->flush();
         }
 
-        $items = $itemRepository->findAllWithImages(['onlyVisible' => false, 'paginate' => true, 'filters' => [], 'order' => ['it.reference' => 'DESC']]);
+        $items = $itemRepository->findAllWithOrders();
 
         $items
             ->setCurrentPage($page)
@@ -126,7 +126,7 @@ class ItemController extends AdminController
      * @param Item $item
      * @return Response
      */
-    public function edit(Request $request, Item $item)
+    public function edit(Request $request, Item $item): Response
     {
         $form = $this->createForm(ItemType::class, $item);
         $form->handleRequest($request);
@@ -152,7 +152,7 @@ class ItemController extends AdminController
      * @param int $row
      * @return Response
      */
-    public function delete(Item $item, $page, $row)
+    public function delete(Item $item, int $page, int $row): Response
     {
         if ($item->getCustomerOrderLines()->isEmpty()) {
             $this->getEm()->remove($item);
@@ -168,7 +168,7 @@ class ItemController extends AdminController
      * @param int $page
      * @return Response
      */
-    public function toggleVisible(Item $item, int $page)
+    public function toggleVisible(Item $item, int $page): Response
     {
         $item->setVisible(!$item->getVisible());
         $this->getEm()->flush();
@@ -181,7 +181,7 @@ class ItemController extends AdminController
      * @param Image $image
      * @return Response
      */
-    public function removeImage(Image $image)
+    public function removeImage(Image $image): Response
     {
         if ($image->getItem()->getImages()->count() > 1) {
             $em = $this->getDoctrine()->getManager();
@@ -203,7 +203,7 @@ class ItemController extends AdminController
      * @param Item $item
      * @return Response
      */
-    public function orders(Item $item)
+    public function orders(Item $item): Response
     {
 
         $lines = $item->getCustomerOrderLines();
@@ -211,7 +211,9 @@ class ItemController extends AdminController
 
         foreach ($lines as $line) {
             $order = $line->getCustomerOrder();
-            $orders[$order->getId()] = $order;
+            if ($order->getIsValid()) {
+                $orders[$order->getId()] = $order;
+            }
         }
 
         return $this->render('admin/item/orders.html.twig', [

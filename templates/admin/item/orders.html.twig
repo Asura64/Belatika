@@ -21,7 +21,7 @@
                 {% for order in orders %}
                     <tr>
                         <td>{{ order.orderedAt|date('d/m/Y') }}</td>
-                        <td>{{ order.user.username }}</td>
+                        <td>{{ order.address.firstname }}</td>
                         <td class="text-right">{{ order.reference }}</td>
                         <td class="text-right">{{ order.total|number_format(2,',') }}€</td>
                         <td class="text-right"><a class="bt-btn bt-btn--info" title="Voir le détail de la commande" target="_blank" href="{{ path('app_user_order', {'reference' : order.reference}) }}"><i class="far fa-eye"></i></a></td>

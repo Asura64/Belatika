@@ -145,4 +145,19 @@ class ItemRepository extends AbstractRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findAllWithOrders(): Pagerfanta
+    {
+        $qb = $this->createQueryBuilder('it')
+            ->innerJoin('it.images', 'im')
+            ->addSelect('im')
+            ->leftJoin('it.customerOrderLines', 'col')
+            ->addSelect('col')
+            ->leftJoin('col.customerOrder', 'co')
+            ->addSelect('co')
+            ->orderBy('it.reference', 'DESC')
+            ;
+
+        return $this->paginate($qb);
+    }
 }

@@ -36,10 +36,10 @@
                                     <input id="ITEM_{{ item.id }}_PRICE" title="Prix" type="number" name="ITEM_{{ item.id }}_PRICE" value="{{ item.price }}" step="0.01" min="0">
                                 </td>
                                 <td>
-                                    {% if item.customerOrderLines.empty %}
-                                        <a class="bt-btn bt-btn--danger" title="Supprimer" href="{{ path('app_admin_item_delete', {'id' : item.id, 'page' : items.currentPage, 'row' : loop.index}) }}" onclick="return confirm('Supprimer définitivement ce bijoux')"><i class="far fa-trash-alt"></i></a>
-                                    {% else %}
+                                    {% if item.hasValidOrders %}
                                         <a class="bt-btn bt-btn--info" title="Voir les commandes" href="{{ path('app_admin_item_orders', {'id' : item.id}) }}"><i class="fas fa-list"></i></a>
+                                    {% else %}
+                                        <a class="bt-btn bt-btn--danger" title="Supprimer" href="{{ path('app_admin_item_delete', {'id' : item.id, 'page' : items.currentPage, 'row' : loop.index}) }}" onclick="return confirm('Supprimer définitivement ce bijoux')"><i class="far fa-trash-alt"></i></a>
                                     {% endif %}
                                 </td>
                                 <td><a class="bt-btn bt-btn--info" title="Modifier" href="{{ path('app_admin_item_edit', {'id' : item.id}) }}"><i class="far fa-edit"></i></a></td>

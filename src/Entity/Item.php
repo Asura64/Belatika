@@ -352,6 +352,16 @@ class Item
         return $this->customerOrderLines;
     }
 
+    public function hasValidOrders(): bool
+    {
+        foreach ($this->customerOrderLines as $customerOrderLine) {
+            if ($customerOrderLine->getCustomerOrder()->getIsValid()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function addCustomerOrderLine(CustomerOrderLine $customerOrderLine): self
     {
         if (!$this->customerOrderLines->contains($customerOrderLine)) {
