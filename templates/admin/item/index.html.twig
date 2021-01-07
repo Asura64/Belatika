@@ -34,6 +34,14 @@
                                 <td class="dashboard-table__number">
                                     <label for="ITEM_{{ item.id }}_PRICE">Prix</label>
                                     <input id="ITEM_{{ item.id }}_PRICE" title="Prix" type="number" name="ITEM_{{ item.id }}_PRICE" value="{{ item.price }}" step="0.01" min="0">
+                                    <label for="ITEM_{{ item.id }}_DISCOUNT">Solde</label>
+                                    <input id="ITEM_{{ item.id }}_DISCOUNT" title="Prix" type="number" name="ITEM_{{ item.id }}_DISCOUNT" value="{{ item.discount }}" min="0" max="100" step="5">
+                                    <div>
+                                        {% if item.discount %}
+                                            <sub><del><i>{{ item.price|number_format(2, ',') }} €</i></del></sub><br>
+                                            {{ (item.discountPrice)|number_format(2, ',') }} €
+                                        {% endif %}
+                                    </div>
                                 </td>
                                 <td>
                                     {% if item.hasValidOrders %}

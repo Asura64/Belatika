@@ -83,6 +83,13 @@
                         {{ form_errors(form.price) }}
                     </div>
                 </div>
+                <div class="row form-group">
+                    {{ form_label(form.discount, null, {'label_attr': {'class': 'col-md-2'}}) }}
+                    <div class="col col-md-10">{{ form_widget(form.discount) }}</div>
+                    <div class="form_errors col-md-12">
+                        {{ form_errors(form.discount) }}
+                    </div>
+                </div>
                 <div id="filesProto" data-prototype="{{ include('/prototype/images.html.twig')|e }}" data-nofile-src="{{ asset('img/resources/image-not-found.png'|imagine_filter('thumb')) }}"></div>
                 <div class="row">
                     <div class="col-12 d-flex flex-wrap align-items-center" id="filesBox" data-content-count="{{ form.images|length }}">
