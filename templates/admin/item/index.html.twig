@@ -12,35 +12,43 @@
                         {% for item in items %}
                             <tr id="row-{{ loop.index }}">
                                 <td id="ITEM_{{ item.id }}" class="dashboard-table__image">
-                                    <figure>
+                                    <figure class="w-100">
                                         <img title="Image principale" src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
                                         <figcaption><input title="Texte alternatif" name="ITEM_{{ item.id }}_FIRST_IMAGE_ALT" type="text" value="{{ item.images|first.alt }}"></figcaption>
                                     </figure>
                                 </td>
                                 <td>
-                                    <label for="ITEM_{{ item.id }}_NAME">Nom</label>
-                                    <input id="ITEM_{{ item.id }}_NAME" title="Nom du bijou" name="ITEM_{{ item.id }}_NAME" type="text" value="{{ item.name }}">
-                                    <label for="ITEM_{{ item.id }}_REFERENCE">Référence</label>
-                                    <input id="ITEM_{{ item.id }}_REFERENCE" title="Référence" name="ITEM_{{ item.id }}_REFERENCE" type="text" value="{{ item.reference }}">
+                                    <div class="w-100">
+                                        <label for="ITEM_{{ item.id }}_NAME">Nom</label>
+                                        <input id="ITEM_{{ item.id }}_NAME" title="Nom du bijou" name="ITEM_{{ item.id }}_NAME" type="text" value="{{ item.name }}">
+                                        <label for="ITEM_{{ item.id }}_REFERENCE">Référence</label>
+                                        <input id="ITEM_{{ item.id }}_REFERENCE" title="Référence" name="ITEM_{{ item.id }}_REFERENCE" type="text" value="{{ item.reference }}">
+                                    </div>
                                 </td>
                                 <td>
-                                    <label for="ITEM_{{ item.id }}_META_DESCRIPTION">Meta description</label>
-                                    <textarea id="ITEM_{{ item.id }}_META_DESCRIPTION" title="Meta-description" rows="7" name="ITEM_{{ item.id }}_META_DESCRIPTION">{{ item.metaDescription }}</textarea>
+                                    <div class="w-100">
+                                        <label for="ITEM_{{ item.id }}_META_DESCRIPTION">Meta description</label>
+                                        <textarea id="ITEM_{{ item.id }}_META_DESCRIPTION" title="Meta-description" rows="7" name="ITEM_{{ item.id }}_META_DESCRIPTION">{{ item.metaDescription }}</textarea>
+                                    </div>
                                 </td>
                                 <td class="dashboard-table__number">
-                                    <label for="ITEM_{{ item.id }}_QUANTITY">Stock</label>
-                                    <input id="ITEM_{{ item.id }}_QUANTITY" title="Stock" type="number" name="ITEM_{{ item.id }}_QUANTITY" value="{{ item.quantity }}" min="0">
+                                    <div class="w-100">
+                                        <label for="ITEM_{{ item.id }}_QUANTITY">Stock</label>
+                                        <input id="ITEM_{{ item.id }}_QUANTITY" title="Stock" type="number" name="ITEM_{{ item.id }}_QUANTITY" value="{{ item.quantity }}" min="0">
+                                    </div>
                                 </td>
                                 <td class="dashboard-table__number">
-                                    <label for="ITEM_{{ item.id }}_PRICE">Prix</label>
-                                    <input id="ITEM_{{ item.id }}_PRICE" title="Prix" type="number" name="ITEM_{{ item.id }}_PRICE" value="{{ item.price }}" step="0.01" min="0">
-                                    <label for="ITEM_{{ item.id }}_DISCOUNT">Solde</label>
-                                    <input id="ITEM_{{ item.id }}_DISCOUNT" title="Prix" type="number" name="ITEM_{{ item.id }}_DISCOUNT" value="{{ item.discount }}" min="0" max="100" step="5">
-                                    <div>
-                                        {% if item.discount %}
-                                            <sub><del><i>{{ item.price|number_format(2, ',') }} €</i></del></sub><br>
-                                            {{ (item.discountPrice)|number_format(2, ',') }} €
-                                        {% endif %}
+                                    <div class="w-100">
+                                        <label for="ITEM_{{ item.id }}_PRICE">Prix</label>
+                                        <input id="ITEM_{{ item.id }}_PRICE" title="Prix" type="number" name="ITEM_{{ item.id }}_PRICE" value="{{ item.price }}" step="0.01" min="0">
+                                        <label for="ITEM_{{ item.id }}_DISCOUNT">Solde (%)</label>
+                                        <input id="ITEM_{{ item.id }}_DISCOUNT" title="Prix" type="number" name="ITEM_{{ item.id }}_DISCOUNT" value="{{ item.discount }}" min="0" max="100" step="5">
+                                        <div>
+                                            {% if item.discount %}
+                                                <sub><del><i>{{ item.price|number_format(2, ',') }} €</i></del></sub><br>
+                                                {{ (item.discountPrice)|number_format(2, ',') }} €
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </td>
                                 <td class="d-iblock d-td-sm">
