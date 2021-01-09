@@ -13,7 +13,7 @@
                             <tr id="row-{{ loop.index }}">
                                 <td id="ITEM_{{ item.id }}" class="dashboard-table__image">
                                     <figure>
-                                        <img title="Image principale" width="120" src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
+                                        <img title="Image principale" src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
                                         <figcaption><input title="Texte alternatif" name="ITEM_{{ item.id }}_FIRST_IMAGE_ALT" type="text" value="{{ item.images|first.alt }}"></figcaption>
                                     </figure>
                                 </td>
@@ -43,16 +43,16 @@
                                         {% endif %}
                                     </div>
                                 </td>
-                                <td>
+                                <td class="d-iblock d-td-sm">
                                     {% if item.hasValidOrders %}
                                         <a class="bt-btn bt-btn--info" title="Voir les commandes" href="{{ path('app_admin_item_orders', {'id' : item.id}) }}"><i class="fas fa-list"></i></a>
                                     {% else %}
                                         <a class="bt-btn bt-btn--danger" title="Supprimer" href="{{ path('app_admin_item_delete', {'id' : item.id, 'page' : items.currentPage, 'row' : loop.index}) }}" onclick="return confirm('Supprimer définitivement ce bijoux')"><i class="far fa-trash-alt"></i></a>
                                     {% endif %}
                                 </td>
-                                <td><a class="bt-btn bt-btn--info" title="Modifier" href="{{ path('app_admin_item_edit', {'id' : item.id}) }}"><i class="far fa-edit"></i></a></td>
-                                <td><button class="bt-btn bt-btn--success" title="Enregistrer" onclick="return confirm('Enregistrer tous les changements?')"><i class="far fa-save"></i></button></td>
-                                <td><a class="bt-btn {% if item.visible %}bt-btn--success{% else %}bt-btn--danger{% endif %}" title="{% if item.visible %}Visible{% else %}Masqué{% endif %}" href="{{ path('app_admin_item_togglevisible', {'id' : item.id, 'page': items.currentPage}) }}"><i class="far fa-eye"></i></a></td>
+                                <td class="d-iblock d-td-sm"><a class="bt-btn bt-btn--info" title="Modifier" href="{{ path('app_admin_item_edit', {'id' : item.id}) }}"><i class="far fa-edit"></i></a></td>
+                                <td class="d-iblock d-td-sm"><button class="bt-btn bt-btn--success" title="Enregistrer" onclick="return confirm('Enregistrer tous les changements?')"><i class="far fa-save"></i></button></td>
+                                <td class="d-iblock d-td-sm"><a class="bt-btn {% if item.visible %}bt-btn--success{% else %}bt-btn--danger{% endif %}" title="{% if item.visible %}Visible{% else %}Masqué{% endif %}" href="{{ path('app_admin_item_togglevisible', {'id' : item.id, 'page': items.currentPage}) }}"><i class="far fa-eye"></i></a></td>
                             </tr>
                         {% endfor %}
                     </tbody>

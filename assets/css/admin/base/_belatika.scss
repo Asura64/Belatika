@@ -1,8 +1,33 @@
 .admin-container {
   display: flex;
   min-height: 100vh;
+  position: relative;
+  &.expanded {
+    //padding-left: 120px;
+    animation: toggle-admin-navbar .2s ease-in-out forwards;
+    & .admin-container__nav {
+      transform: translateX(120px);
+      @include media-breakpoint-up(sm) {
+        transform: translateX(0);
+      }
+    }
+    .admin-nav__toggle i {
+      transform: rotate(180deg);
+    }
+  }
   &__nav {
     background-color: #2e2e2e;
+    position: fixed;
+    left: -120px;
+    height: 100vh;
+    width: 104px;
+    transform: translateX(0);
+    transition: transform .2s ease-in-out;
+    @include media-breakpoint-up(sm) {
+      position: static;
+      width: auto;
+      height: auto;
+    }
     color: white;
     padding: .25rem .5rem;
     box-shadow: 1px 0 2px #2d2d2d;
@@ -16,7 +41,28 @@
       }
     }
     .admin-nav {
+      position: relative;
+      &__toggle {
+        @include media-breakpoint-up(sm) {
+          display: none;
+        }
+        position: absolute;
+        right: -32px;
+        top: calc(-4px - .25rem);
+        background-color: #2e2e2e;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0 0 .25rem 0;
+        box-shadow: 1px 0 2px #2d2d2d;
+        & i {
+          transition: transform .2s ease-in-out;
+        }
+      }
       &__item {
+        margin: .25rem 0;
         &__subnav {
           padding-left: 1.5rem;
           &__item {
@@ -29,9 +75,23 @@
   &__content {
     flex: 1;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     flex-wrap: wrap;
-    align-items: flex-start;
+    @include media-breakpoint-up(sm) {
+      flex-direction: row;
+      align-items: flex-start;
+    }
     padding: 2px 3px;
+  }
+}
+
+@keyframes toggle-admin-navbar {
+  0% {
+    padding-left: 0;
+  }
+  100% {
+    padding-left: 120px;
   }
 }
 

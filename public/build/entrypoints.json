@@ -65,10 +65,10 @@
     "app_admin": {
       "js": [
         "/build/runtime.d94b3b43.js",
-        "/build/app_admin.404e72b8.js"
+        "/build/app_admin.3ff9bfc1.js"
       ],
       "css": [
-        "/build/app_admin.aa581c54.css"
+        "/build/app_admin.9faa8a15.css"
       ]
     }
   }

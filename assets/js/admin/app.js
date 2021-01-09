@@ -10,3 +10,15 @@ require('../../css/admin/app.scss');
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
+
+document.addEventListener('DOMContentLoaded', () => {
+    //Toggle navbar
+    document.getElementById('admin-nav__toggle').addEventListener('click', () => {
+        let container = document.getElementById('admin-container');
+        if (container.classList.contains('expanded')) {
+            container.classList.remove('expanded');
+        } else {
+            container.classList.add('expanded');
+        }
+    });
+});

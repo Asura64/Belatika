@@ -15,3 +15,13 @@
 .text-right {
   text-align: right;
 }
+
+.d-iblock {
+  display: inline-block !important;
+}
+
+.d-td-sm {
+  @include media-breakpoint-up(sm) {
+    display: table-cell !important;
+  }
+}

@@ -1,5 +1,8 @@
 <nav class="admin-container__nav">
     <ul class="admin-nav">
+        <div class="admin-nav__toggle" id="admin-nav__toggle">
+            <i class="fas fa-angle-double-right"></i>
+        </div>
         {% for menu, url in menus %}
             <li class="admin-nav__item">
                 {% if url is iterable %}
