@@ -84,7 +84,7 @@ class ShopController extends AbstractController
     }
 
     /**
-     * @Route("/bijoux/black-friday", name="app_shop_black-friday")
+     * @Route("/bijoux/soldes", name="app_shop_sales")
      * @return Response
      */
     public function sales():Response
@@ -95,7 +95,7 @@ class ShopController extends AbstractController
 
         $items = $this->getDoctrine()->getRepository(Item::class)->findSales();
 
-        $this->breadcrumb[] = ['title' => 'Black Friday'];
+        $this->breadcrumb[] = ['title' => 'Soldes'];
 
         return $this->render('shop/sales.html.twig', ['items' => $items]);
     }
