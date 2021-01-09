@@ -15,15 +15,15 @@
                     {% for blogArticle in blogArticles %}
                         <tr>
                             <td>{{ blogArticle.title }}</td>
-                            <td>
+                            <td class="d-iblock d-td-sm">
                                 {% if blogArticle.isPublished %}
                                     <a class="btn bt-btn--success" title="Visible" href="{{ path('app_admin_blog_togglepublished', {'id' : blogArticle.id}) }}"><i class="far fa-eye"></i></a>
                                 {% else %}
                                     <a class="btn bt-btn--danger" title="Non visible" href="{{ path('app_admin_blog_togglepublished', {'id' : blogArticle.id}) }}"><i class="far fa-eye-slash"></i></a>
                                 {% endif %}
                             </td>
-                            <td><a class="btn bt-btn--info" title="Editer" href="{{ path('app_admin_blog_edit', {'id' : blogArticle.id}) }}"><i class="far fa-edit"></i></a></td>
-                            <td><a class="btn bt-btn--secondary" title="Supprimer" href="{{ path('app_admin_blog_delete', {'id' : blogArticle.id}) }}" onclick="return confirm('Supprimer définitivement?')"><i class="far fa-trash-alt"></i></a></td>
+                            <td class="d-iblock d-td-sm"><a class="btn bt-btn--info" title="Editer" href="{{ path('app_admin_blog_edit', {'id' : blogArticle.id}) }}"><i class="far fa-edit"></i></a></td>
+                            <td class="d-iblock d-td-sm"><a class="btn bt-btn--secondary" title="Supprimer" href="{{ path('app_admin_blog_delete', {'id' : blogArticle.id}) }}" onclick="return confirm('Supprimer définitivement?')"><i class="far fa-trash-alt"></i></a></td>
                         </tr>
                     {% endfor %}
                 </tbody>

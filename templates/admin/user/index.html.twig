@@ -7,7 +7,7 @@
         </div>
         <div class="dashboard-item__content">
             <table class="dashboard-table no-spacing striped-rows">
-                <tbody>
+                <thead>
                     <tr>
                         <th>Info</th>
                         <th>Nom utilisateur</th>
@@ -15,12 +15,26 @@
                         <th>Inscrit le</th>
                         <th>Dernière connection</th>
                     </tr>
+                </thead>
+                <tbody>
                     <tr>
-                        <th colspan="5"><a onclick="return confirm('Supprimer tous les utilisateurs inactifs?\n(Cette action est irréversible.)')" href="{{ path('app_admin_user_clearinactive') }}">Supprimer les utilisateurs inactifs</a></th>
+                        <td class="d-iblock d-td-sm" colspan="5">
+                            <div class="d-none-sm">
+                                Légende info utilisateur:<br>
+                                <i title="Compte créé avec Facebook" style="color: #4C6EF5" class="fab fa-facebook"></i> Compte créé avec Facebook<br>
+                                <i title="Compte créé avec google" style="color: #bb3030" class="fab fa-google"></i> Compte créé avec Google<br>
+                                <i title="Compte créé manuellement" style="color: #15AABF" class="fas fa-user"></i> Compte créé manuellement<br>
+                                <i title="Inscrit à la newsletter" style="color: #00ff00" class="fas fa-envelope"></i> Inscrit à la newsletter<br>
+                                <i title="Ne veux pas de newsletter" style="color: #fd0808" class="fas fa-envelope"></i> Ne veux pas de newsletter<br>
+                                <i title="N'a pas activé la newsletter" style="color: #928f8f" class="fas fa-envelope"></i> N'a pas activé la newsletter<br>
+                                <i title="A reçu un code cadeau avec la newsletter" style="color: #ee9f20" class="fas fa-gift"></i> A reçu un code cadeau avec la newsletter<br>
+                            </div>
+                            <a style="font-weight: bold; color: red" onclick="return confirm('Supprimer tous les utilisateurs inactifs?\n(Cette action est irréversible.)')" href="{{ path('app_admin_user_clearinactive') }}">Supprimer les utilisateurs inactifs</a>
+                        </td>
                     </tr>
                     {% for user in users %}
                         <tr {% if not user.enabled %}style="background-color: red;color: white"{% endif %}>
-                            <td>
+                            <td data-label="Info:">
                                 {% if user.facebookId %}<i title="Compte créé avec Facebook" style="color: #4C6EF5" class="fab fa-facebook"></i>{% endif %}
                                 {% if user.googleId %}<i title="Compte créé avec google" style="color: #bb3030" class="fab fa-google"></i>{% endif %}
                                 {% if not user.facebookId and not user.googleId %}<i title="Compte créé manuellement" style="color: #15AABF" class="fas fa-user"></i>{% endif %}
@@ -34,10 +48,10 @@
                                 class="fas fa-envelope"></i>
                                 {% if user.hasNewsletterGift %}<i title="A reçu un code cadeau avec la newsletter" style="color: #ee9f20" class="fas fa-gift"></i>{% endif %}
                             </td>
-                            <td>{{ user.username }}</td>
-                            <td>{{ user.email }}</td>
-                            <td>{{ user.createdAt|date('d/m/y h:i') }}</td>
-                            <td class="text-right">{{ user.lastLogin|date('d/m/y h:i') }}</td>
+                            <td data-label="Nom:">{{ user.username }}</td>
+                            <td data-label="Email:">{{ user.email }}</td>
+                            <td data-label="Inscription:" class="text-right-sm">{{ user.createdAt|date('d/m/y h:i') }}</td>
+                            <td data-label="Dernière visite:" class="text-right-sm">{{ user.lastLogin|date('d/m/y h:i') }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

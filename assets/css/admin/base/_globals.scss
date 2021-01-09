@@ -25,3 +25,15 @@
     display: table-cell !important;
   }
 }
+
+.d-none-sm {
+  @include media-breakpoint-up(sm) {
+    display: none !important;
+  }
+}
+
+.text-right-sm {
+  @include media-breakpoint-up(sm) {
+    text-align: right;
+  }
+}

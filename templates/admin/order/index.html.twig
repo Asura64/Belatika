@@ -12,25 +12,23 @@
                         <th>Ref</th>
                         <th>Date</th>
                         <th>Montant</th>
-                        <th>Commande</th>
-                        <th>Envoi</th>
-                        <th>Statut</th>
+                        <th>Facture</th>
+                        <th>N° d'envoi</th>
+                        <th>Suivi</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for order in orders %}
                         <tr>
-                            <td>{{ order.reference }}</td>
-                            <td>{{ order.orderedAt|date('d/m/Y H:i') }}</td>
-                            <td class="text-right">{{ order.total|number_format(2, ',') }}€</td>
-                            <td class="text-right">
+                            <td data-label="Référence:">{{ order.reference }}</td>
+                            <td data-label="Date:">{{ order.orderedAt|date('d/m/Y H:i') }}</td>
+                            <td data-label="Montant:" class="text-right-sm">{{ order.total|number_format(2, ',') }}€</td>
+                            <td data-label="Facture:" class="text-right-sm">
                                 {% if order.reference %}
                                     <a href="{{ path('app_order_review', {'reference':order.reference}) }}" target="_blank"><i class="fas fa-file-export"></i></a>
-                                {% else %}
-
                                 {% endif %}
                             </td>
-                            <td>
+                            <td data-label="N° d'envoi:">
                                 {% if order.isValid and not order.isSent %}
                                     <form action="{{ path('app_admin_order_send', {'reference':order.reference}) }}" method="POST">
                                         <input type="text" name="tracking_number" placeholder="Numéro suivi">
@@ -40,7 +38,7 @@
                                     <a target="_blank" href="https://www.laposte.fr/outils/suivre-vos-envois?code={{ order.trackingNumber }}">{{ order.trackingNumber }}</a>
                                 {% endif %}
                             </td>
-                            <td>{{ order.shippingStatus }}</td>
+                            <td data-label="Suivi" class="text-right-sm">{{ order.shippingStatus }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
