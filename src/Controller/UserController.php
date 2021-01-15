@@ -72,12 +72,12 @@ class UserController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $subscribe = $request->get('subscribe');
         if ($subscribe) {
-            if (!$user->hasNewsletterGift()) {
-                $gift = $giftManager->createGift(['end' => date_create()->modify(('+2 days'))]);
-                $user->setHasNewsletterGift(true);
-                $this->fastMail('Votre code cadeau 🎁', $user->getEmail(), 'mail/newsletterGift.html.twig', ['gift' => $gift]);
-                $em->persist($gift);
-            }
+//            if (!$user->hasNewsletterGift()) {
+//                $gift = $giftManager->createGift(['end' => date_create()->modify(('+2 days'))]);
+//                $user->setHasNewsletterGift(true);
+//                $this->fastMail('Votre code cadeau 🎁', $user->getEmail(), 'mail/newsletterGift.html.twig', ['gift' => $gift]);
+//                $em->persist($gift);
+//            }
             $user->setNewsletter(true);
         } else {
             $user->toggleNewsletter();
