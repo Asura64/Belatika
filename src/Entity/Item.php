@@ -200,7 +200,7 @@ class Item
         return $this->discount;
     }
 
-    public function setDiscount(int $discount): self
+    public function setDiscount(?int $discount): self
     {
         $this->discount = $discount;
 
