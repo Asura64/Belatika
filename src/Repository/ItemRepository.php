@@ -103,7 +103,7 @@ class ItemRepository extends AbstractRepository
             ->innerJoin('it.category', 'c')
             ->addSelect('c')
             ->andWhere('it.discount > 0')
-            ->orderBy('it.discount', 'DESC');
+            ->orderBy('it.created_at', 'DESC');
 
         return $qb->getQuery()->getResult();
     }
