@@ -27,16 +27,36 @@
 {% endblock %}
 {% block content %}
     {% if onSales %}
-        <a class="sales" href="{{ path('app_shop_sales') }}">
-            <div class="sales__txt">
-                <h2>Les soldes sont arrivées chez Belatika !</h2>
-                <div class="sales__txt__discount">Jusqu'à <b>-40%</b> de réduction!</div>
-                <div class="sales__txt__cta">J'en profite</div>
+            <h2>{{ 'Les soldes sont arrivées!'|gTrans }}</h2>
+            <div class="categories">
+                <div class="categories__category">
+                    <figure class="categories__category__figure animated" data-start="25" data-end="40" data-mobile-only="1">
+                        <figcaption class="centered-axis-xy">Voir les soldes</figcaption>
+                        <a href="{{ path('app_shop_sales') }}">
+                            <img src="{{ ('img/resources/soldes-20210121.jpg')|imagine_filter('620x350') }}" alt="Soldes Belatika">
+                        </a>
+                    </figure>
+                    <div class="categories__category__description">
+                        Découvrez vite notre sélection de bijoux soldés.
+                        Jusqu'à -40% de réduction. La livraison à domicile est offerte.
+                        Pas de raison de se priver, portez le bijou qui vous plaît:
+                        bague, collier, bracelet ou boucles d'oreilles.
+                        Des réductions à vous faire chavirer de plaisir!
+                    </div>
+                </div>
+                <div class="categories__overview">
+                    {% for item in discountItems %}
+                        <a class="category-item {% if loop.index > 3 %}d-mobile-none{% endif %}" href="{{ path('app_shop_item', {'customer': item.category.customers, 'category_slug': item.category.slug, 'slug': item.slug}) }}">
+                            <div class="category-item__image">
+                                <img src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
+                            </div>
+                            <div class="category-item__description">
+                                {{ item.name }}
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="sales__img">
-                <img src="{{ asset('img/resources/soldes-1800272_640.png') }}" alt="Soldes Belatika">
-            </div>
-        </a>
     {% endif %}
 
     <section>

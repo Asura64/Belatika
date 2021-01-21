@@ -51,6 +51,9 @@ class ShopController extends AbstractController
             }
         }
 
+        $discountItems = $this->getDoctrine()->getRepository(Item::class)->findSales();
+        $discountItems = array_slice($discountItems, 0, 6);
+
         $reviews = $this->getReviews($orders, $etsyFeedbacks, true);
         shuffle($reviews);
         $reviews = array_slice($reviews, 0, 2);
@@ -61,6 +64,7 @@ class ShopController extends AbstractController
                 'blogArticle' => $blogArticle,
                 'reviews' => $reviews,
                 'customerCountries' => implode(',', $customerCountries),
+                'discountItems' => $discountItems,
             ]
         );
     }
