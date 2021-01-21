@@ -26,9 +26,10 @@
     </script>
 {% endblock %}
 {% block content %}
-    {% if onSales %}
-            <h2>{{ 'Les soldes sont arrivées!'|gTrans }}</h2>
-            <div class="categories">
+    <section>
+        <h2>{{ 'La collection'|gTrans }}</h2>
+        <div class="categories">
+            {% if onSales %}
                 <div class="categories__category">
                     <figure class="categories__category__figure animated" data-start="25" data-end="40" data-mobile-only="1">
                         <figcaption class="centered-axis-xy">Voir les soldes</figcaption>
@@ -56,86 +57,38 @@
                         </a>
                     {% endfor %}
                 </div>
-            </div>
-    {% endif %}
+            {% endif %}
 
-    <section>
-        <h2>{{ "Présentation"|gTrans }}</h2>
-        <article class="about">
-            <p class="about__intro">{{ "Belatika est une marque de bijoux qui vous fait suivre la tendance."|gTrans }}</p>
-            <figure class="about__image">
-                <img src="{{ asset('img/resources/belatika_profile.jpg') }}" alt="{{ 'Profil créatrice bijoux tendance Belatika'|gTrans }}">
-            </figure>
-            <p class="about__paragraph">{{ "J’imagine et assemble des apprêts pour créer des bijoux fins et chics."|gTrans }}</p>
-            <p class="about__paragraph">{{ "Des bijoux qui vous accompagneront au quotidien ou pour une soirée très spéciale."|gTrans }}</p>
-            <div class="show-more">
-                <i class="fas fa-angle-down"></i>
-                <p class="about__paragraph">{{ "Vous pouvez me contacter par mail ou téléphone pour toute demande de personnalisation, je serais ravie de vous aider à créer le bijou de vos rêves."|gTrans }}</p>
-                <p class="about__paragraph">{{ "Dans ma boutique vous allez retrouver des bagues, des bracelets en argent ou en acier inoxydable, mais aussi des colliers et boucles d’oreilles en gold-filled 14k ou en laiton. J'utilise aussi les pierres naturelles et les cristaux Swarovski pour le coté chic et décontracté."|gTrans }}</p>
-                <p class="about__paragraph">{{ "De couleur argent ou doré vous allez trouver votre bonheur dans ma collection de bijoux."|gTrans }}</p>
-                <p class="about__paragraph">{{ "Vous aurez également dans la boutique des bijoux réalisés par des fournisseurs de qualité, oui oui... j'aime le travail de certains fournisseurs alors je vous les partage également, et je suis sûre que cela va vous plaire!"|gTrans }}</p>
-                <p class="about__paragraph">{{ "Je vous laisse découvrir mon univers tendance et chic que je propose dans la boutique."|gTrans }}</p>
-            </div>
-        </article>
-    </section>
-
-    <section>
-        <h2>{{ 'La collection'|gTrans }}</h2>
-        <div class="categories">
             {% set nbItems = 6 %}
             {% for category in categories %}
                 {% if category.items|length >= nbItems %}
-                <div class="categories__category">
-                    <figure class="categories__category__figure animated" data-start="25" data-end="40" data-mobile-only="1">
-                        <figcaption class="centered-axis-xy">{{ category.name|gTrans }}{% if category.customers == 'homme' %} homme{% endif %}</figcaption>
-                        <a href="{{ path('app_shop_category', {'customer' : category.customers, 'slug' : category.slug}) }}">
-                            <img src="{{ ('img/resources/categories/' ~ category.image)|imagine_filter('620x350') }}" alt="{{ category.name|gTrans }}">
-                        </a>
-                    </figure>
-                    <div class="categories__category__description">
-                        {{ category.shortDescription|raw }}
+                    <div class="categories__category">
+                        <figure class="categories__category__figure animated" data-start="25" data-end="40" data-mobile-only="1">
+                            <figcaption class="centered-axis-xy">{{ category.name|gTrans }}{% if category.customers == 'homme' %} homme{% endif %}</figcaption>
+                            <a href="{{ path('app_shop_category', {'customer' : category.customers, 'slug' : category.slug}) }}">
+                                <img src="{{ ('img/resources/categories/' ~ category.image)|imagine_filter('620x350') }}" alt="{{ category.name|gTrans }}">
+                            </a>
+                        </figure>
+                        <div class="categories__category__description">
+                            {{ category.shortDescription|raw }}
+                        </div>
                     </div>
-                </div>
-                <div class="categories__overview">
-                    {% for item in category.items({'limit': nbItems}) %}
-                        <a class="category-item {% if loop.index > 3 %}d-mobile-none{% endif %}" href="{{ path('app_shop_item', {'customer': category.customers, 'category_slug': category.slug, 'slug': item.slug}) }}">
-                            <div class="category-item__image">
-                                <img src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
-                            </div>
-                            <div class="category-item__description">
-                                {{ item.name }}
-                            </div>
-                        </a>
-                    {% endfor %}
-                </div>
+                    <div class="categories__overview">
+                        {% for item in category.items({'limit': nbItems}) %}
+                            <a class="category-item {% if loop.index > 3 %}d-mobile-none{% endif %}" href="{{ path('app_shop_item', {'customer': category.customers, 'category_slug': category.slug, 'slug': item.slug}) }}">
+                                <div class="category-item__image">
+                                    <img src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
+                                </div>
+                                <div class="category-item__description">
+                                    {{ item.name }}
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
                 {% endif %}
             {% endfor %}
         </div>
     </section>
-
-    {% if blogArticle %}
-        <section class="blog-article">
-            <h2>{{ 'Dernier article du blog'|gTrans }}</h2>
-            <div class="d-flex justify-content-center">
-                <a href="{{ path('app_blog_article', {'slug' : blogArticle.slug}) }}" class="blog-overview__article blog-overview__article--home">
-                    <article>
-                        <figure class="blog-overview__article__main-image"><img src="{{ asset(blogArticle.mainImage.src) }}" alt="{{ blogArticle.mainImage.alt }}"></figure>
-                        <div class="blog-overview__article__date">{{ blogArticle.postedAt|date('d/m/Y') }}</div>
-                        <div class="blog-overview__article__summary">
-                            <h2 class="blog-overview__article__summary__heading">{{ blogArticle.title|gTrans }}</h2>
-                            <p class="blog-overview__article__summary__content">{{ blogArticle.contentPreview|raw|gTransDB }} <small>({{ 'Lire la suite'|gTrans }})</small></p>
-                        </div>
-                        <div class="blog-overview__article__footer">
-                            <span class="blog-overview__article__footer__comments"><i class="far fa-comment"></i> {{ blogArticle.blogComments|length }}</span>
-                        </div>
-                    </article>
-                </a>
-            </div>
-            <div class="text-center">
-                <a class="btn bt-btn--primary" href="{{ path('app_blog_index') }}">~~ {{ 'Lire le blog'|gTrans }} ~~</a>
-            </div>
-        </section>
-    {% endif %}
 
     <section class="home-reviews">
         <h2>{{ 'Les avis des clients Belatika'|gTrans }}</h2>
@@ -190,6 +143,26 @@
         </div>
     </section>
 
+    <section>
+        <h2>{{ "A propos"|gTrans }}</h2>
+        <article class="about">
+            <p class="about__intro">{{ "Belatika est une marque de bijoux qui vous fait suivre la tendance."|gTrans }}</p>
+            <figure class="about__image">
+                <img src="{{ asset('img/resources/belatika_profile.jpg') }}" alt="{{ 'Profil créatrice bijoux tendance Belatika'|gTrans }}">
+            </figure>
+            <p class="about__paragraph">{{ "J’imagine et assemble des apprêts pour créer des bijoux fins et chics."|gTrans }}</p>
+            <p class="about__paragraph">{{ "Des bijoux qui vous accompagneront au quotidien ou pour une soirée très spéciale."|gTrans }}</p>
+            <div class="show-more">
+                <i class="fas fa-angle-down"></i>
+                <p class="about__paragraph">{{ "Vous pouvez me contacter par mail ou téléphone pour toute demande de personnalisation, je serais ravie de vous aider à créer le bijou de vos rêves."|gTrans }}</p>
+                <p class="about__paragraph">{{ "Dans ma boutique vous allez retrouver des bagues, des bracelets en argent ou en acier inoxydable, mais aussi des colliers et boucles d’oreilles en gold-filled 14k ou en laiton. J'utilise aussi les pierres naturelles et les cristaux Swarovski pour le coté chic et décontracté."|gTrans }}</p>
+                <p class="about__paragraph">{{ "De couleur argent ou doré vous allez trouver votre bonheur dans ma collection de bijoux."|gTrans }}</p>
+                <p class="about__paragraph">{{ "Vous aurez également dans la boutique des bijoux réalisés par des fournisseurs de qualité, oui oui... j'aime le travail de certains fournisseurs alors je vous les partage également, et je suis sûre que cela va vous plaire!"|gTrans }}</p>
+                <p class="about__paragraph">{{ "Je vous laisse découvrir mon univers tendance et chic que je propose dans la boutique."|gTrans }}</p>
+            </div>
+        </article>
+    </section>
+
     <section class="about">
         <h2>{{ "La créatrice"|gTrans }}</h2>
         <figure class="about__image">
@@ -201,6 +174,30 @@
         <p class="about__paragraph">{{ "Je réalise depuis chez moi l’assemblage des bijoux que vous allez découvrir dans ma boutique."|gTrans }}</p>
         <p class="about__paragraph">{{ "J’utilise des matières de qualité comme l’argent, l’acier inoxydable ou le gold filled 14k et le laiton mais aussi des cristaux Swarovski et des pierres naturelles pour leur coté chic et décontracté."|gTrans }}</p>
     </section>
+
+    {% if blogArticle %}
+        <section class="blog-article">
+            <h2>{{ 'Dernier article du blog'|gTrans }}</h2>
+            <div class="d-flex justify-content-center">
+                <a href="{{ path('app_blog_article', {'slug' : blogArticle.slug}) }}" class="blog-overview__article blog-overview__article--home">
+                    <article>
+                        <figure class="blog-overview__article__main-image"><img src="{{ asset(blogArticle.mainImage.src) }}" alt="{{ blogArticle.mainImage.alt }}"></figure>
+                        <div class="blog-overview__article__date">{{ blogArticle.postedAt|date('d/m/Y') }}</div>
+                        <div class="blog-overview__article__summary">
+                            <h2 class="blog-overview__article__summary__heading">{{ blogArticle.title|gTrans }}</h2>
+                            <p class="blog-overview__article__summary__content">{{ blogArticle.contentPreview|raw|gTransDB }} <small>({{ 'Lire la suite'|gTrans }})</small></p>
+                        </div>
+                        <div class="blog-overview__article__footer">
+                            <span class="blog-overview__article__footer__comments"><i class="far fa-comment"></i> {{ blogArticle.blogComments|length }}</span>
+                        </div>
+                    </article>
+                </a>
+            </div>
+            <div class="text-center">
+                <a class="btn bt-btn--primary" href="{{ path('app_blog_index') }}">~~ {{ 'Lire le blog'|gTrans }} ~~</a>
+            </div>
+        </section>
+    {% endif %}
 
 {#    {% if app.user and not app.user.newsletter and app.user.suggestNewsletter %}#}
 {#        <div id="newsletter-popup" class="popup">#}
