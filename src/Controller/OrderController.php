@@ -120,12 +120,13 @@ class OrderController extends AbstractController
         $paypalClient = new PayPalHttpClient($paypalEnvironment);
 
         $items = [];
+        $onSales = $this->onSales();
         foreach ($order->getCustomerOrderLines() as $line) {
             $items[] = [
                 'name' => $line->getItem()->getName(),
                 'unit_amount' => [
                     'currency_code' => 'EUR',
-                    'value' => $line->getPrice() * $line->getQuantity(),
+                    'value' => ($onSales ? $line->getDiscountPrice() : $line->getPrice()) * $line->getQuantity(),
                 ],
                 'quantity' => $line->getQuantity(),
             ];
@@ -165,6 +166,8 @@ class OrderController extends AbstractController
                 ],
             ],
         ];
+
+//        dd($paypalRequestBody);
 
         $paypalRequest = new OrdersCreateRequest();
         $paypalRequest->prefer('return=representation');

@@ -213,7 +213,7 @@ class CustomerOrder
 
     public function getTotal(): ?float
     {
-        return $this->total;
+        return round($this->total, 2);
     }
 
     public function setTotal(?float $total): self

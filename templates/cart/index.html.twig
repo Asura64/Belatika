@@ -47,7 +47,12 @@
                                     </a>
                                 </td>
                                 <td class="cart-content__item__price">
-                                    {{ (price * item.quantity)|number_format(2, ',') }}€
+                                    {% if item.discount and onSales %}
+                                        <span class="shop-items__item__price--crossed-out">{{ (item.price * item.quantity)|number_format(2, ',') }} €</span>
+                                        {{ (item.discountPrice * item.quantity)|number_format(2, ',') }} €
+                                    {% else %}
+                                        {{ (item.price * item.quantity)|number_format(2, ',') }}€
+                                    {% endif %}
                                 </td>
                                 <td class="cart-content__item__remove">
                                     <a class="text-dark" href="{{ path('app_cart_remove', {'id': item.id, 'quantity': item.quantity}) }}" title="{{ 'Retirer cet article de votre panier.'|gTrans }}"><i class="fas fa-trash-alt"></i></a>
