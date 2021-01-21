@@ -118,7 +118,16 @@
     padding-left: 20px;
     font-family: open sans,sans-serif,Arial,Helvetica;
     font-size: 15px;
-    line-height: 18px;
+    line-height: 24px;
+  }
+  &__price {
+    @include price-font;
+    font-size: 1rem;
+    &--crossed-out {
+      text-decoration: line-through;
+      color: #ccc;
+      font-size: .75rem;
+    }
   }
 }
 

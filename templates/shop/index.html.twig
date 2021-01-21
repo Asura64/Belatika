@@ -52,7 +52,13 @@
                                 <img src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
                             </div>
                             <div class="category-item__description">
-                                {{ item.name }}
+                                {{ item.name }}<br>
+                                {% if item.discount and onSales %}
+                                    <span class="category-item__price--crossed-out">{{ item.price|number_format(2, ',') }} €</span>
+                                    <span class="category-item__price">{{ (item.discountPrice)|number_format(2, ',') }} € (-{{ item.discount }}%)</span>
+                                {% else %}
+                                    <span class="category-item__price">{{ item.price|number_format(2, ',') }} €</span>
+                                {% endif %}
                             </div>
                         </a>
                     {% endfor %}
@@ -80,7 +86,13 @@
                                     <img src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
                                 </div>
                                 <div class="category-item__description">
-                                    {{ item.name }}
+                                    {{ item.name }}<br>
+                                    {% if item.discount and onSales %}
+                                        <span class="category-item__price--crossed-out">{{ item.price|number_format(2, ',') }} €</span>
+                                        <span class="category-item__price">{{ (item.discountPrice)|number_format(2, ',') }} € (-{{ item.discount }}%)</span>
+                                    {% else %}
+                                        <span class="category-item__price">{{ item.price|number_format(2, ',') }} €</span>
+                                    {% endif %}
                                 </div>
                             </a>
                         {% endfor %}
