@@ -121,12 +121,15 @@ class OrderController extends AbstractController
 
         $items = [];
         $onSales = $this->onSales();
+        $total = 0;
         foreach ($order->getCustomerOrderLines() as $line) {
+            $value = $onSales ? $line->getDiscountPrice() : $line->getPrice();
+            $total += $value * $line->getQuantity();
             $items[] = [
                 'name' => $line->getItem()->getName(),
                 'unit_amount' => [
                     'currency_code' => 'EUR',
-                    'value' => ($onSales ? $line->getDiscountPrice() : $line->getPrice()) * $line->getQuantity(),
+                    'value' => $value,
                 ],
                 'quantity' => $line->getQuantity(),
             ];
@@ -143,11 +146,11 @@ class OrderController extends AbstractController
                     'reference_id' => $order->getId(),
                     'amount' => [
                         'currency_code' => 'EUR',
-                        'value' => $order->getTotal(),
+                        'value' => $total,
                         'breakdown' => [
                             'item_total' => [
                                 'currency_code' => 'EUR',
-                                'value' => $order->getTotal(),
+                                'value' => $total,
                             ],
                         ],
                     ],
