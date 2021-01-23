@@ -48,8 +48,8 @@
                                 </td>
                                 <td class="cart-content__item__price">
                                     {% if item.discount and onSales %}
-                                        <span class="shop-items__item__price--crossed-out">{{ (item.price * item.quantity)|number_format(2, ',') }} €</span>
                                         {{ (item.discountPrice * item.quantity)|number_format(2, ',') }} €
+                                        <span class="cart-content__item__price--crossed-out">{{ (item.price * item.quantity)|number_format(2, ',') }} €</span>
                                     {% else %}
                                         {{ (item.price * item.quantity)|number_format(2, ',') }}€
                                     {% endif %}

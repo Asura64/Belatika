@@ -19,6 +19,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                    {% set savedMoney = 0 %}
                     {% for line in order.customerOrderLines %}
                         <tr>
                             <td data-label="{{ 'Article'|gTrans }}"><img src="{{ line.item.images|first.webPath|imagine_filter('icon') }}" alt="{{ line.item.images|first.alt }}">{{ line.item.name }}</td>
@@ -26,9 +27,22 @@
                             <td data-label="{{ 'Quantité'|gTrans }}">
                                 {{ line.quantity }}
                             </td>
-                            <td data-label="{{ 'Prix unitaire'|gTrans }}">{{ line.discountPrice|number_format(2, ',') }}€</td>
+                            <td data-label="{{ 'Prix unitaire'|gTrans }}">
+                                <div class="table-price">
+                                    {{ line.discountPrice|number_format(2, ',') }}€
+                                    {% if onSales and line.discount %}
+                                        <span class="cart-content__item__price--crossed-out">{{ line.price|number_format(2, ',') }} €</span>
+                                    {% endif %}
+                                </div>
+                            </td>
                             <td data-label="{{ 'Sous-total'|gTrans }}">
-                                {{ (line.discountPrice * line.quantity)|number_format(2, ',') }}€
+                                <div class="table-price">
+                                    {{ (line.discountPrice * line.quantity)|number_format(2, ',') }}€
+                                    {% if onSales and line.discount %}
+                                        {% set savedMoney = savedMoney + line.quantity * (line.price - line.discountPrice) %}
+                                        <span class="cart-content__item__price--crossed-out">{{ (line.price * line.quantity)|number_format(2, ',') }} €</span>
+                                    {% endif %}
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}
@@ -36,8 +50,8 @@
                         <td data-label="{{ 'Article'|gTrans }}">{{ 'Frais de port'|gTrans }}</td>
                         <td data-label="{{ 'Référence'|gTrans }}"></td>
                         <td data-label="{{ 'Quantité'|gTrans }}">1</td>
-                        <td data-label="{{ 'Prix unitaire'|gTrans }}">0,00€</td>
-                        <td data-label="{{ 'Sous-total'|gTrans }}">0,00€</td>
+                        <td data-label="{{ 'Prix unitaire'|gTrans }}"><div class="table-price">0,00€</div></td>
+                        <td data-label="{{ 'Sous-total'|gTrans }}"><div class="table-price">0,00€</div></td>
                     </tr>
                     </tbody>
                 </table>
@@ -58,6 +72,11 @@
                         <strong>{{ 'Total'|gTrans }} :</strong>
                         <strong>{{ (order.total - order.giftValueUsed)|number_format(2, ',') }}€</strong>
                     </p>
+                    {% if onSales and savedMoney %}
+                        <p class="text-sm-right">
+                            Super! Vous avez économisé {{ savedMoney|number_format(2, ',') }}€ sur votre commande!
+                        </p>
+                    {% endif %}
                     <p><em>{{ 'T.V.A. non applicable art. 293 B du CGI'|gTrans }}</em></p>
                     <p><small>{{ "En validant ma commande, j'accepte les "|gTrans }}<a target="_blank" href="{{ path('app_shop_cgv') }}">{{ "conditions générales de vente"|gTrans }}</a></small></p>
                 </div>

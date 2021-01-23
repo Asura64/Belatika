@@ -45,6 +45,20 @@ $cart-content-breakpoint: 'sm';
       @include price-font;
       font-size: 1.5rem;
       padding: 0 15px;
+      position: relative;
+      &--crossed-out {
+        text-decoration: line-through;
+        color: #ccc;
+        font-size: 1rem;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        align-items: flex-end;
+        height: 100%;
+        top: 0;
+        left: 0;
+      }
       &.total {
         color: darken($gold, 10%);
         font-size: 2rem;
