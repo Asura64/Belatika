@@ -176,6 +176,12 @@ export default class Cart {
         let itemPrice = this.createElementWithClasses('span', this.options.shopping_bag_item_class+'__price');
         let price = item.isShippingFee ? 0 : this.onSales ? item.discountPrice : item.price;
         itemPrice.innerText = new Intl.NumberFormat('fr-FR', {style: 'currency', currency: 'EUR'}).format(price);
+        if (this.onSales && item.discount) {
+            let crossedOutPrice = this.createElementWithClasses('span', this.options.shopping_bag_item_class+'__price--crossed-out');
+            crossedOutPrice.innerText = new Intl.NumberFormat('fr-FR', {style: 'currency', currency: 'EUR'}).format(item.price);
+            itemPrice.appendChild(crossedOutPrice);
+        }
+
         let itemRemove = this.createElementWithClasses('i', ['remove-item', 'far', 'fa-window-close']);
         itemRemove.setAttribute('data-item_id', item.id);
         itemRemove.setAttribute('data-remove_item_url', item.removeLink);

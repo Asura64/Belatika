@@ -7,7 +7,12 @@
                 <img src="{{ asset(item.images|first.webpath|imagine_filter('icon')) }}" alt="{{ item.images|first.alt|gTrans }}">
                 {{ item.name|gTrans|trunc(30) }}
             </a>
-            <span class="cart-hover__item__price">{{ (onSales ? item.discountPrice : item.price)|number_format(2, ',') }}€</span>
+            <span class="cart-hover__item__price">
+                {{ (onSales ? item.discountPrice : item.price)|number_format(2, ',') }}€
+                {% if onSales and item.discount %}
+                    <span class="cart-hover__item__price--crossed-out">{{ item.price|number_format(2, ',') }}€</span>
+                {% endif %}
+            </span>
             <i data-item_id="{{ item.id }}" data-remove_item_url="{{ absolute_url(path('app_cart_remove', {'id':item.id})) }}" class="remove-item far fa-window-close"></i>
         </div>
         {% set cartTotal = cartTotal + item.quantity * (onSales ? item.discountPrice : item.price) %}
