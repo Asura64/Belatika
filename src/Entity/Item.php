@@ -88,7 +88,7 @@ class Item
      * @ORM\Column(type="smallint")
      * @Groups({"item"})
      */
-    private $discount;
+    private int $discount = 0;
 
     /**
      * @Groups({"item"})
