@@ -2,7 +2,7 @@ parameters:
     shop_settings:
         sales:
             start: 20/01/2021_00:00
-            end: 07/02/2021_23:59
+            end: 16/02/2021_23:59
     stripe_secret_key:     '%env(STRIPE_SECRET_KEY)%'
     stripe_secret_webhook: '%env(STRIPE_SECRET_WEBHOOK)%'
     stripe_public_key:     '%env(STRIPE_PUBLIC_KEY)%'
