@@ -1,10 +1,10 @@
 .cart-hover {
   position: absolute;
   top: 100%;
-  right: -45px;
+  right: 0;
   max-width: 90vw;
   background-color: white;
-  z-index: 100;
+  z-index: 500;
   box-shadow: 0 0 3px #1e1e1e;
   opacity: 0;
   pointer-events: none;

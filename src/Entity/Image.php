@@ -99,7 +99,7 @@ class Image
     {
         $webPath = $this->getUploadDir().$this->makeFileName();
 
-        return file_exists($webPath) ? $webPath : 'img/uploads/image-not-found.png';
+        return file_exists($webPath) ? $webPath : 'img/resources/image-not-found.png';
     }
 
     public function getFile(): ?UploadedFile

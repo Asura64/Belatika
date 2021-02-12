@@ -9,21 +9,27 @@
 {% set currentUrl = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 <header id="bt-navbar" class="btheader">
     <div class="btheader__logo">
+        <a href="{% if is_granted('ROLE_ADMIN') and currentUrl == path('app_shop_index') %}{{ path('app_admin_index') }}{% else %}{{ path('app_shop_index') }}{% endif %}">
+            <img src="{{ asset('img/resources/Logo-rond-sans-papillon.png') }}" alt="Logo Belatika">
+            <img class="logo-papillon" src="{{ asset('img/resources/papillon.png') }}" alt="Papillon">
+        </a>
+    </div>
+    <div class="btheader__brand">
         {% if currentUrl == path('app_shop_index') %}<h1 class="home">{% endif %}
-            <a href="{{ path('app_shop_index') }}">
-                <img src="{{ asset('img/resources/brand.png') }}" alt="Logo Belatika">
+            <a href="{% if is_granted('ROLE_ADMIN') and currentUrl == path('app_shop_index') %}{{ path('app_admin_index') }}{% else %}{{ path('app_shop_index') }}{% endif %}">
+                <img src="{{ asset('img/resources/Belatika-Bijoux.png') }}" alt="Belatika Bijoux">
             </a>
         {% if currentUrl == path('app_shop_index') %}</h1>{% endif %}
     </div>
     {{ include('/modules/mainnav.html.twig') }}
     <div class="btbreadcrumb">
         {% if breadcrumb is defined %}
-            <span class="btbreadcrumb__head"><a class="bt-underline" href="{{ path('app_shop_index') }}">Accueil</a></span>
+            <span class="btbreadcrumb__head nowrap"><a class="bt-underline" href="{{ path('app_shop_index') }}">Accueil</a></span>
             {% for element in breadcrumb %}
                 {% if loop.last %}
-                    <span class="btbreadcrumb__tail bt-underline current">{{ element.title|gTrans|lower }}</span>
+                    <span class="btbreadcrumb__tail ellipsis bt-underline current">{{ element.title|gTrans|lower }}</span>
                 {% else %}
-                    <span class="btbreadcrumb__body">
+                    <span class="btbreadcrumb__body nowrap">
                         {% if element.url is defined %}<a class="bt-underline" href="{{ element.url }}">{% endif %}
                             {{ element.title|gTrans|lower }}
                         {% if element.url is defined %}</a>{% endif %}
@@ -32,37 +38,35 @@
             {% endfor %}
         {% endif %}
     </div>
-    <div class="btheader__tools">
-        <div class="btheader__tools__item">
-            <form method="POST" action="{{ path('app_shop_search') }}">
-                <label id="search-form" for="bt-search" class="bt-search">
-                    <span class="sr-only">{{ 'Rechercher sur le site'|gTrans }}</span>
-                    <input class="bt-search__input" id="search-input" name="bt-search" type="text">
-                    <i title="{{ 'Rechercher'|gTrans }}" id="search-trigger" class="fas fa-search bt-search__button"></i>
-                    <button class="sr-only" id="search-button">{{ 'OK'|gTrans }}</button>
-                </label>
-            </form>
-        </div>
-        <div class="btheader__tools__item">
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a title="{{ 'profile.show.title'|trans }}" href="{{ path('security_profile_show') }}"><i class="fas fa-user"></i></a>
-            {% else %}
-                <a title="{{ 'security.login.title'|trans }}" href="{{ path('security_login') }}"><i class="far fa-user"></i></a>
-            {% endif %}
-        </div>
-        <div
-            class="btheader__tools__item navcart {% if not app.session.get('cart')|length %}empty{% endif %}"
-            data-quantity="{{ app.session.get('cart')|length }}"
-        >
-            <a title="{{ 'Panier'|gTrans }}" href="{{ path('app_cart_show') }}" class="navcart__hover"><i class="fas fa-shopping-bag"></i></a href="{{ path('app_cart_show') }}">
-            {{ include('/modules/cart-hover.html.twig') }}
-        </div>
-        {% if is_granted('ROLE_ADMIN') %}
-            <div class="btheader__tools__item">
-                <a title="Administration" href="{{ path('app_admin_index') }}"><i class="fas fa-tools"></i></a>
-            </div>
+    <div class="btheader__tool btheader__tool--search">
+        <form method="POST" action="{{ path('app_shop_search') }}">
+            <label id="search-form" for="bt-search" class="bt-search">
+                <span class="sr-only">{{ 'Rechercher sur le site'|gTrans }}</span>
+                <input class="bt-search__input" id="search-input" name="bt-search" type="text">
+                <i title="{{ 'Rechercher'|gTrans }}" id="search-trigger" class="fas fa-search bt-search__button"></i>
+                <button class="sr-only" id="search-button">{{ 'OK'|gTrans }}</button>
+            </label>
+        </form>
+    </div>
+    <div class="btheader__tool btheader__tool--user">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a title="{{ 'profile.show.title'|trans }}" href="{{ path('security_profile_show') }}"><i class="fas fa-user"></i></a>
+        {% else %}
+            <a title="{{ 'security.login.title'|trans }}" href="{{ path('security_login') }}"><i class="far fa-user"></i></a>
         {% endif %}
     </div>
+    <div
+        class="btheader__tool btheader__tool--cart navcart {% if not app.session.get('cart')|length %}empty{% endif %}"
+        data-quantity="{{ app.session.get('cart')|length }}"
+    >
+        <a title="{{ 'Panier'|gTrans }}" href="{{ path('app_cart_show') }}" class="navcart__hover"><i class="fas fa-shopping-bag"></i></a href="{{ path('app_cart_show') }}">
+        {{ include('/modules/cart-hover.html.twig') }}
+    </div>
+{#        {% if is_granted('ROLE_ADMIN') %}#}
+{#            <div class="btheader__tools__item">#}
+{#                <a title="Administration" href="{{ path('app_admin_index') }}"><i class="fas fa-tools"></i></a>#}
+{#            </div>#}
+{#        {% endif %}#}
 </header>
 {% if title is defined %}
     <h1 class="heading">{{ title }}</h1>
