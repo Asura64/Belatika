@@ -129,6 +129,81 @@
       font-size: .75rem;
     }
   }
+  &--more {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @include media-breakpoint-up(md) {
+      width: 33%;
+    }
+    &__cta {
+      display: block;
+      letter-spacing: 3px;
+      position: relative;
+      background-color: #3ed3f0;
+      color: white;
+      font-weight: bold;
+      padding: .75rem 1.25rem;
+      white-space: nowrap;
+      &::before, &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        border: 1px solid #3ed3f0;
+        transform: scale(.99);
+        border-radius: .25rem;
+      }
+      &::before  {
+        animation: cta 3s ease-in-out infinite;
+      }
+      &::after  {
+        animation: cta 3s 300ms ease-in-out infinite;
+      }
+      i {
+        position: absolute;
+        top: 2px;
+        right: -18px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transform: translateX(0);
+        transition: all 300ms ease-in-out;
+      }
+      &:hover {
+        color: white;
+        text-decoration: none;
+        &::before, &::after {
+          animation: none;
+        }
+        i {
+          opacity: 1;
+          transform: translateX(-20px);
+        }
+      }
+    }
+  }
+}
+
+@keyframes cta {
+  0% {
+    transform: scale(.99);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
 
 hr.separator {

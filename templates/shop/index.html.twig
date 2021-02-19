@@ -65,7 +65,7 @@
                 </div>
             {% endif %}
 
-            {% set nbItems = 6 %}
+            {% set nbItems = 5 %}
             {% for category in categories %}
                 {% if category.items|length >= nbItems %}
                     <div class="categories__category">
@@ -96,6 +96,9 @@
                                 </div>
                             </a>
                         {% endfor %}
+                        <div class="category-item--more">
+                            <a class="category-item--more__cta" href="{{ path('app_shop_category', {'customer' : category.customers, 'slug' : category.slug}) }}">{{ 'Voir plus'|gTrans }} <i class="fas fa-angle-double-right"></i></a>
+                        </div>
                     </div>
                 {% endif %}
             {% endfor %}
