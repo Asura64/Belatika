@@ -20,6 +20,17 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ShopController extends AbstractController
 {
+
+
+    /**
+     * @Route("/qr")
+     * @return Response
+     */
+    public function qr():Response
+    {
+        return $this->redirectToRoute('app_shop_index');
+    }
+
     /**
      * @Route("/")
      * @param FilterService $filterService
