@@ -81,7 +81,7 @@
                     </div>
                     <div class="categories__overview">
                         {% for item in category.items({'limit': nbItems}) %}
-                            <a class="category-item {% if loop.index > 3 %}d-mobile-none{% endif %}" href="{{ path('app_shop_item', {'customer': category.customers, 'category_slug': category.slug, 'slug': item.slug}) }}">
+                            <a class="category-item {% if loop.index > 5 %}d-mobile-none{% endif %}" href="{{ path('app_shop_item', {'customer': category.customers, 'category_slug': category.slug, 'slug': item.slug}) }}">
                                 <div class="category-item__image">
                                     <img src="{{ item.images|first.webPath|imagine_filter('square') }}" alt="{{ item.images|first.alt }}">
                                 </div>
