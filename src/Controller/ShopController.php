@@ -28,7 +28,7 @@ class ShopController extends AbstractController
      */
     public function qr():Response
     {
-        return $this->redirectToRoute('app_shop_index');
+        return $this->redirectToRoute('app_shop_index', ['qr' => 1]);
     }
 
     /**
