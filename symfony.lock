@@ -29,6 +29,9 @@
     "doctrine/dbal": {
         "version": "v2.9.2"
     },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
     "doctrine/doctrine-bundle": {
         "version": "1.6",
         "recipe": {
@@ -207,15 +210,6 @@
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
         }
     },
-    "sensiolabs/security-checker": {
-        "version": "4.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.0",
-            "ref": "05daf6b214e54aed4089f3480f944a67ac3a7889"
-        }
-    },
     "spipu/html2pdf": {
         "version": "v5.2.1"
     },
@@ -349,9 +343,6 @@
             "./src/Controller/.gitignore",
             "./src/Kernel.php"
         ]
-    },
-    "symfony/http-client": {
-        "version": "v5.1.7"
     },
     "symfony/http-client-contracts": {
         "version": "v2.2.0"
