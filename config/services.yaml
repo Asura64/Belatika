@@ -84,7 +84,7 @@ services:
             $algoliaId:             '%env(ALGOLIA_PLACES_ID)%'
             $algoliaKey:            '%env(ALGOLIA_PLACES_KEY)%'
             $etsyKey:               '%env(ETSY_KEY)%'
-            $etsySecret:            '%env(APP_SECRET)%'
+            $etsySecret:            '%env(ETSY_SECRET)%'
             $etsyUserId:            '%env(ETSY_USER_ID)%'
             $etsyShopId:            '%env(ETSY_SHOP_ID)%'
             $etsyAccessToken:       '%env(ETSY_ACCESS_TOKEN)%'
