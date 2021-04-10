@@ -42,8 +42,7 @@
         "symfony/validator": ">=3.4",
         "symfony/web-link": ">=3.4",
         "symfony/webpack-encore-bundle": ">=1.7",
-        "symfony/yaml": ">=3.4",
-        "ext-oauth": "*"
+        "symfony/yaml": ">=3.4"
     },
     "require-dev": {
         "joshtronic/php-loremipsum": "*",
