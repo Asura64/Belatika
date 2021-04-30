@@ -50,7 +50,7 @@ export default class Cart {
 
     onNavcartToggleClick(e)
     {
-        e.preventDefault();
+        // e.preventDefault();
     }
 
     onButtonClick(button)

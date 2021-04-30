@@ -59,7 +59,7 @@
         class="btheader__tool btheader__tool--cart navcart {% if not app.session.get('cart')|length %}empty{% endif %}"
         data-quantity="{{ app.session.get('cart')|length }}"
     >
-        <a title="{{ 'Panier'|gTrans }}" href="{{ path('app_cart_show') }}" class="navcart__hover"><i class="fas fa-shopping-bag"></i></a href="{{ path('app_cart_show') }}">
+        <a title="{{ 'Panier'|gTrans }}" href="{{ path('app_cart_show') }}" class="navcart__hover"><i class="fas fa-shopping-bag"></i></a>
         {{ include('/modules/cart-hover.html.twig') }}
     </div>
 {#        {% if is_granted('ROLE_ADMIN') %}#}
