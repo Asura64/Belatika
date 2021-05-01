@@ -47,7 +47,16 @@ class CartController extends AbstractController
         $cart = $session->get('cart');
         $total = $this->getTotal($cart, $gift);
 
-        return $this->render('cart/index.html.twig', ['isOrdering' => $isOrdering, 'gift' => $gift, 'total' => $total]);
+        $lowerExpeDelay = date_create()->setTime(0, 0)->modify('+3 day');
+        $higherExpeDelay = date_create()->setTime(0, 0)->modify('+10 day');
+
+        return $this->render('cart/index.html.twig', [
+            'isOrdering' => $isOrdering,
+            'gift' => $gift,
+            'total' => $total,
+            'lowerExpeDelay' => $lowerExpeDelay,
+            'higherExpeDelay' => $higherExpeDelay,
+        ]);
     }
 
     /**

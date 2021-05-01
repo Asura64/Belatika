@@ -40,6 +40,29 @@ h2 {
   text-align: center;
 }
 
+h5, h6 {
+  color: #3a3a3a;
+  line-height: 1.2;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+.mt-70 {
+  margin-top: 70px;
+}
+.mt-30 {
+  margin-top: 30px;
+}
+
+.mb-50 {
+  margin-bottom: 50px;
+}
+
 .hidden {
   display: none;
 }

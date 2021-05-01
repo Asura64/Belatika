@@ -29,6 +29,10 @@ liip_imagine:
             filters:
                 thumbnail: { size: [251,329], mode: outbound}
                 background: { size: [255,333], position: center}
+        small:
+            quality: 75
+            filters:
+                thumbnail: { size: [ 200,300 ], mode: outbound }
         large:
             quality: 75
             filters:
