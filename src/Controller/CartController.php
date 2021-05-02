@@ -45,6 +45,16 @@ class CartController extends AbstractController
         }
 
         $cart = $session->get('cart');
+
+        $buyItemRef = (int) $request->get('ref');
+        if ($buyItemRef) {
+            $buyItem = $this->getEm()->getRepository(Item::class)->findOneBy(['reference' => $buyItemRef]);
+            if ($buyItem && !isset($cart[$buyItem->getId()])) {
+                $cart[$buyItem->getId()] = $buyItem->setQuantity(1);
+                $session->set('cart', $cart);
+            }
+        }
+
         $total = $this->getTotal($cart, $gift);
 
         $lowerExpeDelay = date_create()->setTime(0, 0)->modify('+3 day');
