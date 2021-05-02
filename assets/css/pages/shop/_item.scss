@@ -78,7 +78,7 @@ $item-breakpoint: 'md';
       align-items: baseline;
       padding: 0 1rem;
       &__value {
-        font-size: 4rem;
+        font-size: 3rem;
         color: $gold;
         @include price-font;
         &--original {

@@ -62,20 +62,19 @@
                         {% endif %}
                     </div>
                 </div>
+                <div class="item__content__price">
+                    {% if item.discount and onSales %}
+                        <span class="item__content__price__value--discount">-{{ item.discount }}%</span>
+                        <span class="item__content__price__value--original">{{ item.price|number_format(2, ',') }}€</span>
+                        <span class="item__content__price__value">{{ item.discountPrice|number_format(2, ',') }}€</span>
+                    {% else %}
+                        <span class="item__content__price__value"> {{ item.price|number_format(2, ',') }}€ </span>
+                    {% endif %}
+                </div>
                 <div class="item__content__description__text">
                     {{ item.description|raw|gTrans }}
                 </div>
             </div>
-            <div class="item__content__price">
-                {% if item.discount and onSales %}
-                    <span class="item__content__price__value--discount">-{{ item.discount }}%</span>
-                    <span class="item__content__price__value--original">{{ item.price|number_format(2, ',') }}€</span>
-                    <span class="item__content__price__value">{{ item.discountPrice|number_format(2, ',') }}€</span>
-                {% else %}
-                    <span class="item__content__price__value"> {{ item.price|number_format(2, ',') }}€ </span>
-                {% endif %}
-            </div>
-            <div class="item__content__reference">{{ 'Référence'|gTrans }} n°{{ item.reference }}</div>
         </div>
         <div class="item__border"></div>
     </div>
