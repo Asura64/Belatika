@@ -12,7 +12,7 @@
             </a>
             <figcaption>
                 <p><a class="text-dark" href="{{ path('app_shop_item', {'slug': item.slug, 'customer': item.category.customers, 'category_slug': item.category.slug}) }}">{{item.name|gTrans}}</a></p>
-{#                {% if item.quantity %}#}
+                {% if item.quantity %}
 {#                <button#}
 {#                        id="cart-button-{{ item.id }}"#}
 {#                        class="bt-btn bt-btn--primary cart-button btn-sm mr-3"#}
@@ -26,18 +26,18 @@
 {#                    <span class="remove-item{% if cart[item.id] is not defined %} hidden{% endif %}">{{ 'Retirer du panier'|gTrans }}</span>#}
 {#                    <i class="fas fa-spinner hidden"></i>#}
 {#                </button>#}
-{#                {% else %}#}
-{#                    <p class="alert alert-bt-info">#}
-{#                        {{ "Victime de son succés, cet article n'est plus disponible pour le moment"|gTrans }}#}
-{#                        <button#}
-{#                                class="backinstock bt-btn bt-btn--primary mb-2"#}
-{#                                data-id="{{ item.id }}"#}
-{#                                data-url="{{ path('app_shop_backinstock') }}"#}
-{#                                data-callback-text="{{ "Merci, je vous tiens au courant du retour en stock 😉"|gTrans }}"#}
-{#                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}data-email="{{ app.user.email }}"{% endif %}#}
-{#                        ><i class="d-none fas fa-spinner"></i> {{ "M'alerter du retour en stock"|gTrans }}</button>#}
-{#                    </p>#}
-{#                {% endif %}#}
+                {% else %}
+                    <p class="alert alert-bt-info">
+                        {{ "Victime de son succés, cet article n'est plus disponible pour le moment"|gTrans }}
+                        <button
+                                class="backinstock bt-btn bt-btn--primary mb-2"
+                                data-id="{{ item.id }}"
+                                data-url="{{ path('app_shop_backinstock') }}"
+                                data-callback-text="{{ "Merci, je vous tiens au courant du retour en stock 😉"|gTrans }}"
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}data-email="{{ app.user.email }}"{% endif %}
+                        ><i class="d-none fas fa-spinner"></i> {{ "M'alerter du retour en stock"|gTrans }}</button>
+                    </p>
+                {% endif %}
                 {% if item.quantity %}
                     {% if item.discount and onSales %}
                         <span class="shop-items__item__price--crossed-out">{{ item.price|number_format(2, ',') }} €</span>
