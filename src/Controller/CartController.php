@@ -57,8 +57,11 @@ class CartController extends AbstractController
 
         $total = $this->getTotal($cart, $gift);
 
-        $lowerExpeDelay = date_create()->setTime(0, 0)->modify('+3 day');
-        $higherExpeDelay = date_create()->setTime(0, 0)->modify('+10 day');
+        $isSunday = !date_create()->format('w');
+        $lowerExpeDelayDays = $isSunday ? 4 : 3;
+        $higherExpeDelayDays = $isSunday ? 11 : 10;
+        $lowerExpeDelay = date_create()->setTime(0, 0)->modify("+$lowerExpeDelayDays day");
+        $higherExpeDelay = date_create()->setTime(0, 0)->modify("+$higherExpeDelayDays day");
 
         return $this->render('cart/index.html.twig', [
             'isOrdering' => $isOrdering,
