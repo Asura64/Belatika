@@ -1,6 +1,23 @@
 <div class="btnav">
     <div id="navbarToggle" class="btnav__toggle box-shadow"><i class="fas fa-bars"></i></div>
     <div id="navbarContent" class="btnav__content">
+        <div class="btnav__content__submenu d-sm-none d-lg-block order-lg-1 d-xl-none">
+            <div class="btnav__content__submenu__title with-submenus">{{ 'Espace client'|gTrans }}</div>
+            <div class="btnav__content__submenu__content">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <div>
+                        <a class="bt-underline" title="{{ 'profile.show.title'|trans }}" href="{{ path('security_profile_show') }}">{{ "Mon profil"|gTrans }}</a>
+                    </div>
+                {% else %}
+                    <div>
+                        <a class="bt-underline" title="{{ 'security.login.title'|trans }}" href="{{ path('security_login') }}">{{ "Me connecter"|gTrans }}</a>
+                    </div>
+                    <div>
+                        <a class="bt-underline" title="{{ 'security.login.title'|trans }}" href="{{ path('security_login') }}">{{ "Créer un compte"|gTrans }}</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
         <div id="womanToggle" class="btnav__content__submenu">
             <div class="btnav__content__submenu__title with-submenus">{{ 'Bijoux femme'|gTrans }}</div>
             <div class="btnav__content__submenu__content">

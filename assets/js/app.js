@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     //Module de recherche
-    new Search();
+    // new Search();
 
     //Sticky navbar masquée au scroll descendant, visible au scroll montant
     new Navigation({

@@ -52,15 +52,11 @@ $search-size: 15px;
     color: white;
     box-shadow: 0 0 2px rgba(0,0,0,.7);
     font-size: 12px;
-    width: 14px;
-    height: 14px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    bottom: 0;
-    left: 0;
-    @include media-breakpoint-up(lg) {
-      bottom: 10px;
-      left: 10px;
-    }
+    bottom: 4px;
+    left: 4px;
   }
   //&:hover .cart-hover {
   //  opacity: 1;
@@ -69,8 +65,10 @@ $search-size: 15px;
 }
 
 .btnav {
-  grid-column-start: 4;
-  grid-row-start: 2;
+  grid-column-start: 1;
+  grid-row-start: 1;
+  grid-column-end: 2;
+  grid-row-end: 3;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,8 +76,12 @@ $search-size: 15px;
     color: black;
   }
   @include media-breakpoint-up(sm) {
+    grid-column-start: 2;
+    grid-column-end: 3;
+  }
+  @include media-breakpoint-up(md) {
     grid-column-start: 3;
-    grid-row-start: 1;
+    grid-column-end: 4;
   }
   &__content {
     position: absolute;
@@ -157,8 +159,16 @@ $search-size: 15px;
     }
   }
   &__toggle {
-    padding: 1px 6px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: .25rem;
+    &>i {
+      font-size: 36px;
+      color: #333;
+    }
     @include media-breakpoint-up(sm) {
       display: none;
     }
@@ -166,6 +176,7 @@ $search-size: 15px;
 }
 
 .with-submenus {
+  white-space: nowrap;
   @include media-breakpoint-up(xl) {
     &::after {
       content: ':';
@@ -174,7 +185,7 @@ $search-size: 15px;
 }
 
 .btbreadcrumb {
-  grid-column-start: 3;
+  grid-column-start: 2;
   grid-row-start: 2;
   display: none;
   padding-left: 1rem;
@@ -183,6 +194,9 @@ $search-size: 15px;
     display: flex;
     align-items: center;
     font-size: .75rem;
+  }
+  @include media-breakpoint-up(md) {
+    grid-column-start: 3;
   }
   & a {
     color: black;
