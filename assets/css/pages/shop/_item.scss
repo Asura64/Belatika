@@ -74,11 +74,11 @@ $item-breakpoint: 'md';
     }
     &__price {
       display: flex;
-      justify-content: flex-end;
-      align-items: baseline;
+      justify-content: center;
+      align-items: center;
       padding: 0 1rem;
       &__value {
-        font-size: 3rem;
+        font-size: 2rem;
         color: $gold;
         @include price-font;
         &--original {
@@ -88,11 +88,10 @@ $item-breakpoint: 'md';
           margin: 0 12px;
         }
         &--discount {
-          flex: 1;
           color: $gold;
           transform: rotate(-15deg);
           text-align: center;
-          font-size: 3.5rem;
+          font-size: 2.5rem;
           @include price-font;
           @include text-outline(#000);
         }
@@ -106,6 +105,7 @@ $item-breakpoint: 'md';
     }
     &__cart {
       text-align: center;
+      align-self: stretch;
       & button.cart-button {
         margin: 16px 0;
         @include title-font;

@@ -26,9 +26,11 @@
                     {% else %}
                         {{ include('/modules/item-carousel.html.twig') }}
                     {% endif %}
-                    <div class="item__content__cart clearfix">
+                </div>
+                <div>
+                    <div class="item__content__cart">
                         {% if not item.quantity %}
-                            <div>
+                            <div class="d-flex">
                                 <p class="alert alert-bt-info">
                                     {{ "Victime de son succés, cet article n'est plus disponible pour le moment"|gTrans }}
                                     <button
@@ -41,11 +43,11 @@
                                 </p>
                             </div>
                         {% else %}
-                            <div class="d-flex flex-column py-3">
-                                <a class="btn btn-outline-dark" href="{{ path('app_cart_show') ~ '?ref=' ~ item.reference }}">{{ "Acheter maintenant" }}</a>
+                            <div class="d-flex flex-column py-3 flex-md-row justify-content-md-between align-items-md-center">
+                                <a class="btn btn-outline-dark flex-md-grow-1" href="{{ path('app_cart_show') ~ '?ref=' ~ item.reference }}">{{ "Acheter maintenant" }}</a>
                                 <button
                                         id="cart-button-{{ item.id }}"
-                                        class="bt-btn bt-btn--primary cart-button btn-sm"
+                                        class="bt-btn bt-btn--primary cart-button btn-sm flex-md-grow-1 ml-md-2"
                                         data-item_id="{{ item.id }}"
                                         data-add_item_url="{{ absolute_url(path('app_cart_add', {'id':item.id})) }}"
                                         data-remove_item_url="{{ absolute_url(path('app_cart_remove', {'id':item.id})) }}"
@@ -61,15 +63,15 @@
                             <a href="{{ path('app_admin_item_edit', {'id' : item.id}) }}" class="bt-btn bt-btn--primary">Modifier</a>
                         {% endif %}
                     </div>
-                </div>
-                <div class="item__content__price">
-                    {% if item.discount and onSales %}
-                        <span class="item__content__price__value--discount">-{{ item.discount }}%</span>
-                        <span class="item__content__price__value--original">{{ item.price|number_format(2, ',') }}€</span>
-                        <span class="item__content__price__value">{{ item.discountPrice|number_format(2, ',') }}€</span>
-                    {% else %}
-                        <span class="item__content__price__value"> {{ item.price|number_format(2, ',') }}€ </span>
-                    {% endif %}
+                    <div class="item__content__price">
+                        {% if item.discount and onSales %}
+                            <span class="item__content__price__value--discount">-{{ item.discount }}%</span>
+                            <span class="item__content__price__value--original">{{ item.price|number_format(2, ',') }}€</span>
+                            <span class="item__content__price__value">{{ item.discountPrice|number_format(2, ',') }}€</span>
+                        {% else %}
+                            <span class="item__content__price__value"> {{ item.price|number_format(2, ',') }}€ </span>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="item__content__description__text">
                     {{ item.description|raw|gTrans }}
