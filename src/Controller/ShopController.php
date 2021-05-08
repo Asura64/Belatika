@@ -154,13 +154,13 @@ class ShopController extends AbstractController
     {
         if (!$item->getVisible()) return $this->redirectToRoute('app_shop_index');
 
-        $itemUrl = $this->generateUrl('app_shop_item', [
-            'category_slug' => $item->getCategory()->getSlug(),
-            'customer' => $item->getCategory()->getCustomers(),
-            'slug' => $item->getSlug()
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
+//        $itemUrl = $this->generateUrl('app_shop_item', [
+//            'category_slug' => $item->getCategory()->getSlug(),
+//            'customer' => $item->getCategory()->getCustomers(),
+//            'slug' => $item->getSlug()
+//        ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $facebookShareUrl = 'https://www.facebook.com/sharer.php?u=' . urlencode($itemUrl);
+//        $facebookShareUrl = 'https://www.facebook.com/sharer.php?u=' . urlencode($itemUrl);
 
         $this->breadcrumb[] = [
             'title' => 'bijoux '.$item->getCategory()->getCustomers(),
@@ -177,7 +177,7 @@ class ShopController extends AbstractController
 
         return $this->render('shop/item.html.twig', [
             'item' => $item,
-            'facebookShareUrl' => $facebookShareUrl
+//            'facebookShareUrl' => $facebookShareUrl
         ]);
     }
 

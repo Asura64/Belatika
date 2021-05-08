@@ -1,7 +1,6 @@
 {% extends "layout.html.twig" %}
 {% set cart = app.session.get('cart') %}
 {% block meta_title %}{{ item.name|gTrans }}{% endblock %}
-{% block title %}{{ item.name|gTrans }}{% endblock %}
 {% block head %}
     <link rel="canonical" href="{{ absolute_url(path('app_shop_item', {'customer' : item.category.customers, 'category_slug' : item.category.slug, 'slug' : item.slug})) }}">
     <meta property="og:url" content="{{ absolute_url(path('app_shop_item', {'customer' : item.category.customers, 'category_slug' : item.category.slug, 'slug' : item.slug})) }}" />
@@ -14,6 +13,234 @@
     <meta name="description" content="{{ (item.metaDescription ? item.metaDescription : item.autoMetaDescription(onSales))|gTrans }}">
 {% endblock %}
 {% block content %}
+    <section class="product-details spad">
+        <div class="container">
+            <div class="product__details__content">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="product__details__pic">
+                            <div class="product__details__pic__item">
+                                <img src="{{ asset(item.images|first.webPath|imagine_filter('item_big')) }}" alt="{{ item.images|first.alt }}" class="product__details__big__pic">
+                            </div>
+                            <div class="product__details__thumb nice-scroll" tabindex="1" style="overflow-y: hidden; outline: none;">
+                                {% for image in item.images %}
+                                    <div class="pt__item">
+                                        <img data-imgbigurl="{{ asset(image.webPath|imagine_filter('item_big')) }}" src="{{ asset(image.webPath|imagine_filter('item_thumb')) }}" alt="{{ image.alt }}">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="product__details__text d-flex flex-column">
+                            <div class="product__details__title order-2">
+                                <span>{{ item.category.name }}</span>
+                                <h1>{{ item.name }}</h1>
+                            </div>
+                            <div class="product__details__price text-right w-100">
+                                {% if item.discount and onSales %}
+                                    <span class="price-discount">-{{ item.discount }}%</span>
+                                    <span class="price-strike">{{ item.price|number_format(2, ',') }}€</span>
+                                    {{ item.discountPrice|number_format(2, ',') }}€
+                                {% else %}
+                                    {{ item.price|number_format(2, ',') }}€
+                                {% endif %}
+                            </div>
+                            <ul class="product__details__widget order-3">
+                                <li>{{ 'Catégorie'|gTrans }}: <span>{{ item.category.name }}</span></li>
+                                <li>{{ 'Référence' }}: <span>{{ item.reference }}</span></li>
+                                <li>{{ 'Disponibilité' }}: <span>{% if item.quantity %}{{ 'En stock'|gTrans }}{% else %}{{ 'Stock épuisé'|gTrans }}{% endif %}</span></li>
+                            </ul>
+                            <div class="product__details__btns order-1 order-lg-3 align-self-start justify-content-between w-100">
+                                {% if not item.quantity %}
+                                    <div class="d-flex">
+                                        <p class="alert alert-bt-info">
+                                            {{ "Victime de son succés, cet article n'est plus disponible pour le moment"|gTrans }}
+                                            <button
+                                                    class="backinstock bt-btn bt-btn--primary my-2 float-right"
+                                                    data-id="{{ item.id }}"
+                                                    data-url="{{ path('app_shop_backinstock') }}"
+                                                    data-callback-text="{{ "Merci, je vous tiens au courant du retour en stock 😉"|gTrans }}"
+                                                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}data-email="{{ app.user.email }}"{% endif %}
+                                            ><i class="d-none fas fa-spinner"></i> {{ "M'alerter du retour en stock"|gTrans }}</button>
+                                        </p>
+                                    </div>
+                                {% else %}
+                                    <a class="btn btn-outline-dark flex-md-grow-1" href="{{ path('app_cart_show') ~ '?ref=' ~ item.reference }}">{{ "Acheter maintenant" }}</a>
+                                    <button
+                                            id="cart-button-{{ item.id }}"
+                                            class="bt-btn bt-btn--primary cart-button btn-sm flex-md-grow-1 ml-md-2 p-2"
+                                            data-item_id="{{ item.id }}"
+                                            data-add_item_url="{{ absolute_url(path('app_cart_add', {'id':item.id})) }}"
+                                            data-remove_item_url="{{ absolute_url(path('app_cart_remove', {'id':item.id})) }}"
+                                            {% if cart[item.id] is defined %}data-added{% endif %}
+                                    >
+                                        <span class="add-item{% if cart[item.id] is defined %} hidden{% endif %}">{{ 'Ajouter au panier'|gTrans }}</span>
+                                        <span class="remove-item{% if cart[item.id] is not defined %} hidden{% endif %}">{{ 'Retirer du panier'|gTrans }}</span>
+                                        <i class="fas fa-spinner hidden"></i>
+                                    </button>
+                                {% endif %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <div class="w-100 m-4 d-flex justify-content-center">
+                                        <a href="{{ path('app_admin_item_edit', {'id' : item.id}) }}" class="bt-btn bt-btn--primary p-2">Modifier</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="product__details__desc order-5">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab" aria-selected="true">{{ "Description"|gTrans }}</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab" aria-selected="false">{{ "Livraison"|gTrans }}</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                                        {{ item.description|gTrans }}
+                                    </div>
+                                    <div class="tab-pane" id="tabs-2" role="tabpanel">
+                                        {{ "<p>Chez Belatika la <strong>livraison est offerte</strong> sans minimum d'achat.</p>
+                                        <p>Vos commandes sont envoyées sous <strong>1 jour ouvré</strong> en lettre suivie ou boite (selon format et stock).</p>
+                                        <p>Vos bijoux sont soigneusement emballés dans une <strong>protection bulle</strong> et mis dans une <strong>jolie pochette organza</strong> (couleur aléatoire).</p>
+                                        <p>Une <strong>gourmandise</strong> est glissée dans chacun de vos colis ( parfum et friandise aléatoire).</p>"|gTrans }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Related products
+            <div class="related__products">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <div class="section-title">
+                            <h2>Related products</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="d-col">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="https://preview.colorlib.com/theme/florist/img/product/product-1.jpg" style="background-image: url(&quot;https://preview.colorlib.com/theme/florist/img/product/product-1.jpg&quot;);">
+                                <div class="label">New</div>
+                                <ul class="product__item__hover">
+                                    <li><a href="#"><span class="icon_search"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h5><a href="#">Fly Me To The Moon</a></h5>
+                                <div class="price">$27.50</div>
+                                <button class="cart-btn">Add to cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-col">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="https://preview.colorlib.com/theme/florist/img/product/product-2.jpg" style="background-image: url(&quot;https://preview.colorlib.com/theme/florist/img/product/product-2.jpg&quot;);">
+                                <ul class="product__item__hover">
+                                    <li><a href="#"><span class="icon_search"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h5><a href="#">Fly Me To The Moon</a></h5>
+                                <div class="price">$27.50</div>
+                                <a href="#" class="cart-btn">Add to cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-col">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="https://preview.colorlib.com/theme/florist/img/product/product-3.jpg" style="background-image: url(&quot;https://preview.colorlib.com/theme/florist/img/product/product-3.jpg&quot;);">
+                                <div class="label">Sale</div>
+                                <ul class="product__item__hover">
+                                    <li><a href="#"><span class="icon_search"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h5><a href="#">Fly Me To The Moon</a></h5>
+                                <div class="price">$27.50</div>
+                                <a href="#" class="cart-btn">Add to cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-col">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="https://preview.colorlib.com/theme/florist/img/product/product-4.jpg" style="background-image: url(&quot;https://preview.colorlib.com/theme/florist/img/product/product-4.jpg&quot;);">
+                                <ul class="product__item__hover">
+                                    <li><a href="#"><span class="icon_search"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h5><a href="#">Fly Me To The Moon</a></h5>
+                                <div class="price">$27.50</div>
+                                <a href="#" class="cart-btn">Add to cart</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-col">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="https://preview.colorlib.com/theme/florist/img/product/product-5.jpg" style="background-image: url(&quot;https://preview.colorlib.com/theme/florist/img/product/product-5.jpg&quot;);">
+                                <ul class="product__item__hover">
+                                    <li><a href="#"><span class="icon_search"></span></a></li>
+                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h5><a href="#">Fly Me To The Moon</a></h5>
+                                <div class="price">$27.50</div>
+                                <a href="#" class="cart-btn">Add to cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            #}
+
+        </div>
+    </section>
+
+
+    <script src="{{ asset('js/vendors/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('js/vendors/jquery.nicescroll.min.js') }}"></script>
+    <script>
+        'use strict';
+
+        (function ($) {
+            $('.pt__item img').on('click', function () {
+                var imgurl = $(this).data('imgbigurl');
+                var bigImg = $('.product__details__big__pic').attr('src');
+                if (imgurl != bigImg) {
+                    $('.product__details__big__pic').attr({
+                        src: imgurl
+                    });
+                }
+            });
+
+            $(".nice-scroll").niceScroll({
+                cursorborder:"",
+                cursorcolor:"#dddddd",
+                boxzoom:false,
+                cursorwidth: 5,
+                background: 'rgba(0, 0, 0, 0.2)',
+                cursorborderradius:50,
+                horizrailenabled: false
+            });
+
+        })(jQuery);
+    </script>
+    {#
     <div class="item">
         <div class="item__border"></div>
         <div class="item__content">
@@ -80,5 +307,5 @@
         </div>
         <div class="item__border"></div>
     </div>
-
+    #}
 {% endblock %}
