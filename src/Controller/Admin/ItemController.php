@@ -177,6 +177,36 @@ class ItemController extends AdminController
     }
 
     /**
+     * @Route("/clear-unused-images")
+     * @return Response
+     */
+    public function clearUnusedImages(): Response
+    {
+        $imagesFolder = __DIR__.'/../../../public/img/uploads/';
+        $imagesInFolder = scandir($imagesFolder);
+
+        $imagesInFolder = array_filter($imagesInFolder, function ($image) {
+            return !!preg_match('#^\d+\.(png|jpe?g)$#', $image);
+        });
+
+        $imagesInDatabase = $this->getEm()->getRepository(Image::class)->findAll();
+        $imagesIdsInDatabase = [];
+        foreach ($imagesInDatabase as $imageInDatabase) {
+            $imagesIdsInDatabase[] = $imageInDatabase->getId();
+        }
+
+        foreach ($imagesInFolder as $imageInFolder) {
+            $id = preg_replace('#^(\d+)\..*$#', '$1', $imageInFolder);
+            $file = realpath($imagesFolder.$imageInFolder);
+            if (!in_array($id, $imagesIdsInDatabase) && file_exists($file)) {
+                unlink($file);
+            }
+        }
+
+        return $this->redirectToRoute('app_admin_item_items');
+    }
+
+    /**
      * @Route("/remove/image/{id<\d+>}", methods={"POST"})
      * @param Image $image
      * @return Response
