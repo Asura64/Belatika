@@ -2,15 +2,10 @@
   @include text-font;
   min-height: 100vh;
   position: relative;
-  padding: 60px .25rem 380px .25rem;
+  overflow: hidden;
+  padding: 60px .25rem 0 .25rem;
   @include media-breakpoint-up('sm') {
-    padding: 60px 0 250px 0;
-  }
-  @include media-breakpoint-up('md') {
-    padding-bottom: 200px;
-  }
-  @include media-breakpoint-up('lg') {
-    padding-bottom: 150px;
+    padding: 60px 0 0 0;
   }
 }
 

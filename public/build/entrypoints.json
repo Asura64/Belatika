@@ -5,10 +5,10 @@
         "/build/runtime.d94b3b43.js",
         "/build/0.94651fcd.js",
         "/build/1.ecc1e931.js",
-        "/build/app.98d5a466.js"
+        "/build/app.f7d65043.js"
       ],
       "css": [
-        "/build/app.b8c965ce.css"
+        "/build/app.6db5c74b.css"
       ]
     },
     "app_shop_index": {
@@ -51,10 +51,10 @@
     "app_cart_index": {
       "js": [
         "/build/runtime.d94b3b43.js",
-        "/build/app_cart_index.01138520.js"
+        "/build/app_cart_index.3c04ea1d.js"
       ],
       "css": [
-        "/build/app_cart_index.7794134c.css"
+        "/build/app_cart_index.879a30e9.css"
       ]
     },
     "app_order_index": {
@@ -67,10 +67,10 @@
     "app_admin": {
       "js": [
         "/build/runtime.d94b3b43.js",
-        "/build/app_admin.3ff9bfc1.js"
+        "/build/app_admin.778488c7.js"
       ],
       "css": [
-        "/build/app_admin.4bb7012d.css"
+        "/build/app_admin.eee3c3ee.css"
       ]
     }
   }

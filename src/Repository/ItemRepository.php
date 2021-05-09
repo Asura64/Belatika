@@ -94,6 +94,37 @@ class ItemRepository extends AbstractRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param Item $item
+     * @return Item[]
+     */
+    public function getRelatedItems(Item $item): array
+    {
+        $category = $item->getCategory();
+
+        $qb = $this->createQueryBuilder('it')
+            ->where('it.visible = 1')
+            ->innerJoin('it.images', 'im')
+            ->addSelect('im')
+            ->innerJoin('it.category', 'c')
+            ->addSelect('c')
+            ->andWhere('it.category = :category')
+            ->setParameter('category', $category)
+            ->andWhere('it.quantity > 0')
+            ->andWhere('it.id != :id')
+            ->setParameter('id', $item->getId());
+
+        $result = $qb->getQuery()->getResult();
+
+        if (!is_array($result) || count($result) < 5) {
+            return  [];
+        }
+
+        shuffle($result);
+
+        return array_slice($result, 0, 5);
+    }
+
     public function findSales()
     {
         $qb = $this->createQueryBuilder('it')

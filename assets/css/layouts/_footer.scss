@@ -1,15 +1,25 @@
-$footer-breakpoint: 'sm';
+$footer-breakpoint: 'md';
 
 .btfooter {
   display: flex;
-  padding: 0 16px;
+  background-color: #eeeeee;
+  padding: 24px 16px;
   flex-wrap: wrap;
-  position: absolute;
-  bottom: 0;
+  margin-top: 24px;
   width: 100%;
+  border-top: 1px solid #e1e1e1;
+  &>div {
+    border-top: 1px solid #e1e1e1;
+  }
+  &>div:first-child {
+    border: none;
+  }
   @include media-breakpoint-up($footer-breakpoint) {
     flex-direction: row;
-    padding: 0;
+    padding: 24px 0;
+    &>div {
+      border: none;
+    }
   }
   justify-content: space-around;
   &__about {
@@ -43,11 +53,16 @@ $footer-breakpoint: 'sm';
   }
   &__follow {
     width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     &__logos {
       text-align: center;
+      margin: 12px 0;
     }
     @include media-breakpoint-up($footer-breakpoint) {
       width: 20%;
+      display: block;
     }
   }
   &__payment {
