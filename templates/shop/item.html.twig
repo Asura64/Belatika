@@ -124,7 +124,7 @@
                         {% for item in relatedItems %}
                             <div class="d-col">
                                 <div class="product__item">
-                                    <div class="product__item__pic set-bg" style="background-image: url(&quot;{{ asset(item.images|first.webPath|imagine_filter('item_related')) }}&quot;);">
+                                    <div class="product__item__pic set-bg" style="background-image: url(&quot;{{ asset(item.images|first.webPath|imagine_filter('item_big')) }}&quot;);">
                                     </div>
                                     <div class="product__item__text">
                                         <h5><a href="{{ path('app_shop_item', {'category_slug': item.category.slug, 'customer': item.category.customers, 'slug': item.slug}) }}">{{ item.name }}</a></h5>
@@ -185,72 +185,4 @@
 
         })(jQuery);
     </script>
-    {#
-    <div class="item">
-        <div class="item__border"></div>
-        <div class="item__content">
-            <div class="item__content__description">
-                <div class="item__content__description__image">
-                    {% if item.images|length == 1 %}
-                        <figure>
-                            <img src="{{ asset(item.images|first.webPath|imagine_filter('large')) }}" alt="{{ item.images|first.alt }}">
-                        </figure>
-                    {% else %}
-                        {{ include('/modules/item-carousel.html.twig') }}
-                    {% endif %}
-                </div>
-                <div>
-                    <div class="item__content__cart">
-                        {% if not item.quantity %}
-                            <div class="d-flex">
-                                <p class="alert alert-bt-info">
-                                    {{ "Victime de son succés, cet article n'est plus disponible pour le moment"|gTrans }}
-                                    <button
-                                            class="backinstock bt-btn bt-btn--primary mb-2"
-                                            data-id="{{ item.id }}"
-                                            data-url="{{ path('app_shop_backinstock') }}"
-                                            data-callback-text="{{ "Merci, je vous tiens au courant du retour en stock 😉"|gTrans }}"
-                                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}data-email="{{ app.user.email }}"{% endif %}
-                                    ><i class="d-none fas fa-spinner"></i> {{ "M'alerter du retour en stock"|gTrans }}</button>
-                                </p>
-                            </div>
-                        {% else %}
-                            <div class="d-flex flex-column py-3 flex-md-row justify-content-md-between align-items-md-center">
-                                <a class="btn btn-outline-dark flex-md-grow-1" href="{{ path('app_cart_show') ~ '?ref=' ~ item.reference }}">{{ "Acheter maintenant" }}</a>
-                                <button
-                                        id="cart-button-{{ item.id }}"
-                                        class="bt-btn bt-btn--primary cart-button btn-sm flex-md-grow-1 ml-md-2"
-                                        data-item_id="{{ item.id }}"
-                                        data-add_item_url="{{ absolute_url(path('app_cart_add', {'id':item.id})) }}"
-                                        data-remove_item_url="{{ absolute_url(path('app_cart_remove', {'id':item.id})) }}"
-                                        {% if cart[item.id] is defined %}data-added{% endif %}
-                                >
-                                    <span class="add-item{% if cart[item.id] is defined %} hidden{% endif %}">{{ 'Ajouter au panier'|gTrans }}</span>
-                                    <span class="remove-item{% if cart[item.id] is not defined %} hidden{% endif %}">{{ 'Retirer du panier'|gTrans }}</span>
-                                    <i class="fas fa-spinner hidden"></i>
-                                </button>
-                            </div>
-                        {% endif %}
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('app_admin_item_edit', {'id' : item.id}) }}" class="bt-btn bt-btn--primary">Modifier</a>
-                        {% endif %}
-                    </div>
-                    <div class="item__content__price">
-                        {% if item.discount and onSales %}
-                            <span class="item__content__price__value--discount">-{{ item.discount }}%</span>
-                            <span class="item__content__price__value--original">{{ item.price|number_format(2, ',') }}€</span>
-                            <span class="item__content__price__value">{{ item.discountPrice|number_format(2, ',') }}€</span>
-                        {% else %}
-                            <span class="item__content__price__value"> {{ item.price|number_format(2, ',') }}€ </span>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="item__content__description__text">
-                    {{ item.description|raw|gTrans }}
-                </div>
-            </div>
-        </div>
-        <div class="item__border"></div>
-    </div>
-    #}
 {% endblock %}
