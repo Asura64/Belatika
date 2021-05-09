@@ -8,7 +8,9 @@
     padding: 60px 0 0 0;
   }
 }
-
+.flex-1 {
+  flex: 1;
+}
 .alert-bt-primary {
   background-color: lighten($gold, 10%);
 }

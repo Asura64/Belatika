@@ -66,10 +66,10 @@
                                         </p>
                                     </div>
                                 {% else %}
-                                    <a class="btn btn-outline-dark flex-md-grow-1" href="{{ path('app_cart_show') ~ '?ref=' ~ item.reference }}">{{ "Acheter maintenant" }}</a>
+                                    <a class="btn btn-outline-dark flex-1 mr-1" href="{{ path('app_cart_show') ~ '?ref=' ~ item.reference }}">{{ "Acheter maintenant" }}</a>
                                     <button
                                             id="cart-button-{{ item.id }}"
-                                            class="bt-btn bt-btn--primary cart-button btn-sm flex-md-grow-1 ml-md-2 p-2"
+                                            class="bt-btn bt-btn--primary cart-button btn-sm flex-1 ml-1 p-2"
                                             data-item_id="{{ item.id }}"
                                             data-add_item_url="{{ absolute_url(path('app_cart_add', {'id':item.id})) }}"
                                             data-remove_item_url="{{ absolute_url(path('app_cart_remove', {'id':item.id})) }}"
@@ -130,8 +130,6 @@
                                         <h5><a href="{{ path('app_shop_item', {'category_slug': item.category.slug, 'customer': item.category.customers, 'slug': item.slug}) }}">{{ item.name }}</a></h5>
                                         <div class="price">
                                             {% if item.discount and onSales %}
-                                                <span class="price-discount">-{{ item.discount }}%</span>
-                                                <span class="price-strike">{{ item.price|number_format(2, ',') }}€</span>
                                                 {{ item.discountPrice|number_format(2, ',') }}€
                                             {% else %}
                                                 {{ item.price|number_format(2, ',') }}€
@@ -152,88 +150,6 @@
                                 </div>
                             </div>
                         {% endfor %}
-{#                        <div class="d-col">#}
-{#                            <div class="product__item">#}
-{#                                <div class="product__item__pic set-bg" data-setbg="https://preview.colorlib.com/theme/florist/img/product/product-1.jpg" style="background-image: url(&quot;https://preview.colorlib.com/theme/florist/img/product/product-1.jpg&quot;);">#}
-{#                                    <div class="label">New</div>#}
-{#                                    <ul class="product__item__hover">#}
-{#                                        <li><a href="#"><span class="icon_search"></span></a></li>#}
-{#                                        <li><a href="#"><span class="icon_bag_alt"></span></a></li>#}
-{#                                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>#}
-{#                                    </ul>#}
-{#                                </div>#}
-{#                                <div class="product__item__text">#}
-{#                                    <h5><a href="#">Fly Me To The Moon</a></h5>#}
-{#                                    <div class="price">$27.50</div>#}
-{#                                    <button class="cart-btn">Add to cart</button>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="d-col">#}
-{#                            <div class="product__item">#}
-{#                                <div class="product__item__pic set-bg" data-setbg="https://preview.colorlib.com/theme/florist/img/product/product-2.jpg" style="background-image: url(&quot;https://preview.colorlib.com/theme/florist/img/product/product-2.jpg&quot;);">#}
-{#                                    <ul class="product__item__hover">#}
-{#                                        <li><a href="#"><span class="icon_search"></span></a></li>#}
-{#                                        <li><a href="#"><span class="icon_bag_alt"></span></a></li>#}
-{#                                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>#}
-{#                                    </ul>#}
-{#                                </div>#}
-{#                                <div class="product__item__text">#}
-{#                                    <h5><a href="#">Fly Me To The Moon</a></h5>#}
-{#                                    <div class="price">$27.50</div>#}
-{#                                    <a href="#" class="cart-btn">Add to cart</a>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="d-col">#}
-{#                            <div class="product__item">#}
-{#                                <div class="product__item__pic set-bg" data-setbg="https://preview.colorlib.com/theme/florist/img/product/product-3.jpg" style="background-image: url(&quot;https://preview.colorlib.com/theme/florist/img/product/product-3.jpg&quot;);">#}
-{#                                    <div class="label">Sale</div>#}
-{#                                    <ul class="product__item__hover">#}
-{#                                        <li><a href="#"><span class="icon_search"></span></a></li>#}
-{#                                        <li><a href="#"><span class="icon_bag_alt"></span></a></li>#}
-{#                                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>#}
-{#                                    </ul>#}
-{#                                </div>#}
-{#                                <div class="product__item__text">#}
-{#                                    <h5><a href="#">Fly Me To The Moon</a></h5>#}
-{#                                    <div class="price">$27.50</div>#}
-{#                                    <a href="#" class="cart-btn">Add to cart</a>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="d-col">#}
-{#                            <div class="product__item">#}
-{#                                <div class="product__item__pic set-bg" data-setbg="https://preview.colorlib.com/theme/florist/img/product/product-4.jpg" style="background-image: url(&quot;https://preview.colorlib.com/theme/florist/img/product/product-4.jpg&quot;);">#}
-{#                                    <ul class="product__item__hover">#}
-{#                                        <li><a href="#"><span class="icon_search"></span></a></li>#}
-{#                                        <li><a href="#"><span class="icon_bag_alt"></span></a></li>#}
-{#                                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>#}
-{#                                    </ul>#}
-{#                                </div>#}
-{#                                <div class="product__item__text">#}
-{#                                    <h5><a href="#">Fly Me To The Moon</a></h5>#}
-{#                                    <div class="price">$27.50</div>#}
-{#                                    <a href="#" class="cart-btn">Add to cart</a>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="d-col">#}
-{#                            <div class="product__item">#}
-{#                                <div class="product__item__pic set-bg" data-setbg="https://preview.colorlib.com/theme/florist/img/product/product-5.jpg" style="background-image: url(&quot;https://preview.colorlib.com/theme/florist/img/product/product-5.jpg&quot;);">#}
-{#                                    <ul class="product__item__hover">#}
-{#                                        <li><a href="#"><span class="icon_search"></span></a></li>#}
-{#                                        <li><a href="#"><span class="icon_bag_alt"></span></a></li>#}
-{#                                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>#}
-{#                                    </ul>#}
-{#                                </div>#}
-{#                                <div class="product__item__text">#}
-{#                                    <h5><a href="#">Fly Me To The Moon</a></h5>#}
-{#                                    <div class="price">$27.50</div>#}
-{#                                    <a href="#" class="cart-btn">Add to cart</a>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
                     </div>
                 </div>
             {% endif %}
