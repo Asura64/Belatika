@@ -6,24 +6,24 @@ namespace App\Service\Google;
 
 use App\Entity\Item;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Liip\ImagineBundle\Service\FilterService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Merchant
 {
     private EntityManagerInterface $manager;
     private UrlGeneratorInterface $urlGenerator;
-    private RequestStack $requestStack;
+    private FilterService $imagineFilterService;
 
     public function __construct(
         EntityManagerInterface $manager,
         UrlGeneratorInterface $urlGenerator,
-        RequestStack $requestStack
+        FilterService $imagineFilterService
     )
     {
         $this->manager = $manager;
         $this->urlGenerator = $urlGenerator;
-        $this->requestStack = $requestStack;
+        $this->imagineFilterService = $imagineFilterService;
     }
 
     public function generateProductsStream()
@@ -42,7 +42,7 @@ class Merchant
                     'category_slug' => $item->getCategory()->getSlug(),
                     'customer' => $item->getCategory()->getCustomers()
                 ], UrlGeneratorInterface::ABSOLUTE_URL),
-                'image_link' => $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost().'/'.$item->getImages()[0]->getWebPath(),
+                'image_link' => $this->imagineFilterService->getUrlOfFilteredImage($item->getImages()[0]->getWebPath(), 'item_big',),
                 'availability' => 'in stock',
                 'price' => number_format($item->getPrice(), 2, '.', '').' EUR',
                 'google_product_category' => $item->getCategory()->getGoogleCategory(),
