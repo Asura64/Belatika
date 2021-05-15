@@ -9,6 +9,7 @@ use App\Entity\Image;
 use App\Entity\Item;
 use App\Form\ItemType;
 use App\Repository\ItemRepository;
+use App\Service\Google\Merchant;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -99,9 +100,10 @@ class ItemController extends AdminController
     /**
      * @Route("/add")
      * @param Request $request
+     * @param Merchant $googleMerchant
      * @return Response
      */
-    public function add(Request $request): Response
+    public function add(Request $request, Merchant $googleMerchant): Response
     {
         $form = $this->createForm(ItemType::class);
         $form->handleRequest($request);
@@ -111,6 +113,7 @@ class ItemController extends AdminController
             $em = $this->getDoctrine()->getManager();
             $em->persist($item);
             $em->flush();
+            $googleMerchant->generateProductsStream();
             return $this->redirectToRoute('app_admin_item_items');
         }
 
@@ -124,9 +127,10 @@ class ItemController extends AdminController
      * @Route("/edit/{id<\d+>}")
      * @param Request $request
      * @param Item $item
+     * @param Merchant $googleMerchant
      * @return Response
      */
-    public function edit(Request $request, Item $item): Response
+    public function edit(Request $request, Item $item, Merchant $googleMerchant): Response
     {
         $form = $this->createForm(ItemType::class, $item);
         $form->handleRequest($request);
@@ -136,6 +140,7 @@ class ItemController extends AdminController
             $em = $this->getDoctrine()->getManager();
             $em->persist($item);
             $em->flush();
+            $googleMerchant->generateProductsStream();
         }
 
         return $this->render('admin/item/edit.html.twig', [
@@ -148,15 +153,17 @@ class ItemController extends AdminController
     /**
      * @Route("/delete/{id<\d+>}/{page<\d+>?1}/{row<\d+>?1}")
      * @param Item $item
+     * @param Merchant $googleMerchant
      * @param int $page
      * @param int $row
      * @return Response
      */
-    public function delete(Item $item, int $page, int $row): Response
+    public function delete(Item $item, Merchant $googleMerchant, int $page, int $row): Response
     {
         if ($item->getCustomerOrderLines()->isEmpty()) {
             $this->getEm()->remove($item);
             $this->getEm()->flush();
+            $googleMerchant->generateProductsStream();
         }
 
         return $this->redirectToRoute('app_admin_item_items', ['page' => $page, '_fragment' => 'row-'.$row]);
@@ -165,13 +172,15 @@ class ItemController extends AdminController
     /**
      * @Route("/toggle-visible/{id<\d+>}/{page<\d+>?1}")
      * @param Item $item
+     * @param Merchant $googleMerchant
      * @param int $page
      * @return Response
      */
-    public function toggleVisible(Item $item, int $page): Response
+    public function toggleVisible(Item $item, Merchant $googleMerchant, int $page): Response
     {
         $item->setVisible(!$item->getVisible());
         $this->getEm()->flush();
+        $googleMerchant->generateProductsStream();
 
         return $this->redirectToRoute('app_admin_item_items', ['page' => $page, '_fragment' => 'ITEM_'.$item->getId()]);
     }
@@ -209,14 +218,16 @@ class ItemController extends AdminController
     /**
      * @Route("/remove/image/{id<\d+>}", methods={"POST"})
      * @param Image $image
+     * @param Merchant $googleMerchant
      * @return Response
      */
-    public function removeImage(Image $image): Response
+    public function removeImage(Image $image, Merchant $googleMerchant): Response
     {
         if ($image->getItem()->getImages()->count() > 1) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($image);
             $em->flush();
+            $googleMerchant->generateProductsStream();
             $dataResponse = ['success' => true];
         } else {
             $dataResponse = [

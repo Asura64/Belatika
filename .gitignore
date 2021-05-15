@@ -24,6 +24,7 @@ Capfile
 /config/deploy.rb
 /log/
 ###< symfony/webpack-encore-pack ###
+
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
@@ -38,3 +39,7 @@ Capfile
 /public/img/uploads/
 /public/img/blog/
 ###< liip/imagine-bundle ###
+
+###> Google streams ###
+/public/google/
+###< Google streams ###

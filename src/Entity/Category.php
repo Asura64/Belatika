@@ -65,6 +65,11 @@ class Category
      */
     private $shortDescription;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $googleCategory;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -208,6 +213,18 @@ class Category
     public function setShortDescription(string $shortDescription): self
     {
         $this->shortDescription = $shortDescription;
+
+        return $this;
+    }
+
+    public function getGoogleCategory(): ?string
+    {
+        return $this->googleCategory;
+    }
+
+    public function setGoogleCategory(string $googleCategory): self
+    {
+        $this->googleCategory = $googleCategory;
 
         return $this;
     }
