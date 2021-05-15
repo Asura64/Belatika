@@ -28,16 +28,20 @@ class PaymentController extends AbstractController
      */
     private $user;
 
+    private Merchant $googleMerchant;
+
     public function __construct(
         GoogleTranslator $googleTranslator,
         Swift_Mailer $mailer,
         TokenStorageInterface $tokenStorage,
-        Config $config
+        Config $config,
+        Merchant $googleMerchant
     )
     {
         parent::__construct($googleTranslator, $mailer, $config);
         $user = $tokenStorage->getToken()->getUser();
         $this->user = $user instanceof User ? $user : null;
+        $this->googleMerchant = $googleMerchant;
     }
 
     /**
@@ -103,7 +107,7 @@ class PaymentController extends AbstractController
     }
 
 
-    private function validateOrder(CustomerOrder $order, Merchant $googleMerchant): Response
+    private function validateOrder(CustomerOrder $order): Response
     {
         $highestReference = $this->getDoctrine()->getRepository(CustomerOrder::class)->getHighestReference();
         $order
@@ -124,7 +128,7 @@ class PaymentController extends AbstractController
             'mail/confirmedOrderSeller.html.twig',
             ['order' => $order]);
         $this->addFlash('success', $this->gTrans('Merci pour votre commande, vous la recevrez très rapidement!'));
-        $googleMerchant->generateProductsStream();
+        $this->googleMerchant->generateProductsStream();
         return $this->redirectToRoute('app_order_confirmation');
     }
 }
