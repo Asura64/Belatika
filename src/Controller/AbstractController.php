@@ -118,11 +118,13 @@ abstract class AbstractController extends Controller
      */
     protected function fastMail(string $subject, $to, string $template, $viewVars = []): bool
     {
+        $toOwner = false;
+        $ownerMail = $this->config->getOwnerMail();
         if (in_array($this->config->getAppEnv() ?? null, ['dev', 'test'])) {
             $to = [$this->config->getDevMail()];
         } else {
             $to = is_array($to) ? $to : [$to];
-            $to[] = $this->config->getOwnerMail();
+            $toOwner = in_array($ownerMail, $to);
         }
         $message = (new Swift_Message($subject))
             ->setCharset('utf-8')
@@ -130,6 +132,17 @@ abstract class AbstractController extends Controller
             ->setFrom('contact@belatika.com')
             ->setTo($to)
             ->setBody($this->renderView($template, $viewVars));
+
+        if (!$toOwner && $ownerMail) {
+            $ownerMessage =  (new Swift_Message($subject))
+                ->setCharset('utf-8')
+                ->setContentType('text/html')
+                ->setFrom('contact@belatika.com')
+                ->setTo([$ownerMail])
+                ->setBody($this->renderView($template, $viewVars));
+            $this->mailer->send($ownerMessage);
+        }
+
         return $this->mailer->send($message) > 0;
     }
 
