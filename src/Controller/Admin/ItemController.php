@@ -23,9 +23,10 @@ class ItemController extends AdminController
      * @Route("/{page<\d+>?1}")
      * @param int $page
      * @param Request $request
+     * @param Merchant $googleMerchant
      * @return Response
      */
-    public function items(int $page, Request $request): Response
+    public function items(int $page, Request $request, Merchant $googleMerchant): Response
     {
         $manager = $this->getDoctrine()->getManager();
         /**
@@ -84,6 +85,7 @@ class ItemController extends AdminController
                 }
             }
             $manager->flush();
+            $googleMerchant->generateProductsStream();
         }
 
         $items = $itemRepository->findAllWithOrders();
