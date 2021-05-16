@@ -52,6 +52,7 @@ class Merchant
                 'gender' => $item->getCategory()->getCustomers() === 'homme' ? 'male' : 'female',
                 'size' => 'TUA',
                 'shipping' => 'FR::Courrier suivi La Poste:0.00 EUR',
+                'age_group' => 'adult',
             ];
             $products[] = $product;
         }
