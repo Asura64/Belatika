@@ -110,12 +110,18 @@ class Item
      */
     private $metaDescription;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="items")
+     */
+    private $colors;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->created_at = date_create();
         $this->discount = 0;
         $this->customerOrderLines = new ArrayCollection();
+        $this->colors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -381,6 +387,30 @@ class Item
                 $customerOrderLine->setItem(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Color[]
+     */
+    public function getColors(): Collection
+    {
+        return $this->colors;
+    }
+
+    public function addColor(Color $color): self
+    {
+        if (!$this->colors->contains($color)) {
+            $this->colors[] = $color;
+        }
+
+        return $this;
+    }
+
+    public function removeColor(Color $color): self
+    {
+        $this->colors->removeElement($color);
 
         return $this;
     }

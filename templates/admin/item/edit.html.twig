@@ -42,6 +42,13 @@
                     </div>
                 </div>
                 <div class="row form-group">
+                    {{ form_label(form.colors, null, {'label_attr': {'class': 'col-md-2'}}) }}
+                    <div class="col col-md-10">{{ form_widget(form.colors) }}</div>
+                    <div class="form_errors col-md-12">
+                        {{ form_errors(form.colors) }}
+                    </div>
+                </div>
+                <div class="row form-group">
                     {{ form_label(form.visible, null, {'label_attr': {'class': 'col-md-2'}}) }}
                     <div class="col col-md-10">{{ form_widget(form.visible) }}</div>
                     <div class="form_errors col-md-12">

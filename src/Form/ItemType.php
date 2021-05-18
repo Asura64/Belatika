@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Category;
+use App\Entity\Color;
 use App\Entity\Item;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -26,6 +27,13 @@ class ItemType extends AbstractType
                 'label' => 'Catégorie',
                 'class' => Category::class,
                 'choice_label' => 'name_customer',
+            ])
+            ->add('colors', EntityType::class, [
+                'label' => 'Couleurs',
+                'class' => Color::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
             ])
             ->add('name', TextType::class, ['label' => 'Nom'])
             ->add('reference', IntegerType::class, ['label' => 'Référence'])

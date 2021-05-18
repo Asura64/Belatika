@@ -138,3 +138,11 @@
     }
   }
 }
+
+#item_colors {
+  display: flex;
+  flex-wrap: wrap;
+  .form-check {
+    margin-right: 12px;
+  }
+}
