@@ -38,8 +38,10 @@ class ItemRepository extends AbstractRepository
             ->createQueryBuilder('it')
             ->innerJoin('it.images', 'im')
             ->addSelect('im')
-            ->innerJoin('it.category', 'c')
-            ->addSelect('c');
+            ->innerJoin('it.category', 'cat')
+            ->addSelect('cat')
+            ->innerJoin('it.colors', 'col')
+            ->addSelect('col');
 
         if ($params['onlyVisible']) {
             $qb->where('it.visible = 1');

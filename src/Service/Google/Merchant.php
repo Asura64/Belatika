@@ -54,6 +54,15 @@ class Merchant
                 'shipping' => 'FR::Courrier suivi La Poste:0.00 EUR',
                 'age_group' => 'adult',
             ];
+
+            if (!$item->getColors()->isEmpty()) {
+                $colors = [];
+                foreach ($item->getColors() as $color) {
+                    $colors[] = $color->getName();
+                }
+                $product['color'] = implode('/', $colors);
+            }
+
             $products[] = $product;
         }
 
