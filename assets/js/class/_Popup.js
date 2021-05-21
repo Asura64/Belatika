@@ -12,6 +12,8 @@ export default class Popup {
      * @param {Object} options
      * @param {{element: HTMLElement, url: string, callback: ajaxCallback, datas: Object}[]} options.buttons
      * @param {Boolean} options.display
+     * @param {Boolean} options.closeOnOverlayClick
+     * @param {Object} options.customEvents
      */
     constructor(element, options = {})
     {
@@ -19,6 +21,8 @@ export default class Popup {
         this.options = Object.assign({
             buttons: [],
             display: true,
+            closeOnOverlayClick: true,
+            customEvents: {}
         }, options);
 
         //Gestion du DOM
@@ -32,10 +36,19 @@ export default class Popup {
             this.close.addEventListener('click', this.onOverlayClick.bind(this));
         }
         this.popup.addEventListener('click', this.onPopupClick.bind(this));
-        this.overlay.addEventListener('click', this.onOverlayClick.bind(this));
+        if (this.options.closeOnOverlayClick) {
+            this.overlay.addEventListener('click', this.onOverlayClick.bind(this));
+        }
         this.options.buttons.forEach((button) => {
             this.setButtonEvent(button);
         });
+        for (const [selector, callback] of Object.entries(this.options.customEvents)) {
+            let elements = [].slice.call(document.querySelectorAll(selector));
+            elements.forEach(element => element.addEventListener('click', () => {
+                callback();
+                this.onOverlayClick();
+            }));
+        }
     }
 
     setOverlay()

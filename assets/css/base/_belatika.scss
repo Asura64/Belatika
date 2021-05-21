@@ -11,6 +11,9 @@
 .flex-1 {
   flex: 1;
 }
+.line-height-1{
+  line-height: 14px;
+}
 .alert-bt-primary {
   background-color: lighten($gold, 10%);
 }
@@ -165,6 +168,7 @@ img {
 }
 
 .button-link {
+  color: inherit;
   background: none;
   border: none;
   padding: 0;

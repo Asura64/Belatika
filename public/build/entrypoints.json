@@ -4,35 +4,35 @@
       "js": [
         "/build/runtime.d94b3b43.js",
         "/build/0.94651fcd.js",
-        "/build/1.ecc1e931.js",
-        "/build/app.f7d65043.js"
+        "/build/1.05381c73.js",
+        "/build/app.745f5af8.js"
       ],
       "css": [
-        "/build/app.21bf2f19.css"
+        "/build/app.27f03ab7.css"
       ]
     },
     "app_shop_index": {
       "js": [
         "/build/runtime.d94b3b43.js",
         "/build/0.94651fcd.js",
-        "/build/1.ecc1e931.js",
-        "/build/app_shop_index.4f9c7f67.js"
+        "/build/1.05381c73.js",
+        "/build/app_shop_index.28566afb.js"
       ]
     },
     "app_blog_article": {
       "js": [
         "/build/runtime.d94b3b43.js",
         "/build/0.94651fcd.js",
-        "/build/1.ecc1e931.js",
-        "/build/app_blog_article.c08ada8a.js"
+        "/build/1.05381c73.js",
+        "/build/app_blog_article.8efaa141.js"
       ]
     },
     "app_user_address": {
       "js": [
         "/build/runtime.d94b3b43.js",
         "/build/0.94651fcd.js",
-        "/build/1.ecc1e931.js",
-        "/build/app_user_address.d46127a3.js"
+        "/build/1.05381c73.js",
+        "/build/app_user_address.b5f4ddcc.js"
       ]
     },
     "app_user_order": {

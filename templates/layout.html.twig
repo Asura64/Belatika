@@ -1,33 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ app.request.locale }}">
 <head>
-    <!-- Google Tag Manager -->
-    <script>
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-KG57PLK');
-
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    </script>
-    <!-- End Google Tag Manager -->
     <!-- Facebook Pixel Code -->
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-            n.queue=[];t=b.createElement(e);t.async=!0;
-            t.src=v;s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s)}(window, document,'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '638025883243333');
-        fbq('track', 'PageView');
-    </script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=638025883243333&ev=PageView&noscript=1"/></noscript>
     <!-- End Facebook Pixel Code -->
     <title>{% block meta_title %}{% endblock %} - Belatika</title>
@@ -50,6 +24,21 @@
     {{ flashAlert() }}
     {% block content %}{% endblock %}
     {% include '/modules/footer.html.twig' %}
+    <div id="cookies-popup" class="popup">
+        <div class="font-weight-bold">
+            {{ "Ce site utilise des cookies"|gTrans }}
+        </div>
+        <div class="small line-height-1 my-2">
+            {{ "Les cookies nous permettent de personnaliser le contenu et les annonces, d'offrir des fonctionnalités relatives aux médias sociaux et d'analyser notre trafic. Nous partageons également des informations sur l'utilisation de notre site avec nos partenaires de médias sociaux, de publicité et d'analyse, qui peuvent combiner celles-ci avec d'autres informations que vous leur avez fournies ou qu'ils ont collectées lors de votre utilisation de leurs services"|gTrans }}
+        </div>
+        <div class="import"></div>
+        <div class="my-3 text-center">
+            <button class="btn btn-success float-sm-right accept">{{ 'ACCEPTER'|gTrans }}</button>
+        </div>
+        <div class="popup__footer clearfix">
+            <button class="button-link refuse small">{{ 'Refuser'|gTrans }}</button>
+        </div>
+    </div>
 </div>
 {{ encore_entry_script_tags('app') }}
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
