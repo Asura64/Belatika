@@ -10,6 +10,7 @@ use App\Entity\CustomerOrder;
 use App\Entity\EtsyFeedback;
 use App\Entity\EtsySale;
 use App\Entity\Item;
+use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Service\FilterService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,9 +43,13 @@ class ShopController extends AbstractController
         $blogArticle = $doctrine->getRepository(BlogArticle::class)->findLastWithComments();
         $blogContent = $blogArticle->getContent();
         if (preg_match('#(https?://(?:local)?belatika.com/)(img/blog/[^"]*)"#', $blogContent, $matches)) {
-            $resized = $filterService->getUrlOfFilteredImage($matches[2], 'large');
-            $blogContent = str_replace($matches[1].$matches[2], $resized, $blogContent);
-            $blogArticle->setContent($blogContent);
+            try {
+                $resized = $filterService->getUrlOfFilteredImage($matches[2], 'large');
+                $blogContent = str_replace($matches[1].$matches[2], $resized, $blogContent);
+                $blogArticle->setContent($blogContent);
+            } catch (NotLoadableException $e) {
+                $this->alertAdmin(NotLoadableException::class, $e->getMessage());
+            }
         }
 
         $orders = $doctrine->getRepository(CustomerOrder::class)->findBy(['rating' => [1,2,3,4,5]]);
