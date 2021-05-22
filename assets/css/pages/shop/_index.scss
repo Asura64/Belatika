@@ -308,7 +308,7 @@ hr.separator {
   &__image {
     position: relative;
     max-width: 300px;
-    margin: auto;
+    margin: 0 auto 1rem auto;
     &::after {
       content: '';
       @include white-filter;

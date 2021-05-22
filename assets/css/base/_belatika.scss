@@ -1,6 +1,11 @@
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 .btcontainer {
   @include text-font;
-  min-height: 100vh;
+  flex: 1;
   position: relative;
   overflow: hidden;
   padding: 60px .25rem 0 .25rem;
